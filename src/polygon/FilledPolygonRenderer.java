@@ -50,7 +50,6 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
             //if right edge is shorter
         else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY()){
-            System.out.println("--------********");
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Non_Horizontal_RightShort_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -58,7 +57,6 @@ public class FilledPolygonRenderer implements PolygonRenderer{
                 Non_Horizontal_RightShort_topInLeft(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
             else if (p_top.getIntX() >= p_bottomRight.getIntX()){
-                System.out.println("++++++++++!!!!!!!!!!!!!!!!!");
                 Non_Horizontal_RightShort_topInRight(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
         }
@@ -83,10 +81,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double L_x = p_top.getIntX();
         double R_x = p_top.getIntX();
 
-
+        int argbColor = Color.random().asARGB();
         //rendering begin
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, ARGB_WHITE, drawable);
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
             L_x = L_x - L_slope;
             R_x = R_x - R_slope;
         }
@@ -106,10 +104,11 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double L_x = p_top.getIntX();
         double R_x = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
 
         //rendering begin
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, ARGB_WHITE, drawable);
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
             L_x = L_x + L_slope;
             R_x = R_x + R_slope;
         }
@@ -127,10 +126,11 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double L_x = p_top.getIntX();
         double R_x = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
 
         //rendering begin
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, ARGB_WHITE, drawable);
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
             L_x = L_x - L_slope;
             R_x = R_x + R_slope;
         }
@@ -156,14 +156,15 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
         for (int y = p_top.getIntY(); y >= p_bottomRight.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L1_slope;
                 x_end = x_end + R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L2_slope;
                 x_end = x_end + R_slope;
             }
@@ -189,14 +190,16 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
+
         for (int y = p_top.getIntY(); y >= p_bottomRight.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L1_slope;
                 x_end = x_end + R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L2_slope;
                 x_end = x_end + R_slope;
             }
@@ -221,14 +224,16 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
+
         for (int y = p_top.getIntY(); y >= p_bottomRight.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L1_slope;
                 x_end = x_end - R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L2_slope;
                 x_end = x_end - R_slope;
             }
@@ -256,14 +261,16 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
+
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L_slope;
                 x_end = x_end + R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L_slope;
                 x_end = x_end - R2_slope;
             }
@@ -289,14 +296,16 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
+
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L_slope;
                 x_end = x_end + R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start + L_slope;
                 x_end = x_end - R2_slope;
             }
@@ -322,14 +331,16 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         double x_start = p_top.getIntX();
         double x_end = p_top.getIntX();
 
+        int argbColor = Color.random().asARGB();
+
         for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY(); y--){
             if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L_slope;
                 x_end = x_end - R_slope;
             }
             else{
-                fillPixels_leftToRight(x_start, x_end, y, ARGB_WHITE, drawable);
+                fillPixels_leftToRight(x_start, x_end, y, argbColor, drawable);
                 x_start = x_start - L_slope;
                 x_end = x_end - R2_slope;
             }
