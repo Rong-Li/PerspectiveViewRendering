@@ -22,6 +22,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         if(/*left_chain.get(0).getIntY() > left_chain.get(1).getIntY()
                 && right_chain.get(0).getIntY() > right_chain.get(1).getIntY()
                 && */left_chain.get(1).getIntY() == right_chain.get(1).getIntY()){
+            System.out.println("wrong1");
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Horizontal_Bottom_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -34,9 +35,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
         // if having Non-horizontal bottom line
             //if left edge if shorter
-        else if(left_chain.get(1).getIntY() > right_chain.get(1).getIntY() && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
-            //System.out.println("Horizontal: !!!!!!!!!!!!!!!!!");
-
+        else if(left_chain.get(1).getIntY() > right_chain.get(1).getIntY()
+                && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()
+                && right_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
+            System.out.println("wrong2");
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Non_Horizontal_LeftShort_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -48,7 +50,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
             }
         }
             //if right edge is shorter
-        else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY() && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
+        else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY()
+                && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()
+                && right_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
+            System.out.println("wrong3");
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Non_Horizontal_RightShort_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -61,23 +66,48 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
 
         //if horizontal top line
-        else if (left_chain.get(1).getIntY() == left_chain.get(0).getIntY()){
+        else if (left_chain.get(1).getIntY() == left_chain.get(0).getIntY()
+                || right_chain.get(1).getIntY() == right_chain.get(0).getIntY()){
             System.out.println("Right");
-            Vertex3D p_topLeft = left_chain.get(1);
-            Vertex3D p_topRight = left_chain.get(0);
-            Vertex3D p_bottom = right_chain.get(1);
 
-            if (p_bottom.getIntX() > p_topLeft.getIntX() && p_bottom.getIntX() < p_topRight.getIntX()){
-                System.out.println("more right");
-                Horizontal_Top_topInMiddle(p_topLeft, p_topRight, p_bottom, drawable);
+            // 1st case when the top is at right node
+            if (left_chain.get(1).getIntY() == left_chain.get(0).getIntY()){
+                Vertex3D p_topLeft = left_chain.get(1);
+                Vertex3D p_topRight = left_chain.get(0);
+                Vertex3D p_bottom = right_chain.get(1);
+                if (p_bottom.getIntX() > p_topLeft.getIntX() && p_bottom.getIntX() < p_topRight.getIntX()){
+                    System.out.println("more right");
+                    Horizontal_Top_topInMiddle(p_topLeft, p_topRight, p_bottom, drawable);
+                }
+                else if (p_bottom.getIntX() <= p_topLeft.getIntX()){
+                    System.out.println("more right");
+                    Horizontal_Top_topInLeft(p_topLeft, p_topRight, p_bottom, drawable);
+                }
+                else if (p_bottom.getIntX() >= p_topRight.getIntX()){
+                    Horizontal_Top_topInRight(p_topLeft, p_topRight, p_bottom, drawable);
+                }
             }
-            else if (p_bottom.getIntX() <= p_topLeft.getIntX()){
-                System.out.println("more right");
-                Horizontal_Top_topInLeft(p_topLeft, p_topRight, p_bottom, drawable);
+            // 2nd case when the top is at left node
+            else if(right_chain.get(1).getIntY() == right_chain.get(0).getIntY()){
+                Vertex3D p_topLeft = left_chain.get(0);
+                Vertex3D p_topRight = right_chain.get(1);
+                Vertex3D p_bottom = left_chain.get(1);
+
+                if (p_bottom.getIntX() > p_topLeft.getIntX() && p_bottom.getIntX() < p_topRight.getIntX()){
+                    System.out.println("more right");
+                    Horizontal_Top_topInMiddle(p_topLeft, p_topRight, p_bottom, drawable);
+                }
+                else if (p_bottom.getIntX() <= p_topLeft.getIntX()){
+                    System.out.println("more right");
+                    Horizontal_Top_topInLeft(p_topLeft, p_topRight, p_bottom, drawable);
+                }
+                else if (p_bottom.getIntX() >= p_topRight.getIntX()){
+                    Horizontal_Top_topInRight(p_topLeft, p_topRight, p_bottom, drawable);
+                }
             }
-            else if (p_bottom.getIntX() >= p_topRight.getIntX()){
-                Horizontal_Top_topInRight(p_topLeft, p_topRight, p_bottom, drawable);
-            }
+
+
+
         }
 
 

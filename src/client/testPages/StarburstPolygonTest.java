@@ -50,37 +50,17 @@ public class StarburstPolygonTest {
             }
 
 
-//        Vertex3D p1 = new Vertex3D(10.0, 250.0, 0.0, Color.WHITE);// top left
-//        Vertex3D p2 = new Vertex3D(250.0, 250.0, 0.0, Color.WHITE); // top right
-//        Vertex3D p3 = new Vertex3D(80, 10, 0.0, Color.WHITE); // bottom
-//
+//        Vertex3D p1 = new Vertex3D(50.0, 201.0, 0.0, Color.WHITE);// top left
+//        Vertex3D p2 = new Vertex3D(230.0, 201.0, 0.0, Color.WHITE); // top right
+//        Vertex3D p3 = new Vertex3D(150, 10, 0.0, Color.WHITE); // bottom
 //
 //        vertices = new Vertex3D[3];
 //
-//        vertices[0] = p1;
-//        vertices[1] = p2;
-//        vertices[2] = p3;
+//        vertices[2] = p1;
+//        vertices[0] = p2;
+//        vertices[1] = p3;
 //
 //        Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
-//
-//        System.out.println("left.get(0) is is is: " + polygon.leftChain().get(0));
-//        System.out.println("right.get(0) is is is: " + polygon.rightChain().get(0));
-//
-//        System.out.println("left.get(1) is is is: " + polygon.leftChain().get(1));
-//        System.out.println("right.get(1) is is is: " + polygon.rightChain().get(1));
-//
-//
-//        p1 = new Vertex3D(150.0, 201.0, 0.0, Color.WHITE);// top left
-//        p2 = new Vertex3D(230.0, 201.0, 0.0, Color.WHITE); // top right
-//        p3 = new Vertex3D(230, 10, 0.0, Color.WHITE); // bottom
-//
-//        vertices = new Vertex3D[3];
-//
-//        vertices[0] = p1;
-//        vertices[1] = p2;
-//        vertices[2] = p3;
-//
-//        polygon = Polygon.makeEnsuringClockwise(vertices);
 //
 //        System.out.println("_++++++++++: ");
 //

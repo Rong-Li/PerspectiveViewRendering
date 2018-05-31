@@ -1,9 +1,6 @@
 package client;
 
-import client.testPages.ParallelogramTest;
-import client.testPages.RandomLineTest;
-import client.testPages.StarburstLineTest;
-import client.testPages.StarburstPolygonTest;
+import client.testPages.*;
 import geometry.Point2D;
 import line.*;
 //import notProvided.client.ColoredDrawable;
@@ -20,10 +17,7 @@ import line.*;
 import polygon.FilledPolygonRenderer;
 import polygon.PolygonRenderer;
 import windowing.PageTurner;
-import windowing.drawable.Drawable;
-import windowing.drawable.GhostWritingDrawable;
-import windowing.drawable.InvertedYDrawable;
-import windowing.drawable.TranslatingDrawable;
+import windowing.drawable.*;
 import windowing.graphics.Dimensions;
 
 public class Client implements PageTurner {
@@ -67,7 +61,7 @@ public class Client implements PageTurner {
 	public void createDrawables() {
 		image = new InvertedYDrawable(drawable);
 		image = new TranslatingDrawable(image, point(0, 0), dimensions(750, 750));
-		//image = new ColoredDrawable(image, ARGB_WHITE);
+		image = new ColoredDrawable(image, ARGB_WHITE);
 		
 		largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
 		
@@ -149,8 +143,8 @@ public class Client implements PageTurner {
 			panel.clear();
 		}
 		new StarburstPolygonTest(panelArray[0], polygonRenderer);
-//		new MeshPolygonTest(panelArray[1], polygonRenderer, MeshPolygonTest.NO_PERTURBATION);
-//		new MeshPolygonTest(panelArray[2], polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
+		new MeshPolygonTest(panelArray[1], polygonRenderer, MeshPolygonTest.NO_PERTURBATION);
+		new MeshPolygonTest(panelArray[2], polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
 //		new RandomPolygonTest(panelArray[3], polygonRenderer);
 	}
 
