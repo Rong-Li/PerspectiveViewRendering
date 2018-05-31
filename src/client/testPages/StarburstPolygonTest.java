@@ -12,7 +12,7 @@ import java.util.List;
 
 public class StarburstPolygonTest {
 
-    private static final int NUM_RAYS = 4;
+    private static final int NUM_RAYS = 5;
     private static final double FRACTION_OF_PANEL_FOR_DRAWING = 0.9;
 
     private final PolygonRenderer renderer;
@@ -49,20 +49,25 @@ public class StarburstPolygonTest {
             renderer.drawPolygon(polygon, panel, null);
             }
 
-
-//        Vertex3D p1 = new Vertex3D(200.0, 250.0, 0.0, Color.WHITE);// top
-//        Vertex3D p2 = new Vertex3D(10.0, 10.0, 0.0, Color.WHITE); // left
-//        Vertex3D p3 = new Vertex3D(180.0, 100, 0.0, Color.WHITE); // right
+//
+//        Vertex3D p1 = new Vertex3D(10.0, 250.0, 0.0, Color.WHITE);// top left
+//        Vertex3D p2 = new Vertex3D(250.0, 250.0, 0.0, Color.WHITE); // top right
+//        Vertex3D p3 = new Vertex3D(5, 10, 0.0, Color.WHITE); // bottom
 //
 //        vertices = new Vertex3D[3];
 //
 //        vertices[0] = p1;
 //        vertices[1] = p2;
 //        vertices[2] = p3;
-
+//
+//        Polygon polygon = Polygon.make(vertices);
+//        int topIndex = polygon.leftChain().get(0).getIntX();
+//        int topIndex2 = polygon.rightChain().get(0).getIntX();
+//        System.out.println("the result is is is: " + topIndex);
+//        System.out.println("the result is is is: " + topIndex2);
 
 //        Polygon polygon = Polygon.make(vertices);
-
+//
 //        renderer.drawPolygon(polygon, panel, null);
     }
 

@@ -7,7 +7,6 @@ import windowing.graphics.Color;
 
 public class FilledPolygonRenderer implements PolygonRenderer{
     private FilledPolygonRenderer(){}
-    private int ARGB_WHITE = 0xff_ff_ff_ff;
 
     @Override
     public void drawPolygon(Polygon polygon, Drawable drawable, Shader vertexShader){
@@ -61,10 +60,54 @@ public class FilledPolygonRenderer implements PolygonRenderer{
             }
         }
 
+        //if horizontal top line
+        else if (left_chain.get(0).getIntY() == right_chain.get(1).getIntY()
+                || left_chain.get(1).getIntY() == right_chain.get(0).getIntY()){
+
+            if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
+                Horizontal_Top_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
+            }
+            else if (p_top.getIntX() <= p_bottomLeft.getIntX()){
+                Horizontal_Top_topInLeft(p_top, p_bottomLeft, p_bottomRight, drawable);
+            }
+            else if (p_top.getIntX() >= p_bottomRight.getIntX()){
+                Horizontal_Top_topInRight(p_top, p_bottomLeft, p_bottomRight, drawable);
+            }
+        }
+
 
     }
 
+    private void Horizontal_Top_topInMiddle(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        //DDA left line
+        double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
+        double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
 
+        double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
+        double deltaY2 = p_top.getIntY() - p_bottomRight.getIntY();
+
+        double L_slope = deltaX1 / deltaY1;
+        double R_slope = deltaX2 / deltaY2;
+        double L_x = p_top.getIntX();
+        double R_x = p_top.getIntX();
+
+        int argbColor = Color.random().asARGB();
+
+        //rendering begin
+        for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY() ; y--){
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            L_x = L_x - L_slope;
+            R_x = R_x + R_slope;
+        }
+    }
+
+    private void Horizontal_Top_topInLeft(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+
+    }
+
+    private void Horizontal_Top_topInRight(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+
+    }
 
 
     //Horizontal bottom line implementation
@@ -355,7 +398,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         if((int)Math.round(x_start) == (int)Math.round(x_end)){
             drawable.setPixel((int)Math.round(x_start), y, 0.0, color);
         }else{
-            for (int i = (int)Math.round(x_start); i < (int)Math.round(x_end) - 1; i++)
+            for (int i = (int)Math.round(x_start); i < (int)Math.round(x_end); i++)
                 drawable.setPixel(i, y, 0.0, color);
         }
     }
