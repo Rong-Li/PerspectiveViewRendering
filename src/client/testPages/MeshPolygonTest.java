@@ -14,9 +14,11 @@ public class MeshPolygonTest {
         this.panel = panel;
         this.renderer = polygonRenderer;
 
+        //if NO_PERTURBATION
         if (Which.equals(NO_PERTURBATION) == true){
             render_NO_PERTURBATION();
         }
+        //if USE_PERTURBATION
         else if(Which.equals(USE_PERTURBATION) == true){
             render_USE_PERTURBATION();
         }
