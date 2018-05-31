@@ -22,8 +22,6 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         if(/*left_chain.get(0).getIntY() > left_chain.get(1).getIntY()
                 && right_chain.get(0).getIntY() > right_chain.get(1).getIntY()
                 && */left_chain.get(1).getIntY() == right_chain.get(1).getIntY()){
-            //System.out.println("x_start: !!!!!!!!!!!!!!!!!");
-
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Horizontal_Bottom_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -36,7 +34,9 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
         // if having Non-horizontal bottom line
             //if left edge if shorter
-        else if(left_chain.get(1).getIntY() > right_chain.get(1).getIntY()){
+        else if(left_chain.get(1).getIntY() > right_chain.get(1).getIntY() && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
+            //System.out.println("Horizontal: !!!!!!!!!!!!!!!!!");
+
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Non_Horizontal_LeftShort_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -48,7 +48,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
             }
         }
             //if right edge is shorter
-        else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY()){
+        else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY() && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
             if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
                 Non_Horizontal_RightShort_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
             }
@@ -61,52 +61,93 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
 
         //if horizontal top line
-        else if (left_chain.get(0).getIntY() == right_chain.get(1).getIntY()
-                || left_chain.get(1).getIntY() == right_chain.get(0).getIntY()){
+        else if (left_chain.get(1).getIntY() == left_chain.get(0).getIntY()){
+            System.out.println("Right");
+            Vertex3D p_topLeft = left_chain.get(1);
+            Vertex3D p_topRight = left_chain.get(0);
+            Vertex3D p_bottom = right_chain.get(1);
 
-            if (p_top.getIntX() > p_bottomLeft.getIntX() && p_top.getIntX() < p_bottomRight.getIntX()){
-                Horizontal_Top_topInMiddle(p_top, p_bottomLeft, p_bottomRight, drawable);
+            if (p_bottom.getIntX() > p_topLeft.getIntX() && p_bottom.getIntX() < p_topRight.getIntX()){
+                System.out.println("more right");
+                Horizontal_Top_topInMiddle(p_topLeft, p_topRight, p_bottom, drawable);
             }
-            else if (p_top.getIntX() <= p_bottomLeft.getIntX()){
-                Horizontal_Top_topInLeft(p_top, p_bottomLeft, p_bottomRight, drawable);
+            else if (p_bottom.getIntX() <= p_topLeft.getIntX()){
+                System.out.println("more right");
+                Horizontal_Top_topInLeft(p_topLeft, p_topRight, p_bottom, drawable);
             }
-            else if (p_top.getIntX() >= p_bottomRight.getIntX()){
-                Horizontal_Top_topInRight(p_top, p_bottomLeft, p_bottomRight, drawable);
+            else if (p_bottom.getIntX() >= p_topRight.getIntX()){
+                Horizontal_Top_topInRight(p_topLeft, p_topRight, p_bottom, drawable);
             }
         }
 
 
     }
 
-    private void Horizontal_Top_topInMiddle(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+    private void Horizontal_Top_topInMiddle(Vertex3D p_topLeft, Vertex3D p_topRight, Vertex3D p_bottom, Drawable drawable) {
         //DDA left line
-        double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
-        double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
+        double deltaX1 = p_bottom.getIntX() - p_topLeft.getIntX();
+        double deltaY1 = p_topLeft.getIntY() - p_bottom.getIntY();
 
-        double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
-        double deltaY2 = p_top.getIntY() - p_bottomRight.getIntY();
+        double deltaX2 = p_topRight.getIntX() - p_bottom.getIntX();
+        double deltaY2 = p_topRight.getIntY() - p_bottom.getIntY();
 
         double L_slope = deltaX1 / deltaY1;
         double R_slope = deltaX2 / deltaY2;
-        double L_x = p_top.getIntX();
-        double R_x = p_top.getIntX();
+        double L_x = p_topLeft.getIntX();
+        double R_x = p_topRight.getIntX();
 
         int argbColor = Color.random().asARGB();
 
         //rendering begin
-        for (int y = p_top.getIntY(); y >= p_bottomLeft.getIntY() ; y--){
+        for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
             fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
-            L_x = L_x - L_slope;
-            R_x = R_x + R_slope;
+            L_x = L_x + L_slope;
+            R_x = R_x - R_slope;
         }
     }
+    private void Horizontal_Top_topInLeft(Vertex3D p_topLeft, Vertex3D p_topRight, Vertex3D p_bottom, Drawable drawable) {
+        //DDA left line
+        double deltaX1 = p_topLeft.getIntX() - p_bottom.getIntX();
+        double deltaY1 = p_topLeft.getIntY() - p_bottom.getIntY();
 
-    private void Horizontal_Top_topInLeft(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        double deltaX2 = p_topRight.getIntX() - p_bottom.getIntX();
+        double deltaY2 = p_topRight.getIntY() - p_bottom.getIntY();
 
+        double L_slope = deltaX1 / deltaY1;
+        double R_slope = deltaX2 / deltaY2;
+        double L_x = p_topLeft.getIntX();
+        double R_x = p_topRight.getIntX();
+
+        int argbColor = Color.random().asARGB();
+
+        //rendering begin
+        for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            L_x = L_x - L_slope;
+            R_x = R_x - R_slope;
+        }
     }
+    private void Horizontal_Top_topInRight(Vertex3D p_topLeft, Vertex3D p_topRight, Vertex3D p_bottom, Drawable drawable) {
+        //DDA left line
+        double deltaX1 = p_bottom.getIntX() - p_topLeft.getIntX();
+        double deltaY1 = p_topLeft.getIntY() - p_bottom.getIntY();
 
-    private void Horizontal_Top_topInRight(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        double deltaX2 = p_bottom.getIntX() - p_topRight.getIntX();
+        double deltaY2 = p_topRight.getIntY() - p_bottom.getIntY();
 
+        double L_slope = deltaX1 / deltaY1;
+        double R_slope = deltaX2 / deltaY2;
+        double L_x = p_topLeft.getIntX();
+        double R_x = p_topRight.getIntX();
+
+        int argbColor = Color.random().asARGB();
+
+        //rendering begin
+        for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
+            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            L_x = L_x + L_slope;
+            R_x = R_x + R_slope;
+        }
     }
 
 
