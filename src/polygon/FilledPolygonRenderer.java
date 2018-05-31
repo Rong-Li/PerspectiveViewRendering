@@ -364,7 +364,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
     private void Non_Horizontal_RightShort_topInLeft(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
         Vertex3D p_middle = p_bottomRight;
         //first DDA left line
-        double deltaX1_1 = p_bottomRight.getIntX() - p_top.getIntX();
+        double deltaX1_1 = p_bottomLeft.getIntX() - p_top.getIntX();
         double deltaY1_1 = p_top.getIntY() - p_bottomLeft.getIntY();
 
         double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();

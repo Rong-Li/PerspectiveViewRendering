@@ -12,7 +12,7 @@ import java.util.List;
 
 public class StarburstPolygonTest {
 
-    private static final int NUM_RAYS = 5;
+    private static final int NUM_RAYS = 90;
     private static final double FRACTION_OF_PANEL_FOR_DRAWING = 0.9;
 
     private final PolygonRenderer renderer;
