@@ -130,7 +130,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
 
         //rendering begin
         for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            if (drawable.getPixel((int)Math.round(L_x),y) != drawable.ARGB_BLACK){}
+            else{
+                fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            }
             L_x = L_x + L_slope;
             R_x = R_x - R_slope;
         }
@@ -152,7 +155,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
 
         //rendering begin
         for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            if (drawable.getPixel((int)Math.round(L_x),y) != drawable.ARGB_BLACK){}
+            else{
+                fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            }
             L_x = L_x - L_slope;
             R_x = R_x - R_slope;
         }
@@ -174,7 +180,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
 
         //rendering begin
         for (int y = p_topLeft.getIntY(); y >= p_bottom.getIntY() ; y--){
-            fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            if (drawable.getPixel((int)Math.round(L_x),y) != drawable.ARGB_BLACK){}
+            else{
+                fillPixels_leftToRight(L_x, R_x, y, argbColor, drawable);
+            }
             L_x = L_x + L_slope;
             R_x = R_x + R_slope;
         }
@@ -466,10 +475,17 @@ public class FilledPolygonRenderer implements PolygonRenderer{
 
 
     private void fillPixels_leftToRight(double x_start, double x_end, int y, int color, Drawable drawable) {
-        if((int)Math.round(x_start) == (int)Math.round(x_end)){
-            drawable.setPixel((int)Math.round(x_start), y, 0.0, color);
+        int start = (int)Math.round(x_start);
+        int end = (int)Math.round(x_end);
+        if( start == end) {
+//            if (drawable.getPixel(start,y) != drawable.ARGB_BLACK){}
+//            else{
+//                drawable.setPixel(start, y, 0.0, color);
+//             }
+            drawable.setPixel(start, y, 0.0, color);
+
         }else{
-            for (int i = (int)Math.round(x_start); i < (int)Math.round(x_end); i++)
+            for (int i = start; i < end; i++)
                 drawable.setPixel(i, y, 0.0, color);
         }
     }
