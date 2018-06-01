@@ -6,7 +6,7 @@ import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
 public class StarburstLineTest {
-	private static final int NUM_RAYS = 5;
+	private static final int NUM_RAYS = 90;
 	private static final double FRACTION_OF_PANEL_FOR_DRAWING = 0.9;
 	
 	private final LineRenderer renderer;

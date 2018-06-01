@@ -145,7 +145,7 @@ public class Client implements PageTurner {
 		new StarburstPolygonTest(panelArray[0], polygonRenderer);
 		new MeshPolygonTest(panelArray[1], polygonRenderer, MeshPolygonTest.NO_PERTURBATION);
 		new MeshPolygonTest(panelArray[2], polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
-//		new RandomPolygonTest(panelArray[3], polygonRenderer);
+		new RandomPolygonTest(panelArray[3], polygonRenderer);
 	}
 
 	private void defaultPage() {
