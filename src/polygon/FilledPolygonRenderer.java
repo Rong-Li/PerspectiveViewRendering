@@ -160,7 +160,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         int argbColor = Color.random().asARGB();
 
         //rendering begin
-        while(y >= p_bottomLeft.getIntY()){
+        while(y > p_bottomLeft.getIntY()){
             fillPixels_leftToRight(start_point, end_point, y, argbColor, drawable);
             start_point = start_point - L_slope;
             end_point = end_point - R_slope;
