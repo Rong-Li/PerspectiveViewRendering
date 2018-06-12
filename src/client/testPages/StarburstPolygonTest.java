@@ -77,13 +77,13 @@ public class StarburstPolygonTest {
     private void makeCenter() {
         int centerX = panel.getWidth() / 2;
         int centerY = panel.getHeight() / 2;
-        center = new Vertex3D(centerX, centerY, 0, Color.WHITE);
+        center = new Vertex3D(centerX, centerY, 0, Color.BLACK);
     }
 
     private Vertex3D radialPoint(double radius, double angle) {
         double x = center.getX() + radius * Math.cos(angle);
         double y = center.getY() + radius * Math.sin(angle);
-        return new Vertex3D(x, y, 0, Color.WHITE);
+        return new Vertex3D(x, y, 0, Color.BLACK);
     }
 
     private double computeRadius() {
