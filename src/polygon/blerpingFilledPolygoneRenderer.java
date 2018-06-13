@@ -72,16 +72,30 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
 
 
     private void Non_Horizontal_RightShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        double r = p_top.getColor().getR();
+        double g = p_top.getColor().getG();
+        double b = p_top.getColor().getB();
         Vertex3D p_middle = p_bottomRight;
-
+        //left long edge
         double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
         double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
+        double mr1 = getMforColors(p_top, p_bottomLeft, "red");
+        double mg1 = getMforColors(p_top, p_bottomLeft, "green");
+        double mb1 = getMforColors(p_top, p_bottomLeft, "blue");
 
+        //right short top edge
         double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
         double deltaY2 = p_bottomRight.getIntY() - p_top.getIntY();
+        double mr2 = getMforColors(p_top, p_bottomRight, "red");
+        double mg2 = getMforColors(p_top, p_bottomRight, "green");
+        double mb2 = getMforColors(p_top, p_bottomRight, "blue");
 
+        //right short bot edge
         double deltaX2_2 = p_bottomRight.getIntX() - p_bottomLeft.getIntX();
         double deltaY2_2 = p_bottomRight.getIntY() - p_bottomLeft.getIntY();
+        double mr2_2 = getMforColors(p_bottomRight, p_bottomLeft, "red");
+        double mg2_2 = getMforColors(p_bottomRight, p_bottomLeft, "green");
+        double mb2_2 = getMforColors(p_bottomRight, p_bottomLeft, "blue");
 
         double L_slope = deltaX1 / deltaY1;
         double R_slope = deltaX2 / deltaY2;
@@ -107,6 +121,27 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
                 y--;
             }
         }
+    }
+
+    private double getMforColors(Vertex3D p1, Vertex3D p2, String color) {
+        double deltaY = p1.getIntY() - p2.getIntY();
+        double p1_r = 1.0;
+        double p2_r = 0.0;
+        if (color == "red"){
+            p1_r = p1.getColor().getR();
+            p2_r = p2.getColor().getR();
+
+        } else if (color == "green"){
+            p1_r = p1.getColor().getG();
+            p2_r = p2.getColor().getG();
+
+        } else if (color == "blue"){
+            p1_r = p1.getColor().getB();
+            p2_r = p2.getColor().getB();
+        }
+        double deltaR = p1_r - p2_r;
+        double m = deltaR/deltaY;
+        return m;
     }
 
     private void Non_Horizontal_LeftShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
