@@ -3,19 +3,10 @@ package client;
 import client.testPages.*;
 import geometry.Point2D;
 import line.*;
-//import notProvided.client.ColoredDrawable;
-//import notProvided.client.testpages.MeshPolygonTest;
-//import notProvided.client.testpages.ParallelogramTest;
-//import notProvided.client.testpages.RandomLineTest;
-//import notProvided.client.testpages.RandomPolygonTest;
-//import notProvided.client.testpages.StarburstPolygonTest;
-//import notProvided.line.AntialiasingLineRenderer;
-//import notProvided.line.BresenhamLineRenderer;
-//import notProvided.line.DDALineRenderer;
-//import notProvided.polygon.FilledPolygonRenderer;
-//import notProvided.polygon.WireframePolygonRenderer;
 import polygon.FilledPolygonRenderer;
+import polygon.FilledWireFrameRenderer;
 import polygon.PolygonRenderer;
+import polygon.WireframeRenderer;
 import windowing.PageTurner;
 import windowing.drawable.*;
 import windowing.graphics.Dimensions;
@@ -43,12 +34,14 @@ public class Client implements PageTurner {
 	private Drawable[] panels;
 	private Drawable[] ghostPanels;					// use transparency and write only white
 	private Drawable largePanel;
+	private Drawable fullPanel;
 	
-	private LineRenderer lineRenderers[];
+	private LineRenderer lineRenderer;
 	private PolygonRenderer polygonRenderer;
-	
-	
-	public Client(Drawable drawable) {
+    private WireframeRenderer wireframeRenderer;
+
+
+    public Client(Drawable drawable) {
 		this.drawable = drawable;	
 		createDrawables();
 		createRenderers();
@@ -64,9 +57,10 @@ public class Client implements PageTurner {
 		image = new ColoredDrawable(image, ARGB_WHITE);
 		
 		largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
+		fullPanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
 		
-		createPanels();
-		createGhostPanels();
+		//createPanels();
+		//createGhostPanels();
 	}
 
 	public void createPanels() {
@@ -92,61 +86,83 @@ public class Client implements PageTurner {
 		return new Dimensions(x, y);
 	}
 	private void createRenderers() {
-		
-		lineRenderers = new LineRenderer[4];
-		lineRenderers[0] = BresenhamLineRenderer.make();
-		lineRenderers[1] = DDALineRenderer.make();
-		lineRenderers[2] = AlternatingLineRenderer.make();
-		lineRenderers[3] = AntialiasingLineRenderer.make();
-		//polygonRenderer = null;
+		lineRenderer = DDALineRenderer.make();
 		polygonRenderer = FilledPolygonRenderer.make();
+		wireframeRenderer = FilledWireFrameRenderer.make();
 	}
-	
+
+
 	@Override
 	public void nextPage() {
+		Drawable depthCueingDrawable;
 		System.out.println("PageNumber " + (pageNumber + 1));
 		pageNumber = (pageNumber + 1) % NUM_PAGES;
-		
+
 		image.clear();
-		largePanel.clear();
+		fullPanel.clear();
+
 		switch(pageNumber) {
-		case 1:  lineDrawerPage((panel, renderer)->{ new StarburstLineTest(panel, renderer); });
-				 break;
-		case 2:  lineDrawerPage((panel, renderer)->{ new ParallelogramTest(panel, renderer); });
-				 break;
-		case 3:	 lineDrawerPage((panel, renderer)->{ new RandomLineTest(panel, renderer); });
-				 break;
-		case 4:  polygonDrawerPage(panels);
-				 break;
-		case 0:	 polygonDrawerPage(ghostPanels);		// will be fifth page.  5 == 0 (mod 5)
-				 break;
-		default: defaultPage();
-				 break;
+			case 1:  new MeshPolygonTest(fullPanel, wireframeRenderer, MeshPolygonTest.USE_PERTURBATION);
+				break;
+//			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
+//				break;
+//			case 3:	 centeredTriangleTest(fullPanel, polygonRenderer);
+//				break;
+//
+//			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
+//				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
+//				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+
+			default: defaultPage();
+				break;
 		}
 	}
 
-	@FunctionalInterface
-	private interface TestPerformer {
-		public void perform(Drawable drawable, LineRenderer renderer);
-	}
-	private void lineDrawerPage(TestPerformer test) {
-		image.clear();
+//	@Override
+//	public void nextPage() {
+//		System.out.println("PageNumber " + (pageNumber + 1));
+//		pageNumber = (pageNumber + 1) % NUM_PAGES;
+//
+//		image.clear();
+//		largePanel.clear();
+//		switch(pageNumber) {
+//		case 1:  lineDrawerPage((panel, renderer)->{ new StarburstLineTest(panel, renderer); });
+//				 break;
+//		case 2:  lineDrawerPage((panel, renderer)->{ new ParallelogramTest(panel, renderer); });
+//				 break;
+//		case 3:	 lineDrawerPage((panel, renderer)->{ new RandomLineTest(panel, renderer); });
+//				 break;
+//		case 4:  polygonDrawerPage(panels);
+//				 break;
+//		case 0:	 polygonDrawerPage(ghostPanels);		// will be fifth page.  5 == 0 (mod 5)
+//				 break;
+//		default: defaultPage();
+//				 break;
+//		}
+//	}
 
-		for(int panelNumber = 0; panelNumber < panels.length; panelNumber++) {
-			panels[panelNumber].clear();
-			test.perform(panels[panelNumber], lineRenderers[panelNumber]);
-		}
-	}
-	public void polygonDrawerPage(Drawable[] panelArray) {
-		image.clear();
-		for(Drawable panel: panels) {		// 'panels' necessary here.  Not panelArray, because clear() uses setPixel.
-			panel.clear();
-		}
-		new StarburstPolygonTest(panelArray[0], polygonRenderer);
-		new MeshPolygonTest(panelArray[1], polygonRenderer, MeshPolygonTest.NO_PERTURBATION);
-		new MeshPolygonTest(panelArray[2], polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
-		new RandomPolygonTest(panelArray[3], polygonRenderer);
-	}
+
 
 	private void defaultPage() {
 		image.clear();
