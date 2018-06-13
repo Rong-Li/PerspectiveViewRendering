@@ -1,12 +1,11 @@
 package polygon;
 
-import geometry.Vertex;
 import geometry.Vertex3D;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
-public class FilledPolygonRenderer implements PolygonRenderer{
-    private FilledPolygonRenderer(){}
+public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
+    private blerpingFilledPolygoneRenderer(){}
 
     @Override
     public void drawPolygon(Polygon polygon, Drawable drawable, Shader vertexShader){
@@ -27,7 +26,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
             Horizontal_Bottom(p_top,p_bottomLeft,p_bottomRight,drawable);
         }
         // if having Non-horizontal bottom line
-            //if left edge if shorter
+        //if left edge if shorter
         else if(left_chain.get(1).getIntY() > right_chain.get(1).getIntY()
                 && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()
                 && right_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
@@ -35,7 +34,7 @@ public class FilledPolygonRenderer implements PolygonRenderer{
 
             Non_Horizontal_LeftShort(p_top,p_bottomLeft,p_bottomRight,drawable);
         }
-            //if right edge is shorter
+        //if right edge is shorter
         else if (left_chain.get(1).getIntY() < right_chain.get(1).getIntY()
                 && left_chain.get(1).getIntY() != left_chain.get(0).getIntY()
                 && right_chain.get(1).getIntY() != left_chain.get(0).getIntY()){
@@ -67,6 +66,10 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
 
     }
+
+
+
+
 
     private void Non_Horizontal_RightShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
         Vertex3D p_middle = p_bottomRight;
@@ -209,8 +212,14 @@ public class FilledPolygonRenderer implements PolygonRenderer{
         }
     }
 
+
+
+
+
+
+
     public static PolygonRenderer make() {
-        return new FilledPolygonRenderer();
+        return new blerpingFilledPolygoneRenderer();
     }
 
 }

@@ -3,10 +3,7 @@ package client;
 import client.testPages.*;
 import geometry.Point2D;
 import line.*;
-import polygon.FilledPolygonRenderer;
-import polygon.FilledWireFrameRenderer;
-import polygon.PolygonRenderer;
-import polygon.WireframeRenderer;
+import polygon.*;
 import windowing.PageTurner;
 import windowing.drawable.*;
 import windowing.graphics.Dimensions;
@@ -87,7 +84,7 @@ public class Client implements PageTurner {
 	}
 	private void createRenderers() {
 		lineRenderer = DDALineRenderer.make();
-		polygonRenderer = FilledPolygonRenderer.make();
+		polygonRenderer = blerpingFilledPolygoneRenderer.make();
 		wireframeRenderer = FilledWireFrameRenderer.make();
 	}
 
@@ -104,8 +101,8 @@ public class Client implements PageTurner {
 		switch(pageNumber) {
 			case 1:  new MeshPolygonTest(fullPanel, wireframeRenderer, MeshPolygonTest.USE_PERTURBATION);
 				break;
-//			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
-//				break;
+			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
+				break;
 //			case 3:	 centeredTriangleTest(fullPanel, polygonRenderer);
 //				break;
 //

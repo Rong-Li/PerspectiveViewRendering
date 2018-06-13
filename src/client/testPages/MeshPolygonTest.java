@@ -46,10 +46,12 @@ public class MeshPolygonTest {
         }
         //if USE_PERTURBATION
         else if(Which.equals(USE_PERTURBATION) == true){
-            render_USE_PERTURBATION();
+            RandomdizePoints();
+            bilerping_fill();
         }
 
     }
+
 
     public MeshPolygonTest(Drawable panel, WireframeRenderer wireframeRenderer, String Which){
         this.panel = panel;
@@ -63,16 +65,33 @@ public class MeshPolygonTest {
         }
         //if USE_PERTURBATION
         else if(Which.equals(USE_PERTURBATION) == true){
-            render_USE_PERTURBATION();
+            RandomdizePoints();
+            DrawPolygons_UsingGivenVertices();
         }
     }
 
+
+    private void fillInVertices() {
+        points[0][0] = new Vertex3D(19, 19 ,0.0, Color.WHITE);
+        int temp;
+        for (int i = 1; i < 10; i++){
+            temp = points[i-1][0].getIntX() + 68;
+            points[i][0] = new Vertex3D(temp, 15, 0.0, Color.WHITE);
+        }
+        for (int j = 1; j < 10; j++){
+            for (int i = 0; i < 10; i++){
+                int X = points[i][j-1].getIntX();
+                int Y = points[i][j-1].getIntY() + 68;
+                points[i][j] = new Vertex3D(X, Y, 0.0, Color.WHITE);
+            }
+        }
+    }
 
     private void render_NO_PERTURBATION() {
         DrawPolygons_UsingGivenVertices();
     }
 
-    private void render_USE_PERTURBATION() {
+    private void RandomdizePoints() {
         Random random = new Random();
 
         for (int i = 0; i < 10 ; i++){
@@ -85,12 +104,8 @@ public class MeshPolygonTest {
                 points[i][j] = new Vertex3D(a, b, 0.0, Color.random(randomColor));
             }
         }
-
-        DrawPolygons_UsingGivenVertices();
     }
 
-
-///////
     private void DrawPolygons_UsingGivenVertices() {
         for (int j = 0; j < 9; j++){
             for (int i = 0; i < 9; i++){
@@ -117,21 +132,32 @@ public class MeshPolygonTest {
         }
     }
 
+    private void bilerping_fill() {
+        for (int j = 0; j < 9; j++){
+            for (int i = 0; i < 9; i++){
+                //make bottom polygon
+                vertices = new Vertex3D[3];
 
-    private void fillInVertices() {
-        points[0][0] = new Vertex3D(19, 19 ,0.0, Color.WHITE);
-        int temp;
-        for (int i = 1; i < 10; i++){
-            temp = points[i-1][0].getIntX() + 68;
-            points[i][0] = new Vertex3D(temp, 15, 0.0, Color.WHITE);
-        }
-        for (int j = 1; j < 10; j++){
-            for (int i = 0; i < 10; i++){
-                int X = points[i][j-1].getIntX();
-                int Y = points[i][j-1].getIntY() + 68;
-                points[i][j] = new Vertex3D(X, Y, 0.0, Color.WHITE);
+                vertices[0] = points[i][j];
+                vertices[1] = points[i+1][j];
+                vertices[2] = points[i+1][j+1];
+
+                Polygon polygon_bot = Polygon.makeEnsuringClockwise(vertices);
+
+                //make top polygon
+                vertices[0] = points[i][j];
+                vertices[1] = points[i][j+1];
+                vertices[2] = points[i+1][j+1];
+
+                Polygon polygon_top = Polygon.makeEnsuringClockwise(vertices);
+
+                //rendering begin
+                renderer.drawPolygon(polygon_bot, panel, null);
+                renderer.drawPolygon(polygon_top, panel, null);
             }
         }
     }
+
+
 
 }
