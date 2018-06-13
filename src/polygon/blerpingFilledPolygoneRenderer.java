@@ -204,7 +204,7 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
 //            else{
 //                drawable.setPixel(start, y, 0.0, color);
 //             }
-            //
+
             drawable.setPixel(start, y, 0.0, color);
 
         }else{
