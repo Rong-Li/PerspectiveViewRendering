@@ -77,11 +77,12 @@ public class MeshPolygonTest {
 
         for (int i = 0; i < 10 ; i++){
             for (int j = 0; j < 10; j++){
+                Random randomColor = new Random();
                 int rand = random.nextInt(24) - 12;
                 a = points[i][j].getIntX()+rand;
                 rand = random.nextInt(24) - 12;
                 b = points[i][j].getIntY()+rand;
-                points[i][j] = new Vertex3D(a, b, 0.0, Color.WHITE);
+                points[i][j] = new Vertex3D(a, b, 0.0, Color.random(randomColor));
             }
         }
 

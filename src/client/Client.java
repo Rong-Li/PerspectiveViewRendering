@@ -139,28 +139,6 @@ public class Client implements PageTurner {
 		}
 	}
 
-//	@Override
-//	public void nextPage() {
-//		System.out.println("PageNumber " + (pageNumber + 1));
-//		pageNumber = (pageNumber + 1) % NUM_PAGES;
-//
-//		image.clear();
-//		largePanel.clear();
-//		switch(pageNumber) {
-//		case 1:  lineDrawerPage((panel, renderer)->{ new StarburstLineTest(panel, renderer); });
-//				 break;
-//		case 2:  lineDrawerPage((panel, renderer)->{ new ParallelogramTest(panel, renderer); });
-//				 break;
-//		case 3:	 lineDrawerPage((panel, renderer)->{ new RandomLineTest(panel, renderer); });
-//				 break;
-//		case 4:  polygonDrawerPage(panels);
-//				 break;
-//		case 0:	 polygonDrawerPage(ghostPanels);		// will be fifth page.  5 == 0 (mod 5)
-//				 break;
-//		default: defaultPage();
-//				 break;
-//		}
-//	}
 
 
 
