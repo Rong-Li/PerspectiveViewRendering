@@ -76,7 +76,7 @@ public class MeshPolygonTest {
         int temp;
         for (int i = 1; i < 10; i++){
             temp = points[i-1][0].getIntX() + 68;
-            points[i][0] = new Vertex3D(temp, 15, 0.0, Color.WHITE);
+            points[i][0] = new Vertex3D(temp, 19, 0.0, Color.WHITE);
         }
         for (int j = 1; j < 10; j++){
             for (int i = 0; i < 10; i++){

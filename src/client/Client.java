@@ -52,6 +52,8 @@ public class Client implements PageTurner {
 		image = new InvertedYDrawable(drawable);
 		image = new TranslatingDrawable(image, point(0, 0), dimensions(750, 750));
 		image = new ColoredDrawable(image, ARGB_WHITE);
+		image = new z_bufferingDrawable(image);
+
 		
 		largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
 		fullPanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));

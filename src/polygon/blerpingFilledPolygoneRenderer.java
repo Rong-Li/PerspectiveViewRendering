@@ -69,8 +69,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
 
 
 
-
-
     private void Non_Horizontal_RightShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
         Vertex3D p_middle = p_bottomRight;
         //left long edge
@@ -270,23 +268,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
                 drawable.setPixel(i, y, 0.0, newColor.asARGB());
                 newColor = newColor.add(addOn);
             }
-        }
-    }
-
-    private void fillPixels_leftToRight(double x_start, double x_end, int y, int color, Drawable drawable) {
-        int start = (int)Math.round(x_start);
-        int end = (int)Math.round(x_end);
-        if( start == end) {
-//            if (drawable.getPixel(start,y) != drawable.ARGB_BLACK){}
-//            else{
-//                drawable.setPixel(start, y, 0.0, color);
-//             }
-
-            drawable.setPixel(start, y, 0.0, color);
-
-        }else{
-            for (int i = start; i < end; i++)
-                drawable.setPixel(i, y, 0.0, color);
         }
     }
 
