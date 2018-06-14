@@ -120,6 +120,112 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
         }
     }
 
+    private void Non_Horizontal_LeftShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        Vertex3D p_middle = p_bottomLeft;
+
+        double deltaX1_1 = p_top.getIntX() - p_bottomLeft.getIntX();
+        double deltaY1_1 = p_top.getIntY() - p_bottomLeft.getIntY();
+        Color m1_1 = DecrementforColors(p_top, p_bottomLeft);
+
+
+        double deltaX1_2 = p_bottomRight.getIntX() - p_bottomLeft.getIntX();
+        double deltaY1_2 = p_bottomRight.getIntY() - p_bottomLeft.getIntY();
+        Color m1_2 = DecrementforColors(p_bottomRight, p_bottomLeft);
+
+        double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
+        double deltaY2 = p_bottomRight.getIntY() - p_top.getIntY();
+        Color m2 = DecrementforColors(p_bottomRight, p_top);
+
+
+        double L1_slope = deltaX1_1 / deltaY1_1;
+        double L2_slope = deltaX1_2 / deltaY1_2;
+        double R_slope = deltaX2 / deltaY2;
+
+        double start_point = p_top.getIntX();
+        double end_point = p_top.getIntX();
+
+        int y = p_top.getIntY();
+        Color c1 = p_top.getColor();
+        Color c2 = p_top.getColor();
+
+        //rendering begin
+        while(y >= p_bottomRight.getIntY()){
+            if (y > p_middle.getIntY()){
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable);
+                start_point = start_point - L1_slope;
+                end_point = end_point - R_slope;
+                c1 = c1.subtract(m1_1);
+                c2 = c2.subtract(m2);
+                y--;
+            }
+            else{
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable);
+                start_point = start_point - L2_slope;
+                end_point = end_point - R_slope;
+                c1 = c1.subtract(m1_2);
+                c2 = c2.subtract(m2);
+                y--;
+            }
+        }
+    }
+
+    private void Horizontal_Bottom(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
+        double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
+        double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
+        Color m1 = DecrementforColors(p_top, p_bottomLeft);
+
+        double deltaX2 = p_top.getIntX() - p_bottomRight.getIntX();
+        double deltaY2 = p_top.getIntY() - p_bottomRight.getIntY();
+        Color m2 = DecrementforColors(p_top, p_bottomRight);
+
+        double L_slope = deltaX1 / deltaY1;
+        double R_slope = deltaX2 / deltaY2;
+        double start_point = p_top.getIntX();
+        double end_point = p_top.getIntX();
+        int y = p_top.getIntY();
+        Color c1 = p_top.getColor();
+        Color c2 = p_top.getColor();
+
+        //rendering begin
+        while(y > p_bottomLeft.getIntY()){
+            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable);
+            start_point = start_point - L_slope;
+            end_point = end_point - R_slope;
+            c1 = c1.subtract(m1);
+            c2 = c2.subtract(m2);
+            y--;
+        }
+    }
+
+    private void Horizontal_top(Vertex3D p_topLeft, Vertex3D p_topRight, Vertex3D p_bottom, Drawable drawable) {
+        double deltaX1 = p_topLeft.getIntX() - p_bottom.getIntX();
+        double deltaY1 = p_topLeft.getIntY() - p_bottom.getIntY();
+        Color m1 = DecrementforColors(p_topLeft, p_bottom);
+
+        double deltaX2 = p_topRight.getIntX() - p_bottom.getIntX();
+        double deltaY2 = p_topRight.getIntY() - p_bottom.getIntY();
+        Color m2 = DecrementforColors(p_topRight, p_bottom);
+
+        double L_slope = deltaX1 / deltaY1;
+        double R_slope = deltaX2 / deltaY2;
+        double start_point = p_topLeft.getIntX();
+        double end_point = p_topRight.getIntX();
+        int y = p_topLeft.getIntY();
+        Color c1 = p_topLeft.getColor();
+        Color c2 = p_topRight.getColor();
+
+        //rendering begin
+        while(y >= p_bottom.getIntY()){
+            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable);
+            start_point = start_point - L_slope;
+            end_point = end_point - R_slope;
+            c1 = c1.subtract(m1);
+            c2 = c2.subtract(m2);
+            y--;
+        }
+    }
+
+
     private Color DecrementforColors(Vertex3D p1, Vertex3D p2) {
         double deltaY = p1.getIntY() - p2.getIntY();
 
@@ -141,92 +247,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
         Color result = new Color(mr,mg,mb);
         return result;
     }
-
-    private void Non_Horizontal_LeftShort(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
-        Vertex3D p_middle = p_bottomLeft;
-
-        double deltaX1_1 = p_top.getIntX() - p_bottomLeft.getIntX();
-        double deltaY1_1 = p_top.getIntY() - p_bottomLeft.getIntY();
-
-        double deltaX1_2 = p_bottomRight.getIntX() - p_bottomLeft.getIntX();
-        double deltaY1_2 = p_bottomRight.getIntY() - p_bottomLeft.getIntY();
-
-        double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
-        double deltaY2 = p_bottomRight.getIntY() - p_top.getIntY();
-
-        double L1_slope = deltaX1_1 / deltaY1_1;
-        double L2_slope = deltaX1_2 / deltaY1_2;
-        double R_slope = deltaX2 / deltaY2;
-
-        double start_point = p_top.getIntX();
-        double end_point = p_top.getIntX();
-
-        int y = p_top.getIntY();
-        int argbColor = Color.random().asARGB();
-
-        //rendering begin
-        while(y >= p_bottomRight.getIntY()){
-            if (y > p_middle.getIntY()){
-                fillPixels_leftToRight(start_point, end_point, y, argbColor, drawable);
-                start_point = start_point - L1_slope;
-                end_point = end_point - R_slope;
-                y--;
-            }
-            else{
-                fillPixels_leftToRight(start_point, end_point, y, argbColor, drawable);
-                start_point = start_point - L2_slope;
-                end_point = end_point - R_slope;
-                y--;
-            }
-        }
-    }
-
-    private void Horizontal_Bottom(Vertex3D p_top, Vertex3D p_bottomLeft, Vertex3D p_bottomRight, Drawable drawable) {
-        double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
-        double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
-
-        double deltaX2 = p_top.getIntX() - p_bottomRight.getIntX();
-        double deltaY2 = p_top.getIntY() - p_bottomRight.getIntY();
-
-        double L_slope = deltaX1 / deltaY1;
-        double R_slope = deltaX2 / deltaY2;
-        double start_point = p_top.getIntX();
-        double end_point = p_top.getIntX();
-        int y = p_top.getIntY();
-        int argbColor = Color.random().asARGB();
-
-        //rendering begin
-        while(y > p_bottomLeft.getIntY()){
-            fillPixels_leftToRight(start_point, end_point, y, argbColor, drawable);
-            start_point = start_point - L_slope;
-            end_point = end_point - R_slope;
-            y--;
-        }
-    }
-
-    private void Horizontal_top(Vertex3D p_topLeft, Vertex3D p_topRight, Vertex3D p_bottom, Drawable drawable) {
-        double deltaX1 = p_topLeft.getIntX() - p_bottom.getIntX();
-        double deltaY1 = p_topLeft.getIntY() - p_bottom.getIntY();
-
-        double deltaX2 = p_topRight.getIntX() - p_bottom.getIntX();
-        double deltaY2 = p_topRight.getIntY() - p_bottom.getIntY();
-
-        double L_slope = deltaX1 / deltaY1;
-        double R_slope = deltaX2 / deltaY2;
-        double start_point = p_topLeft.getIntX();
-        double end_point = p_topRight.getIntX();
-        int y = p_topLeft.getIntY();
-        int argbColor = Color.random().asARGB();
-
-        //rendering begin
-        while(y >= p_bottom.getIntY()){
-            fillPixels_leftToRight(start_point, end_point, y, argbColor, drawable);
-            start_point = start_point - L_slope;
-            end_point = end_point - R_slope;
-            y--;
-        }
-    }
-
 
     private void blerping_fillPixels_leftToRight(double x_start, double x_end, int y, Color c1, Color c2,  Drawable drawable){
         Color newColor = c1;
