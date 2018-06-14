@@ -105,8 +105,8 @@ public class Client implements PageTurner {
 				break;
 			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
 				break;
-//			case 3:	 centeredTriangleTest(fullPanel, polygonRenderer);
-//				break;
+			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
+				break;
 //
 //			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
 //				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
@@ -146,3 +146,20 @@ public class Client implements PageTurner {
 		largePanel.fill(ARGB_GREEN, Double.MAX_VALUE);
 	}
 }
+
+
+
+
+//		case 1:  lineDrawerPage((panel, renderer)->{ new StarburstLineTest(panel, renderer); });
+//				break;
+//				case 2:  lineDrawerPage((panel, renderer)->{ new ParallelogramTest(panel, renderer); });
+//				break;
+//				case 3:	 lineDrawerPage((panel, renderer)->{ new RandomLineTest(panel, renderer); });
+//				break;
+//				case 4:  polygonDrawerPage(panels);
+//				break;
+//				case 0:	 polygonDrawerPage(ghostPanels);		// will be fifth page.  5 == 0 (mod 5)
+//				break;
+//default: defaultPage();
+//		break;
+//		}
