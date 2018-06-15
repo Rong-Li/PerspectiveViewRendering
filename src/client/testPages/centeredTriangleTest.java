@@ -4,7 +4,12 @@ import polygon.PolygonRenderer;
 import windowing.drawable.Drawable;
 
 public class centeredTriangleTest {
-    public centeredTriangleTest(Drawable fullPanel, PolygonRenderer polygonRenderer) {
 
+    private final PolygonRenderer renderer;
+    private final Drawable panel;
+
+    public centeredTriangleTest(Drawable fullPanel, PolygonRenderer polygonRenderer) {
+        this.renderer = polygonRenderer;
+        this.panel = fullPanel;
     }
 }
