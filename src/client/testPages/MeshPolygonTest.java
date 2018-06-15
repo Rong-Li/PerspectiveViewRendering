@@ -1,14 +1,12 @@
 package client.testPages;
 
 import geometry.Vertex3D;
-import line.LineRenderer;
 import polygon.Polygon;
 import polygon.PolygonRenderer;
-import polygon.WireframeRenderer;
+import wireframe.WireframeRenderer;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MeshPolygonTest {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class z_bufferingDrawable extends DrawableDecorator{
+
     private List<List<Double>>  matrix= new ArrayList<List<Double>>();
 
 
@@ -24,7 +25,8 @@ public class z_bufferingDrawable extends DrawableDecorator{
         return matrix;
     }
 
-    public double getZ(int x, int y){
+    @Override
+    public double getZValue(int x, int y){
         int trueY = delegate.getHeight() - 1 - y;
         return this.matrix.get(x).get(trueY);
     }

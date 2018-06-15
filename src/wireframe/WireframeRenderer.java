@@ -1,4 +1,4 @@
-package polygon;
+package wireframe;
 
 import geometry.Vertex3D;
 import polygon.Polygon;

@@ -7,6 +7,8 @@ import polygon.*;
 import windowing.PageTurner;
 import windowing.drawable.*;
 import windowing.graphics.Dimensions;
+import wireframe.FilledWireFrameRenderer;
+import wireframe.WireframeRenderer;
 
 public class Client implements PageTurner {
 	private static final int ARGB_WHITE = 0xff_ff_ff_ff;
@@ -105,6 +107,7 @@ public class Client implements PageTurner {
 				break;
 			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
 				break;
+
 			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
 				break;
 //

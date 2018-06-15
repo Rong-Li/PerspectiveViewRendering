@@ -1,7 +1,9 @@
-package polygon;
+package wireframe;
 
 import line.DDALineRenderer;
 import line.LineRenderer;
+import polygon.Polygon;
+import polygon.Shader;
 import windowing.drawable.Drawable;
 
 public class FilledWireFrameRenderer implements WireframeRenderer {
