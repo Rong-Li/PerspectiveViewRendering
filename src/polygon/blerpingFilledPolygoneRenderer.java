@@ -273,7 +273,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
             for (int i = start; i < end; i++){
                 drawable.setPixel(i, y, z, newColor.asARGB());
                 newColor = newColor.add(addOn);
-
             }
         }
     }

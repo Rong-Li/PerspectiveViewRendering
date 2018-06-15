@@ -5,7 +5,7 @@ import java.util.List;
 
 public class z_bufferingDrawable extends DrawableDecorator{
 
-    private List<List<Double>>  matrix= new ArrayList<List<Double>>();
+    private List<List<Double>>  zBuffer= new ArrayList<List<Double>>();
 
 
     public z_bufferingDrawable(Drawable delegate) {
@@ -17,24 +17,32 @@ public class z_bufferingDrawable extends DrawableDecorator{
             for (int j = 0; j < width; j++) {
                 c.add(-Double.MAX_VALUE);
             }
-            matrix.add(c);
+            zBuffer.add(c);
         }
     }
 
     public List<List<Double>> getMatrix() {
-        return matrix;
+        return zBuffer;
     }
 
     @Override
     public double getZValue(int x, int y){
         int trueY = delegate.getHeight() - 1 - y;
-        return this.matrix.get(x).get(trueY);
+        return this.zBuffer.get(x).get(trueY);
     }
 
-    public void setZ(int x, int y, double newValue){
-        int trueY = delegate.getHeight() - 1 - y;
-        this.matrix.get(x).set(trueY, newValue);
+    @Override
+    public void setPixel(int x, int y, double z, int argbColor) {
+        delegate.setPixel(x, y, z, argbColor);
+
+//        if (zBuffer.get(x).get(y) < z){
+//            delegate.setPixel(x, y, z, argbColor);
+//            int trueY = delegate.getHeight() - 1 - y;
+//            this.zBuffer.get(x).set(trueY, z);
+//        }
     }
+
+
 }
 
 

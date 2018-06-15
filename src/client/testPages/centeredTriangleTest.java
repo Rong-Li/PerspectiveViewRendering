@@ -55,6 +55,7 @@ public class centeredTriangleTest {
         vertices[2] = new Vertex3D(562, 186, 0.0, Color.WHITE);//bottom right
 
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
+        renderer.drawPolygon(polygon, panel, null);
         return polygon;
     }
     public void FillinColors(){
