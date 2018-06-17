@@ -57,7 +57,7 @@ public class Client implements PageTurner {
         image = new ColoredDrawable(image, ARGB_WHITE);
 
 		
-		largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
+		//largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
         fullPanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
         fullPanel = new z_bufferingDrawable(fullPanel);
         //fullPanel = new z_bufferingDrawable(image);
@@ -109,7 +109,6 @@ public class Client implements PageTurner {
 				break;
 			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
 				break;
-
 			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
 				break;
 //
@@ -148,7 +147,7 @@ public class Client implements PageTurner {
 
 	private void defaultPage() {
 		image.clear();
-		largePanel.fill(ARGB_GREEN, Double.MAX_VALUE);
+		fullPanel.fill(ARGB_GREEN, Double.MAX_VALUE);
 	}
 }
 
