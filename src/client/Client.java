@@ -10,7 +10,6 @@ import windowing.drawable.*;
 import windowing.graphics.Color;
 import windowing.graphics.Dimensions;
 import wireframe.FilledWireFrameRenderer;
-import wireframe.WireframeRenderer;
 
 public class Client implements PageTurner {
 	private static final int ARGB_WHITE = 0xff_ff_ff_ff;
@@ -39,7 +38,9 @@ public class Client implements PageTurner {
 	
 	private LineRenderer lineRenderer;
 	private PolygonRenderer polygonRenderer;
-    private WireframeRenderer wireframeRenderer;
+    private PolygonRenderer wireframeRenderer;
+    private RendererTrio renderers;
+    private SimpInterpreter interpreter;
 
 
     public Client(Drawable drawable) {
@@ -86,7 +87,8 @@ public class Client implements PageTurner {
 		lineRenderer = DDALineRenderer.make();
 		polygonRenderer = blerpingFilledPolygoneRenderer.make();
 		wireframeRenderer = FilledWireFrameRenderer.make();
-	}
+		renderers = new RendererTrio(lineRenderer, polygonRenderer, wireframeRenderer);
+    }
 
 
 	@Override

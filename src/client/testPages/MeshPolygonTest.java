@@ -3,7 +3,6 @@ package client.testPages;
 import geometry.Vertex3D;
 import polygon.Polygon;
 import polygon.PolygonRenderer;
-import wireframe.WireframeRenderer;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
@@ -12,7 +11,6 @@ import java.util.*;
 public class MeshPolygonTest {
 
     private  PolygonRenderer renderer;
-    private  WireframeRenderer renderer2;
     private  Drawable panel;
     public static String NO_PERTURBATION = "NO_PERTURBATION";
     public static String USE_PERTURBATION = "USE_PERTURBATION";
@@ -25,35 +23,11 @@ public class MeshPolygonTest {
 
     private Vertex3D points[][] = new Vertex3D[10][10];
 
-    public MeshPolygonTest(Drawable panel, PolygonRenderer polygonRenderer, String Which) {
+
+
+    public MeshPolygonTest(Drawable panel, PolygonRenderer renderer, String Which){
         this.panel = panel;
-        this.renderer = polygonRenderer;
-
-        for (int m = 0; m < 25; m++) {
-            assets.add(addon);
-            addon++;
-        }
-
-
-        fillInVertices();
-
-
-        //if NO_PERTURBATION
-        if (Which.equals(NO_PERTURBATION) == true){
-            render_NO_PERTURBATION();
-        }
-        //if USE_PERTURBATION
-        else if(Which.equals(USE_PERTURBATION) == true){
-            RandomdizePoints();
-            bilerping_fill();
-        }
-
-    }
-
-
-    public MeshPolygonTest(Drawable panel, WireframeRenderer wireframeRenderer, String Which){
-        this.panel = panel;
-        this.renderer2 = wireframeRenderer;
+        this.renderer = renderer;
 
         fillInVertices();
 
@@ -124,38 +98,10 @@ public class MeshPolygonTest {
                 Polygon polygon_top = Polygon.makeEnsuringClockwise(vertices);
 
                 //rendering begin
-                renderer2.drawPolygon(polygon_bot, panel, null);
-                renderer2.drawPolygon(polygon_top, panel, null);
-            }
-        }
-    }
-
-    private void bilerping_fill() {
-        for (int j = 0; j < 9; j++){
-            for (int i = 0; i < 9; i++){
-                //make bottom polygon
-                vertices = new Vertex3D[3];
-
-                vertices[0] = points[i][j];
-                vertices[1] = points[i+1][j];
-                vertices[2] = points[i+1][j+1];
-
-                Polygon polygon_bot = Polygon.makeEnsuringClockwise(vertices);
-
-                //make top polygon
-                vertices[0] = points[i][j];
-                vertices[1] = points[i][j+1];
-                vertices[2] = points[i+1][j+1];
-
-                Polygon polygon_top = Polygon.makeEnsuringClockwise(vertices);
-
-                //rendering begin
                 renderer.drawPolygon(polygon_bot, panel, null);
                 renderer.drawPolygon(polygon_top, panel, null);
             }
         }
     }
-
-
 
 }

@@ -2,18 +2,13 @@ package client.interpreter;
 
 import java.util.Stack;
 
-import client.interpreter.LineBasedReader;
 import geometry.Point3DH;
-import geometry.Rectangle;
 import geometry.Vertex3D;
 import line.LineRenderer;
 import notProvided.client.Clipper;
-import windowing.drawable.DepthCueingDrawable;
-import notProvided.client.RendererTrio;
+import client.RendererTrio;
 import notProvided.geometry.Transformation;
-import polygon.Polygon;
 import polygon.PolygonRenderer;
-import polygon.Shader;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 import windowing.graphics.Dimensions;
@@ -53,9 +48,7 @@ public class SimpInterpreter {
         FILLED,
         WIREFRAME;
     }
-    public SimpInterpreter(String filename,
-                           Drawable drawable,
-                           RendererTrio renderers) {
+    public SimpInterpreter(String filename, Drawable drawable, RendererTrio renderers) {
         this.drawable = drawable;
         this.depthCueingDrawable = drawable;
         this.lineRenderer = renderers.getLineRenderer();

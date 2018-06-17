@@ -3,10 +3,11 @@ package wireframe;
 import line.DDALineRenderer;
 import line.LineRenderer;
 import polygon.Polygon;
+import polygon.PolygonRenderer;
 import polygon.Shader;
 import windowing.drawable.Drawable;
 
-public class FilledWireFrameRenderer implements WireframeRenderer {
+public class FilledWireFrameRenderer implements PolygonRenderer {
     private FilledWireFrameRenderer(){}
     private LineRenderer lineRenderer = DDALineRenderer.make();
 
@@ -18,7 +19,8 @@ public class FilledWireFrameRenderer implements WireframeRenderer {
     }
 
 
-    public static WireframeRenderer make() {
+
+    public static PolygonRenderer make() {
         return new FilledWireFrameRenderer();
     }
 }

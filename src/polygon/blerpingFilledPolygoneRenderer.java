@@ -281,8 +281,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
 
 
 
-
-
     public static PolygonRenderer make() {
         return new blerpingFilledPolygoneRenderer();
     }
