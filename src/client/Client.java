@@ -4,7 +4,7 @@ import client.testPages.*;
 import geometry.Point2D;
 import line.*;
 import polygon.*;
-import simp.SimpInterpreter;
+//import client.interpreter.SimpInterpreter;
 import windowing.PageTurner;
 import windowing.drawable.*;
 import windowing.graphics.Color;
@@ -16,7 +16,7 @@ public class Client implements PageTurner {
 	private static final int ARGB_WHITE = 0xff_ff_ff_ff;
 	private static final int ARGB_GREEN = 0xff_00_ff_40;
 	
-	private static final int NUM_PAGES = 5;
+	private static final int NUM_PAGES = 8;
 	protected static final double GHOST_COVERAGE = 0.14;
 
 	private static final int NUM_PANELS = 4;
@@ -62,19 +62,11 @@ public class Client implements PageTurner {
 		//largePanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
         fullPanel = new TranslatingDrawable(image, point(  50, 50),  dimensions(650, 650));
         fullPanel = new z_bufferingDrawable(fullPanel);
-        //fullPanel = new z_bufferingDrawable(image);
 
         //createPanels();
 		//createGhostPanels();
 	}
 
-	public void createPanels() {
-		panels = new Drawable[NUM_PANELS];
-		
-		for(int index = 0; index < NUM_PANELS; index++) {
-			panels[index] = new TranslatingDrawable(image, lowCornersOfPanels[index], PANEL_SIZE);
-		}
-	}
 
 	private void createGhostPanels() {
 		ghostPanels = new Drawable[NUM_PANELS];
@@ -115,15 +107,16 @@ public class Client implements PageTurner {
 				break;
 
 			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
-				interpreter.interpret();
+				     new centeredTriangleTest(depthCueingDrawable, polygonRenderer);
+//				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
 				break;
 //
 //			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
 //				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
 //				interpreter.interpret();
 //				break;
-//
+
 //			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
 //				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
 //				interpreter.interpret();

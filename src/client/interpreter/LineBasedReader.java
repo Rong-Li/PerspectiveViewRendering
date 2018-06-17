@@ -1,4 +1,4 @@
-package notProvided.client.interpreter.copy;
+package client.interpreter;
 
 import java.io.BufferedReader;
 import java.io.File;
