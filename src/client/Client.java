@@ -4,7 +4,7 @@ import client.testPages.*;
 import geometry.Point2D;
 import line.*;
 import polygon.*;
-//import client.interpreter.SimpInterpreter;
+import client.interpreter.SimpInterpreter;
 import windowing.PageTurner;
 import windowing.drawable.*;
 import windowing.graphics.Color;
@@ -107,9 +107,8 @@ public class Client implements PageTurner {
 				break;
 
 			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-				     new centeredTriangleTest(depthCueingDrawable, polygonRenderer);
-//				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
+				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
+				interpreter.interpret();
 				break;
 //
 //			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
@@ -148,17 +147,3 @@ public class Client implements PageTurner {
 
 
 
-
-//		case 1:  lineDrawerPage((panel, renderer)->{ new StarburstLineTest(panel, renderer); });
-//				break;
-//				case 2:  lineDrawerPage((panel, renderer)->{ new ParallelogramTest(panel, renderer); });
-//				break;
-//				case 3:	 lineDrawerPage((panel, renderer)->{ new RandomLineTest(panel, renderer); });
-//				break;
-//				case 4:  polygonDrawerPage(panels);
-//				break;
-//				case 0:	 polygonDrawerPage(ghostPanels);		// will be fifth page.  5 == 0 (mod 5)
-//				break;
-//default: defaultPage();
-//		break;
-//		}
