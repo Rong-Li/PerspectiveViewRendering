@@ -4,8 +4,10 @@ import client.testPages.*;
 import geometry.Point2D;
 import line.*;
 import polygon.*;
+import simp.SimpInterpreter;
 import windowing.PageTurner;
 import windowing.drawable.*;
+import windowing.graphics.Color;
 import windowing.graphics.Dimensions;
 import wireframe.FilledWireFrameRenderer;
 import wireframe.WireframeRenderer;
@@ -111,11 +113,11 @@ public class Client implements PageTurner {
 				break;
 			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
 				break;
-//
-//			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-//				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
+
+			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
+				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
+				interpreter.interpret();
+				break;
 //
 //			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
 //				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
