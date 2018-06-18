@@ -24,6 +24,7 @@ public class SimpInterpreter {
 
     private Transformation CTM;
     private Transformation worldToScreen;
+    private Stack<Transformation> matrixStack;
 
     private static int WORLD_LOW_X = -100;
     private static int WORLD_HIGH_X = 100;
@@ -62,6 +63,7 @@ public class SimpInterpreter {
         readerStack = new Stack<>();
         renderStyle = RenderStyle.FILLED;
         CTM = Transformation.identity();
+        this.matrixStack = new Stack<>();
     }
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
@@ -123,16 +125,16 @@ public class SimpInterpreter {
     }
 
     private void push() {
-        // TODO: finish this method
+        this.matrixStack.push(CTM);
     }
     private void pop() {
-        // TODO: finish this method
+        this.CTM = this.matrixStack.pop();
     }
     private void wire() {
-        // TODO: finish this method
+        this.renderStyle = RenderStyle.WIREFRAME;
     }
     private void filled() {
-        // TODO: finish this method
+        this.renderStyle = RenderStyle.FILLED;
     }
 
     // this one is complete.
@@ -153,19 +155,31 @@ public class SimpInterpreter {
         double sx = cleanNumber(tokens[1]);
         double sy = cleanNumber(tokens[2]);
         double sz = cleanNumber(tokens[3]);
-        // TODO: finish this method
+
+        Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
+        this.CTM.matrixMultiplication(scale);
     }
     private void interpretTranslate(String[] tokens) {
         double tx = cleanNumber(tokens[1]);
         double ty = cleanNumber(tokens[2]);
         double tz = cleanNumber(tokens[3]);
-        // TODO: finish this method
+
+        Transformation translate = Transformation.translateMatrix(tx,ty,tz);
+        this.CTM.matrixMultiplication(translate);
     }
     private void interpretRotate(String[] tokens) {
         String axisString = tokens[1];
         double angleInDegrees = cleanNumber(tokens[2]);
-
-        // TODO: finish this method
+        Transformation rotate = Transformation.identity();
+        if(axisString == "Z"){
+            rotate = Transformation.rotateAroundZ(angleInDegrees);
+        } else if(axisString == "Y"){
+            rotate = Transformation.rotateAroundY(angleInDegrees);
+        } else if(axisString == "X"){
+            rotate = Transformation.rotateAroundX(angleInDegrees);
+        }
+        System.out.println("Rotate by " + axisString);
+        this.CTM.matrixMultiplication(rotate);
     }
     private double cleanNumber(String string) {
         return Double.parseDouble(string);
@@ -258,5 +272,11 @@ public class SimpInterpreter {
     private Vertex3D transformToCamera(Vertex3D vertex) {
         // TODO: finish this method
     }
+
+
+
+
+
+
 
 }
