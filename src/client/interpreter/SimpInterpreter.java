@@ -3,11 +3,12 @@ package client.interpreter;
 import java.util.Stack;
 
 import geometry.Point3DH;
+import geometry.Transformation;
 import geometry.Vertex3D;
 import line.LineRenderer;
 import notProvided.client.Clipper;
 import client.RendererTrio;
-import notProvided.geometry.Transformation;
+import geometry.Transformation;
 import polygon.PolygonRenderer;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
@@ -64,7 +65,14 @@ public class SimpInterpreter {
     }
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
-        // TODO: fill this in
+        this.worldToScreen = CTM;
+        //scalling
+        this.worldToScreen.set(1,1,3.25);
+        this.worldToScreen.set(2,2,3.25);
+        this.worldToScreen.set(3,3,3.25);
+        //translating
+        this.worldToScreen.set(1,4,324);
+        this.worldToScreen.set(2,4,324);
     }
 
     public void interpret() {
