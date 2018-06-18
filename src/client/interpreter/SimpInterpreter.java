@@ -148,6 +148,7 @@ public class SimpInterpreter {
         reader = new LineBasedReader(filename);
     }
 
+    //
     private void interpretScale(String[] tokens) {
         double sx = cleanNumber(tokens[1]);
         double sy = cleanNumber(tokens[2]);
