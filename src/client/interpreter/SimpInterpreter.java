@@ -6,9 +6,10 @@ import geometry.Point3DH;
 import geometry.Transformation;
 import geometry.Vertex3D;
 import line.LineRenderer;
-import notProvided.client.Clipper;
+//import notProvided.client.Clipper;
 import client.RendererTrio;
 import geometry.Transformation;
+import polygon.Polygon;
 import polygon.PolygonRenderer;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
@@ -44,7 +45,7 @@ public class SimpInterpreter {
     private PolygonRenderer filledRenderer;
     private PolygonRenderer wireframeRenderer;
     private Transformation cameraToScreen;
-    private Clipper clipper;
+    //private Clipper clipper;
 
     public enum RenderStyle {
         FILLED,
@@ -200,13 +201,13 @@ public class SimpInterpreter {
     }
     private void interpretLine(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 2, 1);
+        lineRenderer.drawLine(vertices[0], vertices[1], this.drawable);
 
-        // TODO: finish this method
     }
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
-
-        // TODO: finish this method
+        Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
+        filledRenderer.drawPolygon(polygon, this.drawable, null);
     }
 
 
@@ -240,38 +241,47 @@ public class SimpInterpreter {
             color = interpretColor(tokens, startingIndex + NUM_TOKENS_FOR_POINT);
         }
 
-        // TODO: finish this method
+        Vertex3D result = new Vertex3D(point,color);
+        return result;
     }
     public Point3DH interpretPoint(String[] tokens, int startingIndex) {
         double x = cleanNumber(tokens[startingIndex]);
         double y = cleanNumber(tokens[startingIndex + 1]);
         double z = cleanNumber(tokens[startingIndex + 2]);
 
-        // TODO: finish this method
+        Transformation vector = new Transformation(4,1);
+        vector.set(1,1, x);
+        vector.set(2,1, y);
+        vector.set(3,1, z);
+
+        vector = vector.matrixMultiplication(this.CTM);
+
+        Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1));
+        return result;
     }
     public Color interpretColor(String[] tokens, int startingIndex) {
         double r = cleanNumber(tokens[startingIndex]);
         double g = cleanNumber(tokens[startingIndex + 1]);
         double b = cleanNumber(tokens[startingIndex + 2]);
 
-        // TODO: finish this method
+        return Color.WHITE;
     }
 
-    private void line(Vertex3D p1, Vertex3D p2) {
-        Vertex3D screenP1 = transformToCamera(p1);
-        Vertex3D screenP2 = transformToCamera(p2);
-        // TODO: finish this method
-    }
-    private void polygon(Vertex3D p1, Vertex3D p2, Vertex3D p3) {
-        Vertex3D screenP1 = transformToCamera(p1);
-        Vertex3D screenP2 = transformToCamera(p2);
-        Vertex3D screenP3 = transformToCamera(p3);
-        // TODO: finish this method
-    }
-
-    private Vertex3D transformToCamera(Vertex3D vertex) {
-        // TODO: finish this method
-    }
+//    private void line(Vertex3D p1, Vertex3D p2) {
+//        Vertex3D screenP1 = transformToCamera(p1);
+//        Vertex3D screenP2 = transformToCamera(p2);
+//        // TODO: finish this method
+//    }
+//    private void polygon(Vertex3D p1, Vertex3D p2, Vertex3D p3) {
+//        Vertex3D screenP1 = transformToCamera(p1);
+//        Vertex3D screenP2 = transformToCamera(p2);
+//        Vertex3D screenP3 = transformToCamera(p3);
+//        // TODO: finish this method
+//    }
+//
+//    private Vertex3D transformToCamera(Vertex3D vertex) {
+//        // TODO: finish this method
+//    }
 
 
 
