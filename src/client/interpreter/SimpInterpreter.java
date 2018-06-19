@@ -161,7 +161,7 @@ public class SimpInterpreter {
         double sz = cleanNumber(tokens[3]);
 
         Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
-        CTM = this.CTM.matrixMultiplication(scale);
+        CTM = scale.matrixMultiplication(CTM);
         System.out.println("it is a Scaling Matrix: ");
         CTM.printMatrix();
     }
@@ -171,7 +171,7 @@ public class SimpInterpreter {
         double tz = cleanNumber(tokens[3]);
 
         Transformation translate = Transformation.translateMatrix(tx,ty,tz);
-        CTM = this.CTM.matrixMultiplication(translate);
+        CTM = translate.matrixMultiplication(CTM);
         System.out.println("it is a Translating Matrix: ");
         CTM.printMatrix();
     }
@@ -190,7 +190,7 @@ public class SimpInterpreter {
             rotate = Transformation.rotateAroundX(angleInDegrees);
         }
         System.out.println("Rotate by " + axisString);
-        CTM = this.CTM.matrixMultiplication(rotate);
+        CTM = rotate.matrixMultiplication(CTM);
         CTM.printMatrix();
     }
     private double cleanNumber(String string) {
@@ -267,11 +267,10 @@ public class SimpInterpreter {
         vector.set(4,1,1);
 
         vector = vector.matrixMultiplication(this.CTM);
+        System.out.println("Before!!!");
         vector.printMatrix();
-        System.out.println("Temporate delete right away");
-        System.out.println("Temporate delete right away");
         vector = vector.matrixMultiplication(worldToScreen);
-        System.out.println("T！！！！！！！！");
+        System.out.println("After!!!!!!");
         vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
