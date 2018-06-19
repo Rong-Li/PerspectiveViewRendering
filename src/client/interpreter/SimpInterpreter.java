@@ -58,12 +58,12 @@ public class SimpInterpreter {
         this.filledRenderer = renderers.getFilledRenderer();
         this.wireframeRenderer = renderers.getWireframeRenderer();
         this.defaultColor = Color.WHITE;
+        CTM = Transformation.identity();
         makeWorldToScreenTransform(drawable.getDimensions());
 
         reader = new LineBasedReader(filename);
         readerStack = new Stack<>();
         renderStyle = RenderStyle.FILLED;
-        CTM = Transformation.identity();
         this.matrixStack = new Stack<>();
     }
 
@@ -76,6 +76,7 @@ public class SimpInterpreter {
         //translating
         this.worldToScreen.set(1,4,324);
         this.worldToScreen.set(2,4,324);
+        //this.worldToScreen.printMatrix();
     }
 
     public void interpret() {
@@ -158,7 +159,9 @@ public class SimpInterpreter {
         double sz = cleanNumber(tokens[3]);
 
         Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
-        this.CTM.matrixMultiplication(scale);
+        CTM = this.CTM.matrixMultiplication(scale);
+        System.out.println("it is a Scaling Matrix: ");
+        scale.printMatrix();
     }
     private void interpretTranslate(String[] tokens) {
         double tx = cleanNumber(tokens[1]);
@@ -166,21 +169,27 @@ public class SimpInterpreter {
         double tz = cleanNumber(tokens[3]);
 
         Transformation translate = Transformation.translateMatrix(tx,ty,tz);
-        this.CTM.matrixMultiplication(translate);
+        CTM = this.CTM.matrixMultiplication(translate);
+        System.out.println("it is a Translating Matrix: ");
+        translate.printMatrix();
     }
     private void interpretRotate(String[] tokens) {
         String axisString = tokens[1];
         double angleInDegrees = cleanNumber(tokens[2]);
         Transformation rotate = Transformation.identity();
-        if(axisString == "Z"){
+        if(axisString.equals("Z")){
+            System.out.println("it is a Z");
             rotate = Transformation.rotateAroundZ(angleInDegrees);
-        } else if(axisString == "Y"){
+        } else if(axisString.equals("Y")){
+            System.out.println("it is a Y");
             rotate = Transformation.rotateAroundY(angleInDegrees);
-        } else if(axisString == "X"){
+        } else if(axisString.equals("X")){
+            System.out.println("it is a X");
             rotate = Transformation.rotateAroundX(angleInDegrees);
         }
         System.out.println("Rotate by " + axisString);
-        this.CTM.matrixMultiplication(rotate);
+        CTM = this.CTM.matrixMultiplication(rotate);
+        rotate.printMatrix();
     }
     private double cleanNumber(String string) {
         return Double.parseDouble(string);

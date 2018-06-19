@@ -46,8 +46,8 @@ public class Transformation {
     }
 
     public void set(int x, int y, double value){
-        int trueX = this.rows - x;
-        int trueY = this.cols - y;
+        int trueX = x - 1;
+        int trueY = y - 1;
         this.matrix[trueX][trueY] = value;
     }
 
@@ -75,11 +75,26 @@ public class Transformation {
         result.set(2,2,1.0);
         result.set(3,3,1.0);
         result.set(4,4,1.0);
+        //result.printMatrix();
         return result;
     }
 
+
+    public void printMatrix(){
+        double temp;
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                temp = this.matrix[i][j];
+                System.out.print(temp + "," + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+
     public static Transformation scaleMatrix(double sx, double sy, double sz){
-        Transformation result = new Transformation();
+        Transformation result = Transformation.identity();
 
         result.set(1,1, sx);
         result.set(2,2, sy);
@@ -87,7 +102,7 @@ public class Transformation {
         return result;
     }
     public static Transformation translateMatrix(double tx, double ty, double tz){
-        Transformation result = new Transformation();
+        Transformation result = Transformation.identity();
 
         result.set(1,4, tx);
         result.set(2,4, ty);
@@ -95,7 +110,7 @@ public class Transformation {
         return result;
     }
     public static  Transformation rotateAroundZ(double degrees){
-        Transformation result = new Transformation();
+        Transformation result = Transformation.identity();
         double radians = Math.toRadians(degrees);
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
@@ -107,7 +122,7 @@ public class Transformation {
         return result;
     }
     public static  Transformation rotateAroundX(double degrees){
-        Transformation result = new Transformation();
+        Transformation result = Transformation.identity();
         double radians = Math.toRadians(degrees);
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
@@ -119,7 +134,7 @@ public class Transformation {
         return result;
     }
     public static  Transformation rotateAroundY(double degrees){
-        Transformation result = new Transformation();
+        Transformation result = Transformation.identity();
         double radians = Math.toRadians(degrees);
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
@@ -130,4 +145,6 @@ public class Transformation {
         result.set(3,3, cos);
         return result;
     }
+
+
 }
