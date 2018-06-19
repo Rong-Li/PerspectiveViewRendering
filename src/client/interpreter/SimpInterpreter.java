@@ -267,8 +267,8 @@ public class SimpInterpreter {
         vector.set(4,1,1);
 
         vector = vector.matrixMultiplication(this.CTM);
-        System.out.println("Before!!!");
-        vector.printMatrix();
+//        System.out.println("Before!!!");
+//        vector.printMatrix();
         vector = vector.matrixMultiplication(worldToScreen);
         System.out.println("After!!!!!!");
         vector.printMatrix();

@@ -18,11 +18,13 @@ public class DepthCueingDrawable extends DrawableDecorator {
 
     @Override
     public void setPixel(int x, int y, double z, int argbColor) {
-        double fraction = 1 - (z/back);
-        double r = this.color.getR() * fraction;
-        double g = this.color.getG() * fraction;
-        double b = this.color.getB() * fraction;
-        Color newColor = new Color(r,g,b);
-        delegate.setPixel(x, y, z, newColor.asARGB());
+        if (z <= back && z >= front){
+            double fraction = 1 - (z/back);
+            double r = this.color.getR() * fraction;
+            double g = this.color.getG() * fraction;
+            double b = this.color.getB() * fraction;
+            Color newColor = new Color(r,g,b);
+            delegate.setPixel(x, y, z, newColor.asARGB());
+        }
     }
 }
