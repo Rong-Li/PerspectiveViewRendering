@@ -72,13 +72,13 @@ public class SimpInterpreter {
         //scalling
         this.worldToScreen.set(1,1,3.25);
         this.worldToScreen.set(2,2,3.25);
-        this.worldToScreen.set(3,3,3.25);
+//        this.worldToScreen.set(3,3,3.25);
         //translating
         this.worldToScreen.set(1,4,324);
         this.worldToScreen.set(2,4,324);
         //this.worldToScreen.printMatrix();
         System.out.println("Temporate delete right away");
-        CTM.printMatrix();
+        worldToScreen.printMatrix();
     }
 
     public void interpret() {
@@ -264,10 +264,17 @@ public class SimpInterpreter {
         vector.set(1,1, x);
         vector.set(2,1, y);
         vector.set(3,1, z);
+        vector.set(4,1,1);
 
         vector = vector.matrixMultiplication(this.CTM);
+        vector.printMatrix();
+        System.out.println("Temporate delete right away");
+        System.out.println("Temporate delete right away");
+        vector = vector.matrixMultiplication(worldToScreen);
+        System.out.println("T！！！！！！！！");
+        vector.printMatrix();
 
-        Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1));
+        Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
         return result;
     }
     public Color interpretColor(String[] tokens, int startingIndex) {
