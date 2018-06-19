@@ -41,8 +41,8 @@ public class Transformation {
     }
 
     public double get(int x, int y){
-        int trueX = this.rows - x;
-        int trueY = this.cols - y;
+        int trueX = x - 1;
+        int trueY = y - 1;
         double result = this.matrix[trueX][trueY];
         return result;
     }

@@ -65,6 +65,11 @@ public class SimpInterpreter {
         readerStack = new Stack<>();
         renderStyle = RenderStyle.FILLED;
         this.matrixStack = new Stack<>();
+        for (int i = 0; i < 650; i++) {
+            for (int j = 0; j < 650; j++) {
+                System.out.print(this.drawable.getZValue(i,j));
+            }
+        }
     }
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
@@ -163,7 +168,7 @@ public class SimpInterpreter {
         Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
         CTM = scale.matrixMultiplication(CTM);
         System.out.println("it is a Scaling Matrix: ");
-        CTM.printMatrix();
+        //CTM.printMatrix();
     }
     private void interpretTranslate(String[] tokens) {
         double tx = cleanNumber(tokens[1]);
@@ -173,7 +178,7 @@ public class SimpInterpreter {
         Transformation translate = Transformation.translateMatrix(tx,ty,tz);
         CTM = translate.matrixMultiplication(CTM);
         System.out.println("it is a Translating Matrix: ");
-        CTM.printMatrix();
+        //CTM.printMatrix();
     }
     private void interpretRotate(String[] tokens) {
         String axisString = tokens[1];
@@ -191,7 +196,7 @@ public class SimpInterpreter {
         }
         System.out.println("Rotate by " + axisString);
         CTM = rotate.matrixMultiplication(CTM);
-        CTM.printMatrix();
+        //CTM.printMatrix();
     }
     private double cleanNumber(String string) {
         return Double.parseDouble(string);
@@ -230,6 +235,10 @@ public class SimpInterpreter {
         for(int index = 0; index < numVertices; index++) {
             vertices[index] = interpretVertex(tokens, startingIndex + index * vertexColors.numTokensPerVertex(), vertexColors);
         }
+//        System.out.println("number of vertices" + numVertices);
+//        for (int i =  0; i  < numVertices; i++){
+//            System.out.println("point: " + vertices[i].toIntString());
+//        }
         return vertices;
     }
     public VertexColors verticesAreColored(String[] tokens, int numVertices) {
@@ -253,6 +262,7 @@ public class SimpInterpreter {
         }
 
         Vertex3D result = new Vertex3D(point,color);
+        //System.out.println("then****!!!!!!" + result.toString());
         return result;
     }
     public Point3DH interpretPoint(String[] tokens, int startingIndex) {
@@ -270,10 +280,13 @@ public class SimpInterpreter {
 //        System.out.println("Before!!!");
 //        vector.printMatrix();
         vector = vector.matrixMultiplication(worldToScreen);
-        System.out.println("After!!!!!!");
-        vector.printMatrix();
+//        System.out.println("After!!!!!!");
+//        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
+        //System.out.println("After!!!!!!" + result.toString());
+//        vector.printMatrix();
+
         return result;
     }
     public Color interpretColor(String[] tokens, int startingIndex) {

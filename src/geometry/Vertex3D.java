@@ -82,7 +82,7 @@ public class Vertex3D implements Vertex {
 		return "(" + getX() + ", " + getY() + ", " + getZ() + ", " + getColor().toIntString() + ")";
 	}
 	public String toIntString() {
-		return "(" + getIntX() + ", " + getIntY() + getIntZ() + ", " + ", " + getColor().toIntString() + ")";
+		return "(" + getIntX() + ", " + getIntY() + ", " + getIntZ()  + ", " + getColor().toIntString() + ")";
 	}
 
 }
