@@ -68,7 +68,7 @@ public class SimpInterpreter {
     }
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
-        this.worldToScreen = CTM;
+        this.worldToScreen = Transformation.identity();
         //scalling
         this.worldToScreen.set(1,1,3.25);
         this.worldToScreen.set(2,2,3.25);
@@ -77,6 +77,8 @@ public class SimpInterpreter {
         this.worldToScreen.set(1,4,324);
         this.worldToScreen.set(2,4,324);
         //this.worldToScreen.printMatrix();
+        System.out.println("Temporate delete right away");
+        CTM.printMatrix();
     }
 
     public void interpret() {
@@ -161,7 +163,7 @@ public class SimpInterpreter {
         Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
         CTM = this.CTM.matrixMultiplication(scale);
         System.out.println("it is a Scaling Matrix: ");
-        scale.printMatrix();
+        CTM.printMatrix();
     }
     private void interpretTranslate(String[] tokens) {
         double tx = cleanNumber(tokens[1]);
@@ -171,7 +173,7 @@ public class SimpInterpreter {
         Transformation translate = Transformation.translateMatrix(tx,ty,tz);
         CTM = this.CTM.matrixMultiplication(translate);
         System.out.println("it is a Translating Matrix: ");
-        translate.printMatrix();
+        CTM.printMatrix();
     }
     private void interpretRotate(String[] tokens) {
         String axisString = tokens[1];
@@ -189,7 +191,7 @@ public class SimpInterpreter {
         }
         System.out.println("Rotate by " + axisString);
         CTM = this.CTM.matrixMultiplication(rotate);
-        rotate.printMatrix();
+        CTM.printMatrix();
     }
     private double cleanNumber(String string) {
         return Double.parseDouble(string);

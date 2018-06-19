@@ -1,5 +1,7 @@
 package geometry;
 
+import java.text.DecimalFormat;
+
 public class Transformation {
     private int rows;
     private int cols;
@@ -85,7 +87,7 @@ public class Transformation {
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
                 temp = this.matrix[i][j];
-                System.out.print(temp + "," + "\t");
+                System.out.print(roundTwoDecimals(temp) + "," + "\t");
             }
             System.out.println();
         }
@@ -147,4 +149,8 @@ public class Transformation {
     }
 
 
+    public double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.valueOf(twoDForm.format(d));
+    }
 }
