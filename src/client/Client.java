@@ -99,6 +99,7 @@ public class Client implements PageTurner {
 
 		image.clear();
 		fullPanel.clear();
+		//depthCueingDrawable.clear();
 
 		switch(pageNumber) {
 			case 1:  new MeshPolygonTest(fullPanel, wireframeRenderer, MeshPolygonTest.USE_PERTURBATION);
@@ -107,31 +108,31 @@ public class Client implements PageTurner {
 				break;
 			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
 				break;
+            case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
+                interpreter = new SimpInterpreter("try.simp", depthCueingDrawable, renderers);
+                interpreter.interpret();
+                break;
 
-			case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-				interpreter = new SimpInterpreter("tomsPage4.simp", depthCueingDrawable, renderers);
+			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
+
+				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
 				interpreter.interpret();
 				break;
-//
-//			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
-//				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
 
-//			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
+			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
+				interpreter.interpret();
+				break;
+
+			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
+				interpreter.interpret();
+				break;
+
+			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
+				interpreter.interpret();
+				break;
 
 			default: defaultPage();
 				break;

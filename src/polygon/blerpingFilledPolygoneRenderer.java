@@ -9,6 +9,17 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
 
     @Override
     public void drawPolygon(Polygon polygon, Drawable drawable, Shader vertexShader){
+        if (outofRange(polygon,drawable)){
+            return;
+        }
+        if (polygon.get(0).getY() == polygon.get(1).getY()
+                && polygon.get(1).getY() == polygon.get(2).getY()){
+            return;
+        }
+        if (polygon.get(0).getX() == polygon.get(1).getX()
+                && polygon.get(1).getX() == polygon.get(2).getX()){
+            return;
+        }
         Chain left_chain = polygon.leftChain();
         Chain right_chain = polygon.rightChain();
 
@@ -285,4 +296,16 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer{
         return new blerpingFilledPolygoneRenderer();
     }
 
+    public boolean outofRange(Polygon polygon, Drawable panel){
+        boolean result = false;
+        Vertex3D p1 = polygon.get(0);
+        Vertex3D p2 = polygon.get(1);
+        Vertex3D p3 = polygon.get(2);
+        if (p1.getIntX() > panel.getWidth() && p1.getIntY() > panel.getHeight()
+                && p2.getIntX() > panel.getWidth() && p2.getIntY() > panel.getHeight()
+                && p3.getIntX() > panel.getWidth() && p3.getIntY() > panel.getHeight()){
+            result = true;
+        }
+        return result;
+    }
 }

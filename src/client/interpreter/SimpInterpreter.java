@@ -67,7 +67,9 @@ public class SimpInterpreter {
         this.matrixStack = new Stack<>();
         for (int i = 0; i < 650; i++) {
             for (int j = 0; j < 650; j++) {
-                System.out.print(this.drawable.getZValue(i,j));
+                if(this.drawable.getZValue(i,j) != -200){
+                    System.out.println("!!!!!!!!!!!!!!WRONGWORNG!!!!!!!!!!!");
+                }
             }
         }
     }
@@ -79,14 +81,15 @@ public class SimpInterpreter {
         this.worldToScreen.set(2,2,3.25);
 //        this.worldToScreen.set(3,3,3.25);
         //translating
-        this.worldToScreen.set(1,4,324);
-        this.worldToScreen.set(2,4,324);
+        this.worldToScreen.set(1,4,325);
+        this.worldToScreen.set(2,4,325);
         //this.worldToScreen.printMatrix();
         System.out.println("Temporate delete right away");
         worldToScreen.printMatrix();
     }
 
     public void interpret() {
+
         while(reader.hasNext() ) {
             String line = reader.next().trim();
             interpretLine(line);
@@ -224,6 +227,7 @@ public class SimpInterpreter {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         filledRenderer.drawPolygon(polygon, this.drawable, null);
+        System.out.println("End of a polygon");
     }
 
 
@@ -284,8 +288,8 @@ public class SimpInterpreter {
 //        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
-        //System.out.println("After!!!!!!" + result.toString());
-//        vector.printMatrix();
+        System.out.println("After!!!!!!" + result.toString());
+        vector.printMatrix();
 
         return result;
     }

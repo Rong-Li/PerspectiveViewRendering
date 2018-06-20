@@ -1,5 +1,7 @@
 package client.testPages;
 
+import geometry.Transformation;
+import geometry.Vertex;
 import geometry.Vertex3D;
 import polygon.Polygon;
 import polygon.PolygonRenderer;
@@ -85,22 +87,108 @@ public class centeredTriangleTest {
     }
 
     public Polygon RotatedThePolygon_withNewZ(double degrees, double newZ){
-        //Moving the Polygon to be center at the origin
-        Vertex3D topVertex = new Vertex3D(0.0, 275.0, newZ, Color.BLACK);
-        Vertex3D BotLeftVertex = new Vertex3D(-238, -138, newZ, Color.BLACK);
-        Vertex3D BotRightVertex = new Vertex3D(238, -138, newZ, Color.BLACK);
+        double radians = Math.toRadians(degrees);
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
+        Transformation rotate = new Transformation(3,3);
+        rotate.set(1,1, cos);
+        rotate.set(1,2, -sin);
+        rotate.set(2,1, sin);
+        rotate.set(2,2, cos);
+        rotate.set(3,3, 1);
+        System.out.println("rotate!!!");
+        rotate.printMatrix();
+
+        Transformation translate = new Transformation(3,3);
+        translate.set(1,1, 1);
+        translate.set(2,2, 1);
+        translate.set(3,3, 1);
+        translate.set(1,3, -325);
+        translate.set(2,3, -325);
+        System.out.println("translate!!!");
+        translate.printMatrix();
+
+        Transformation back = new Transformation(3,3);
+        back.set(1,1, 1);
+        back.set(2,2, 1);
+        back.set(3,3, 1);
+        back.set(1,3, 325);
+        back.set(2,3, 325);
+        System.out.println("back!!!");
+        back.printMatrix();
+
+        Transformation p1 = new Transformation(3,1);
+        p1.set(1,1, Original.get(0).getX());
+        p1.set(2,1, Original.get(0).getY());
+        p1.set(3,1, 1);
+        System.out.println("p1 before!!!");
+        p1.printMatrix();
+
+        Transformation p2 = new Transformation(3,1);
+        p2.set(1,1, Original.get(1).getX());
+        p2.set(2,1, Original.get(1).getY());
+        p2.set(3,1, 1);
+        System.out.println("p2 before!!!");
+        p2.printMatrix();
+
+        Transformation p3 = new Transformation(3,1);
+        p3.set(1,1, Original.get(2).getX());
+        p3.set(2,1, Original.get(2).getY());
+        p3.set(3,1, 1);
+        System.out.println("p3 before!!!");
+        p3.printMatrix();
+
+        p1 = p1.matrixMultiplication(translate);
+        p1 = p1.matrixMultiplication(rotate);
+        p1 = p1.matrixMultiplication(back);
+        System.out.println("p1 after!!!");
+        p1.printMatrix();
+
+        p2 = p2.matrixMultiplication(translate);
+        p2 = p2.matrixMultiplication(rotate);
+        p2 = p2.matrixMultiplication(back);
+        System.out.println("p2 after!!!");
+        p2.printMatrix();
+
+        p3 = p3.matrixMultiplication(translate);
+        p3 = p3.matrixMultiplication(rotate);
+        p3 = p3.matrixMultiplication(back);
+        System.out.println("p3 after!!!");
+        p3.printMatrix();
 
         Vertex3D vertices[];
         vertices = new Vertex3D[3];
 
         //Rotate the origin centered Polygon then by adding origin to move back the polygon
-        vertices[0] = RotatedNewVertices(topVertex, degrees).add(this.center);
-        vertices[1] = RotatedNewVertices(BotLeftVertex, degrees).add(this.center);
-        vertices[2] = RotatedNewVertices(BotRightVertex, degrees).add(this.center);
+        vertices[0] = new Vertex3D(p1.get(1,1), p1.get(2,1), newZ, Color.BLACK);
+        vertices[1] = new Vertex3D(p2.get(1,1), p2.get(2,1), newZ, Color.BLACK);
+        vertices[2] = new Vertex3D(p3.get(1,1), p3.get(2,1), newZ, Color.BLACK);
 
         Polygon result = Polygon.makeEnsuringClockwise(vertices);
+
+
         return result;
     }
+
+
+
+//    public Polygon RotatedThePolygon_withNewZ(double degrees, double newZ){
+//        //Moving the Polygon to be center at the origin
+//        Vertex3D topVertex = new Vertex3D(0.0, 275.0, newZ, Color.BLACK);
+//        Vertex3D BotLeftVertex = new Vertex3D(-238, -138, newZ, Color.BLACK);
+//        Vertex3D BotRightVertex = new Vertex3D(238, -138, newZ, Color.BLACK);
+//
+//        Vertex3D vertices[];
+//        vertices = new Vertex3D[3];
+//
+//        //Rotate the origin centered Polygon then by adding origin to move back the polygon
+//        vertices[0] = RotatedNewVertices(topVertex, degrees).add(this.center);
+//        vertices[1] = RotatedNewVertices(BotLeftVertex, degrees).add(this.center);
+//        vertices[2] = RotatedNewVertices(BotRightVertex, degrees).add(this.center);
+//
+//        Polygon result = Polygon.makeEnsuringClockwise(vertices);
+//        return result;
+//    }
 
     public Polygon SetNewColor(Polygon polygon, Color newColor){
         Vertex3D vertices[];
