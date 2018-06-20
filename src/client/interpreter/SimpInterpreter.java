@@ -226,7 +226,12 @@ public class SimpInterpreter {
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
-        filledRenderer.drawPolygon(polygon, this.drawable, null);
+        if(this.renderStyle == RenderStyle.FILLED){
+            filledRenderer.drawPolygon(polygon, this.drawable, null);
+        }
+        else if(this.renderStyle == RenderStyle.WIREFRAME){
+            wireframeRenderer.drawPolygon(polygon, this.drawable, null);
+        }
         System.out.println("End of a polygon");
     }
 
@@ -298,7 +303,8 @@ public class SimpInterpreter {
         double g = cleanNumber(tokens[startingIndex + 1]);
         double b = cleanNumber(tokens[startingIndex + 2]);
 
-        return Color.WHITE;
+        Color result = new Color(r,g,b);
+        return result;
     }
 
 //    private void line(Vertex3D p1, Vertex3D p2) {
