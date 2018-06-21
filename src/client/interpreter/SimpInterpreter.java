@@ -222,7 +222,7 @@ public class SimpInterpreter {
         else if(this.renderStyle == RenderStyle.WIREFRAME){
             wireframeRenderer.drawPolygon(polygon, this.drawable, null);
         }
-        System.out.println("End of a polygon");
+        //System.out.println("End of a polygon");
     }
 
 
@@ -284,8 +284,8 @@ public class SimpInterpreter {
 //        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
-        System.out.println("After!!!!!!");
-        vector.printMatrix();
+//        System.out.println("After!!!!!!");
+//        vector.printMatrix();
 
         return result;
     }

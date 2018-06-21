@@ -313,11 +313,16 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         int start = (int) Math.round(x_start);
         int end = (int) Math.round(x_end);
         if (start == end) {
-            drawable.setPixel(start, y, z, c1.asARGB());
+            if(start < drawable.getWidth() && y < drawable.getHeight()){
+                drawable.setPixel(start, y, z, c1.asARGB());
+            }
+        }
 
-        } else {
+        else {
             for (int i = start; i < end; i++) {
-                drawable.setPixel(i, y, z, newColor.asARGB());
+                if(i < drawable.getWidth() && y < drawable.getHeight()){
+                    drawable.setPixel(i, y, z, newColor.asARGB());
+                }
                 newColor = newColor.add(addOn);
                 z = z + z_slope;
             }
