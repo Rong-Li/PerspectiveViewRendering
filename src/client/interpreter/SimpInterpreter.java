@@ -215,9 +215,6 @@ public class SimpInterpreter {
     }
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
-        if (completelyOutofRange(vertices)){
-
-        }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         if(this.renderStyle == RenderStyle.FILLED){
             filledRenderer.drawPolygon(polygon, this.drawable, null);
@@ -301,18 +298,18 @@ public class SimpInterpreter {
         return result;
     }
 
-    private boolean completelyOutofRange(Vertex3D[] vertices) {
-        boolean result = false;
-        Transformation p1 = Transformation.vertexToVector(vertices[0]);
-        Transformation p2 = Transformation.vertexToVector(vertices[1]);
-        Transformation p3 = Transformation.vertexToVector(vertices[2]);
-
-        if (p1.get(1,1) > 650 && p2.get(1,1) > 650 && p3.get(1,1) > 650
-                && p1.get(2,1) > 650 && p2.get(2,1) > 650 && p3.get(2,1) > 650){
-            result = true;
-        }
-        return result;
-    }
+//    private boolean completelyOutofRange(Vertex3D[] vertices) {
+//        boolean result = false;
+//        Transformation p1 = Transformation.vertexToVector(vertices[0]);
+//        Transformation p2 = Transformation.vertexToVector(vertices[1]);
+//        Transformation p3 = Transformation.vertexToVector(vertices[2]);
+//
+//        if (p1.get(1,1) > 650 && p2.get(1,1) > 650 && p3.get(1,1) > 650
+//                && p1.get(2,1) > 650 && p2.get(2,1) > 650 && p3.get(2,1) > 650){
+//            result = true;
+//        }
+//        return result;
+//    }
 
 
 //    private void line(Vertex3D p1, Vertex3D p2) {
