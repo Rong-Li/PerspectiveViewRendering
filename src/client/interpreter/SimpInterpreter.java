@@ -65,13 +65,6 @@ public class SimpInterpreter {
         readerStack = new Stack<>();
         renderStyle = RenderStyle.FILLED;
         this.matrixStack = new Stack<>();
-        for (int i = 0; i < 650; i++) {
-            for (int j = 0; j < 650; j++) {
-                if(this.drawable.getZValue(i,j) != -200){
-                    System.out.println("!!!!!!!!!!!!!!WRONGWORNG!!!!!!!!!!!");
-                }
-            }
-        }
     }
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
@@ -81,10 +74,9 @@ public class SimpInterpreter {
         this.worldToScreen.set(2,2,3.25);
 //        this.worldToScreen.set(3,3,3.25);
         //translating
-        this.worldToScreen.set(1,4,325);
-        this.worldToScreen.set(2,4,325);
+        this.worldToScreen.set(1,4,324);
+        this.worldToScreen.set(2,4,324);
         //this.worldToScreen.printMatrix();
-        System.out.println("Temporate delete right away");
         worldToScreen.printMatrix();
     }
 

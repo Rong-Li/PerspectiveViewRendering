@@ -1,5 +1,6 @@
 package wireframe;
 
+import geometry.Vertex3D;
 import line.DDALineRenderer;
 import line.LineRenderer;
 import polygon.Polygon;
@@ -13,11 +14,29 @@ public class FilledWireFrameRenderer implements PolygonRenderer {
 
     @Override
     public void drawPolygon(Polygon polygon, Drawable drawable, Shader vertexShader) {
+        if (outofRange(polygon,drawable)){
+            return;
+        }
+
         lineRenderer.drawLine(polygon.get(0), polygon.get(1), drawable);
         lineRenderer.drawLine(polygon.get(1), polygon.get(2), drawable);
         lineRenderer.drawLine(polygon.get(0), polygon.get(2), drawable);
     }
 
+
+
+    public boolean outofRange(Polygon polygon, Drawable panel){
+        boolean result = false;
+        Vertex3D p1 = polygon.get(0);
+        Vertex3D p2 = polygon.get(1);
+        Vertex3D p3 = polygon.get(2);
+        if (p1.getIntX() > panel.getWidth() && p1.getIntY() > panel.getHeight()
+                && p2.getIntX() > panel.getWidth() && p2.getIntY() > panel.getHeight()
+                && p3.getIntX() > panel.getWidth() && p3.getIntY() > panel.getHeight()){
+            result = true;
+        }
+        return result;
+    }
 
 
     public static PolygonRenderer make() {

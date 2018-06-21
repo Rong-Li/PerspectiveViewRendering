@@ -10,9 +10,12 @@ public class DDALineRenderer implements LineRenderer {
 
     @Override
     public void drawLine(Vertex3D p1, Vertex3D p2, Drawable drawable) {
+        double z = p1.getIntZ();
         double deltaX = p2.getIntX() - p1.getIntX();
         double deltaY = p2.getIntY() - p1.getIntY();
+        double deltaZ = p2.getIntZ() - p1.getIntZ();
         double slope = deltaY / deltaX;
+        double mz = deltaZ/deltaX;
 
         double p1_r = p1.getColor().getR();
         double p2_r = p2.getColor().getR();
@@ -37,11 +40,12 @@ public class DDALineRenderer implements LineRenderer {
 
         for(int x = p1.getIntX(); x <= p2.getIntX(); x++) {
             Color color = new Color(r,g,b);
-            drawable.setPixel(x, (int)Math.round(y), 0.0, color.asARGB());
+            drawable.setPixel(x, (int)Math.round(y), z, color.asARGB());
             y = y + slope;
             r = r + mr;
             g = g + mg;
             b = b + mb;
+            z = z + mz;
         }
     }
 
