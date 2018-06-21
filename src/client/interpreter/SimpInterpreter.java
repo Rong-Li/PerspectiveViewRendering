@@ -2,9 +2,7 @@ package client.interpreter;
 
 import java.util.Stack;
 
-import geometry.Point3DH;
-import geometry.Transformation;
-import geometry.Vertex3D;
+import geometry.*;
 import line.LineRenderer;
 //import notProvided.client.Clipper;
 import client.RendererTrio;
@@ -77,7 +75,7 @@ public class SimpInterpreter {
         this.worldToScreen.set(1,4,324);
         this.worldToScreen.set(2,4,324);
         //this.worldToScreen.printMatrix();
-        worldToScreen.printMatrix();
+        //worldToScreen.printMatrix();
     }
 
     public void interpret() {
@@ -162,7 +160,7 @@ public class SimpInterpreter {
 
         Transformation scale = Transformation.scaleMatrix(sx,sy,sz);
         CTM = scale.matrixMultiplication(CTM);
-        System.out.println("it is a Scaling Matrix: ");
+        //System.out.println("it is a Scaling Matrix: ");
         //CTM.printMatrix();
     }
     private void interpretTranslate(String[] tokens) {
@@ -172,7 +170,7 @@ public class SimpInterpreter {
 
         Transformation translate = Transformation.translateMatrix(tx,ty,tz);
         CTM = translate.matrixMultiplication(CTM);
-        System.out.println("it is a Translating Matrix: ");
+        //System.out.println("it is a Translating Matrix: ");
         //CTM.printMatrix();
     }
     private void interpretRotate(String[] tokens) {
@@ -180,16 +178,16 @@ public class SimpInterpreter {
         double angleInDegrees = cleanNumber(tokens[2]);
         Transformation rotate = Transformation.identity();
         if(axisString.equals("Z")){
-            System.out.println("it is a Z");
+            //System.out.println("it is a Z");
             rotate = Transformation.rotateAroundZ(angleInDegrees);
         } else if(axisString.equals("Y")){
-            System.out.println("it is a Y");
+            //System.out.println("it is a Y");
             rotate = Transformation.rotateAroundY(angleInDegrees);
         } else if(axisString.equals("X")){
-            System.out.println("it is a X");
+            //System.out.println("it is a X");
             rotate = Transformation.rotateAroundX(angleInDegrees);
         }
-        System.out.println("Rotate by " + axisString);
+        //System.out.println("Rotate by " + axisString);
         CTM = rotate.matrixMultiplication(CTM);
         //CTM.printMatrix();
     }
@@ -217,6 +215,9 @@ public class SimpInterpreter {
     }
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
+        if (completelyOutofRange(vertices)){
+
+        }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         if(this.renderStyle == RenderStyle.FILLED){
             filledRenderer.drawPolygon(polygon, this.drawable, null);
@@ -226,7 +227,6 @@ public class SimpInterpreter {
         }
         System.out.println("End of a polygon");
     }
-
 
 
     public Vertex3D[] interpretVertices(String[] tokens, int numVertices, int startingIndex) {
@@ -271,11 +271,13 @@ public class SimpInterpreter {
         double y = cleanNumber(tokens[startingIndex + 1]);
         double z = cleanNumber(tokens[startingIndex + 2]);
 
-        Transformation vector = new Transformation(4,1);
-        vector.set(1,1, x);
-        vector.set(2,1, y);
-        vector.set(3,1, z);
-        vector.set(4,1,1);
+        Vertex3D p = new Vertex3D(x,y,z,Color.BLACK);
+
+        Transformation vector = Transformation.vertexToVector(p);
+//        vector.set(1,1, x);
+//        vector.set(2,1, y);
+//        vector.set(3,1, z);
+//        vector.set(4,1,1);
 
         vector = vector.matrixMultiplication(this.CTM);
 //        System.out.println("Before!!!");
@@ -285,7 +287,7 @@ public class SimpInterpreter {
 //        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
-        System.out.println("After!!!!!!" + result.toString());
+        System.out.println("After!!!!!!");
         vector.printMatrix();
 
         return result;
@@ -298,6 +300,20 @@ public class SimpInterpreter {
         Color result = new Color(r,g,b);
         return result;
     }
+
+    private boolean completelyOutofRange(Vertex3D[] vertices) {
+        boolean result = false;
+        Transformation p1 = Transformation.vertexToVector(vertices[0]);
+        Transformation p2 = Transformation.vertexToVector(vertices[1]);
+        Transformation p3 = Transformation.vertexToVector(vertices[2]);
+
+        if (p1.get(1,1) > 650 && p2.get(1,1) > 650 && p3.get(1,1) > 650
+                && p1.get(2,1) > 650 && p2.get(2,1) > 650 && p3.get(2,1) > 650){
+            result = true;
+        }
+        return result;
+    }
+
 
 //    private void line(Vertex3D p1, Vertex3D p2) {
 //        Vertex3D screenP1 = transformToCamera(p1);

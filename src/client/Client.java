@@ -114,7 +114,6 @@ public class Client implements PageTurner {
                 break;
 
 			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
-
 				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
 				interpreter.interpret();
 				break;

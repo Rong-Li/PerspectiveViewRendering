@@ -148,6 +148,18 @@ public class Transformation {
         return result;
     }
 
+    public static Transformation vertexToVector(Vertex3D p){
+        double x = p.getX();
+        double y = p.getY();
+        double z = p.getZ();
+        Transformation vector = new Transformation(4,1);
+        vector.set(1,1, x);
+        vector.set(2,1, y);
+        vector.set(3,1, z);
+        vector.set(4,1,1);
+
+        return vector;
+    }
 
     public double roundTwoDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");

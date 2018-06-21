@@ -77,7 +77,6 @@ public class Vertex3D implements Vertex {
 		Point3DH euclidean = getPoint3D().euclidean();
 		return replacePoint(euclidean);
 	}
-	
 	public String toString() {
 		return "(" + getX() + ", " + getY() + ", " + getZ() + ", " + getColor().toIntString() + ")";
 	}

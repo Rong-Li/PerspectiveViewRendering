@@ -96,8 +96,8 @@ public class centeredTriangleTest {
         rotate.set(2,1, sin);
         rotate.set(2,2, cos);
         rotate.set(3,3, 1);
-        System.out.println("rotate!!!");
-        rotate.printMatrix();
+        //System.out.println("rotate!!!");
+        //rotate.printMatrix();
 
         Transformation translate = new Transformation(3,3);
         translate.set(1,1, 1);
@@ -105,8 +105,8 @@ public class centeredTriangleTest {
         translate.set(3,3, 1);
         translate.set(1,3, -325);
         translate.set(2,3, -325);
-        System.out.println("translate!!!");
-        translate.printMatrix();
+        //System.out.println("translate!!!");
+        //translate.printMatrix();
 
         Transformation back = new Transformation(3,3);
         back.set(1,1, 1);
@@ -114,47 +114,47 @@ public class centeredTriangleTest {
         back.set(3,3, 1);
         back.set(1,3, 325);
         back.set(2,3, 325);
-        System.out.println("back!!!");
-        back.printMatrix();
+        //System.out.println("back!!!");
+        //back.printMatrix();
 
         Transformation p1 = new Transformation(3,1);
         p1.set(1,1, Original.get(0).getX());
         p1.set(2,1, Original.get(0).getY());
         p1.set(3,1, 1);
-        System.out.println("p1 before!!!");
-        p1.printMatrix();
+        //System.out.println("p1 before!!!");
+        //p1.printMatrix();
 
         Transformation p2 = new Transformation(3,1);
         p2.set(1,1, Original.get(1).getX());
         p2.set(2,1, Original.get(1).getY());
         p2.set(3,1, 1);
-        System.out.println("p2 before!!!");
-        p2.printMatrix();
+        //System.out.println("p2 before!!!");
+        //p2.printMatrix();
 
         Transformation p3 = new Transformation(3,1);
         p3.set(1,1, Original.get(2).getX());
         p3.set(2,1, Original.get(2).getY());
         p3.set(3,1, 1);
-        System.out.println("p3 before!!!");
-        p3.printMatrix();
+        //System.out.println("p3 before!!!");
+        //p3.printMatrix();
 
         p1 = p1.matrixMultiplication(translate);
         p1 = p1.matrixMultiplication(rotate);
         p1 = p1.matrixMultiplication(back);
-        System.out.println("p1 after!!!");
-        p1.printMatrix();
+        //System.out.println("p1 after!!!");
+        //p1.printMatrix();
 
         p2 = p2.matrixMultiplication(translate);
         p2 = p2.matrixMultiplication(rotate);
         p2 = p2.matrixMultiplication(back);
-        System.out.println("p2 after!!!");
-        p2.printMatrix();
+        //System.out.println("p2 after!!!");
+        //p2.printMatrix();
 
         p3 = p3.matrixMultiplication(translate);
         p3 = p3.matrixMultiplication(rotate);
         p3 = p3.matrixMultiplication(back);
-        System.out.println("p3 after!!!");
-        p3.printMatrix();
+        //System.out.println("p3 after!!!");
+        //p3.printMatrix();
 
         Vertex3D vertices[];
         vertices = new Vertex3D[3];
