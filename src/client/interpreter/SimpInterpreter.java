@@ -222,7 +222,6 @@ public class SimpInterpreter {
         else if(this.renderStyle == RenderStyle.WIREFRAME){
             wireframeRenderer.drawPolygon(polygon, this.drawable, null);
         }
-        //System.out.println("End of a polygon");
     }
 
 
