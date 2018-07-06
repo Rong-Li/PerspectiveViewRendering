@@ -114,9 +114,9 @@ public class SimpInterpreter {
             case "rotate" :		interpretRotate(tokens);	break;
             case "line" :		interpretLine(tokens);		break;
             case "polygon" :	interpretPolygon(tokens);	break;
-//		case "camera" :		interpretCamera(tokens);	break;
+		    case "camera" :		interpretCamera(tokens);	break;
 //		case "surface" :	interpretSurface(tokens);	break;
-//		case "ambient" :	interpretAmbient(tokens);	break;
+            case "ambient" :	interpretAmbient(tokens);	break;
 //		case "depth" :		interpretDepth(tokens);		break;
 //		case "obj" :		interpretObj(tokens);		break;
 
@@ -125,6 +125,8 @@ public class SimpInterpreter {
                 break;
         }
     }
+
+
 
     private void push() {
         this.matrixStack.push(CTM);
@@ -297,18 +299,32 @@ public class SimpInterpreter {
         return result;
     }
 
-//    private boolean completelyOutofRange(Vertex3D[] vertices) {
-//        boolean result = false;
-//        Transformation p1 = Transformation.vertexToVector(vertices[0]);
-//        Transformation p2 = Transformation.vertexToVector(vertices[1]);
-//        Transformation p3 = Transformation.vertexToVector(vertices[2]);
-//
-//        if (p1.get(1,1) > 650 && p2.get(1,1) > 650 && p3.get(1,1) > 650
-//                && p1.get(2,1) > 650 && p2.get(2,1) > 650 && p3.get(2,1) > 650){
-//            result = true;
-//        }
-//        return result;
-//    }
+
+
+
+    private void interpretCamera(String[] tokens) {
+        Transformation temp = Transformation.identity();
+        temp.set(1,1,3);
+        temp.set(1,2,2);
+        temp.set(1,3,-1);
+        temp.set(2,1,-2);
+        temp.set(2,2,0);
+        temp.set(2,3,5);
+        temp.set(3,1,1);
+        temp.set(3,2,1);
+        temp.set(3,3,-4);
+        temp.printMatrix();
+
+        System.out.println("AFTER inverse!!!");
+
+        Transformation result = temp.InversedMatrix();
+        result.printMatrix();
+    }
+
+
+
+    private void interpretAmbient(String[] tokens) {
+    }
 
 
 //    private void line(Vertex3D p1, Vertex3D p2) {

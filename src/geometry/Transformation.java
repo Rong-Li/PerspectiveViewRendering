@@ -32,6 +32,17 @@ public class Transformation {
         return matrix;
     }
 
+    //this is for getting inverse matrix without changing the old one
+    public double[][] getMatrix_withoutAliasing() {
+        double temp[][] = new double[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                temp[i][j] = this.getMatrix()[i][j];
+            }
+        }
+        return temp;
+    }
+
     public int getRows() {
         return rows;
     }
@@ -53,6 +64,15 @@ public class Transformation {
         this.matrix[trueX][trueY] = value;
     }
 
+    //only copy the data but do not aliasing
+    public void setMatrix(double matrix[][]){
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                this.matrix[i][j] = matrix[i][j];
+            }
+        }
+    }
+
 
     public Transformation matrixMultiplication(Transformation newMatrix){
         Transformation result = new Transformation(newMatrix.getRows(), this.cols);
@@ -69,6 +89,30 @@ public class Transformation {
         }
         return result;
     }
+
+    public Transformation InversedMatrix(){
+        double temp[][] = this.getMatrix_withoutAliasing();
+        double mat[][] = this.getMatrix_withoutAliasing();
+        double det = 0;
+        for(int i = 0; i < 3; i++)
+            det = det + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3]));
+        if (det == 0){
+            System.out.println("wrong !!!!!determine is 0");
+            return null;
+        }
+        else{
+            System.out.println("The determine is:  " + det);
+            for(int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j){
+                    temp[i][j] = ((mat[(j + 1) % 3][(i + 1) % 3] * mat[(j + 2) % 3][(i + 2) % 3]) - (mat[(j + 1) % 3][(i + 2) % 3] * mat[(j + 2) % 3][(i + 1) % 3])) / det;
+                }
+            }
+        }
+        Transformation result = new Transformation();
+        result.setMatrix(temp);
+        return result;
+    }
+
 
     public static Transformation identity(){
         Transformation result = new Transformation();
@@ -93,7 +137,6 @@ public class Transformation {
         }
         System.out.println();
     }
-
 
     public static Transformation scaleMatrix(double sx, double sy, double sz){
         Transformation result = Transformation.identity();
@@ -160,6 +203,7 @@ public class Transformation {
 
         return vector;
     }
+
 
     public double roundTwoDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
