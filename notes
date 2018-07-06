@@ -1,0 +1,67 @@
+Some methods in SimpInterpreter need to be made static so ObjReader can use them.
+
+
+Some code to add to SimpInterpreter:
+
+	public static Point3D interpretPointWithW(String[] tokens, int startingIndex) {
+		double x = cleanNumber(tokens[startingIndex]);
+		double y = cleanNumber(tokens[startingIndex + 1]);
+		double z = cleanNumber(tokens[startingIndex + 2]);
+		double w = cleanNumber(tokens[startingIndex + 3]);
+		Point3D point = new Point3D(x, y, z, w);
+		return point;
+	}
+		
+	private void objFile(String filename) {
+		ObjReader objReader = new ObjReader(filename, defaultColor);
+		objReader.read();
+		objReader.render();
+	}
+
+
+Here's a peek inside my Client.h for this assignment.  Use any of it you feel is useful.
+
+	@Override
+	public void nextPage() {
+		if(hasArgument) {
+			argumentNextPage();
+		}
+		else {
+			noArgumentNextPage();
+		}
+	}
+
+	private void argumentNextPage() {
+		image.clear();
+		fullPanel.clear();
+		
+		interpreter = new SimpInterpreter(filename + ".simp", fullPanel, renderers);
+		interpreter.interpret();
+	}
+	
+	public void noArgumentNextPage() {
+		System.out.println("PageNumber " + (pageNumber + 1));
+		pageNumber = (pageNumber + 1) % NUM_PAGES;
+		
+		image.clear();
+		fullPanel.clear();
+		String filename;
+
+		switch(pageNumber) {
+		case 1:  filename = "pageA";	 break;
+		case 2:  filename = "pageB";	 break;
+		case 3:	 filename = "pageC";	 break;
+		case 4:  filename = "pageD";	 break;
+		case 5:  filename = "pageE";	 break;
+		case 6:  filename = "pageF";	 break;
+		case 7:  filename = "pageG";	 break;
+		case 8:  filename = "pageH";	 break;
+		case 9:  filename = "pageI";	 break;
+		case 0:  filename = "tomsPageJ";	 break;
+
+		default: defaultPage();
+				 return;
+		}				 
+		interpreter = new SimpInterpreter(filename + ".simp", fullPanel, renderers);
+		interpreter.interpret();
+	}

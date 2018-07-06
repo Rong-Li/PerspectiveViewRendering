@@ -41,18 +41,24 @@ public class Client implements PageTurner {
     private PolygonRenderer wireframeRenderer;
     private RendererTrio renderers;
     private SimpInterpreter interpreter;
+	private boolean hasArgument = false;
+	private String filename;
 
 
-    public Client(Drawable drawable) {
+	public Client(Drawable drawable, String filename) {
+		if (filename != null){
+		    hasArgument = true;
+		    this.filename = filename;
+        }
+        else{
+		    System.out.println("There is no specification of which file to choose!!");
+        }
 		this.drawable = drawable;	
 		createDrawables();
 		createRenderers();
 	}
 
-	//createDrawables() creates drawables for the entire window (called image),
-	// for the entire window minus a 50-pixel wide border (largePanel),
-	// for the four subwindows that I told you to draw to (panels, inside createPanels()),
-	// and an alternative set for those four panels for use on page 5 (ghostPanels).
+
 	public void createDrawables() {
 		image = new InvertedYDrawable(drawable);
 		image = new TranslatingDrawable(image, point(0, 0), dimensions(750, 750));
@@ -93,50 +99,100 @@ public class Client implements PageTurner {
 
 	@Override
 	public void nextPage() {
-		Drawable depthCueingDrawable;
-		System.out.println("PageNumber " + (pageNumber + 1));
+		if(hasArgument) {
+			argumentNextPage();
+		}
+		else {
+			noArgumentNextPage();
+		}
+	}
+
+	private void argumentNextPage() {
+		image.clear();
+		fullPanel.clear();
+
+		interpreter = new SimpInterpreter(filename + ".simp", fullPanel, renderers);
+		interpreter.interpret();
+	}
+
+	public void noArgumentNextPage() {
+        Drawable depthCueingDrawable;
+        System.out.println("PageNumber " + (pageNumber + 1));
 		pageNumber = (pageNumber + 1) % NUM_PAGES;
 
 		image.clear();
 		fullPanel.clear();
-		//depthCueingDrawable.clear();
+		String filename;
 
 		switch(pageNumber) {
+
+			case 1:  filename = "pageA";	 break;
+			case 2:  filename = "pageB";	 break;
+			case 3:	 filename = "pageC";	 break;
+			case 4:  filename = "pageD";	 break;
+			case 5:  filename = "pageE";	 break;
+			case 6:  filename = "pageF";	 break;
+			case 7:  filename = "pageG";	 break;
+			case 8:  filename = "pageH";	 break;
+			case 9:  filename = "pageI";	 break;
+			case 0:  filename = "tomsPageJ";	 break;
+
+			default: defaultPage();
+				return;
+		}
+		interpreter = new SimpInterpreter(filename + ".simp", fullPanel, renderers);
+		interpreter.interpret();
+	}
+
+
+
+
+//	@Override
+//	public void nextPage() {
+//		Drawable depthCueingDrawable;
+//		System.out.println("PageNumber " + (pageNumber + 1));
+//		pageNumber = (pageNumber + 1) % NUM_PAGES;
+//
+//		image.clear();
+//		fullPanel.clear();
+//		//depthCueingDrawable.clear();
+//
+//		switch(pageNumber) {
 //			case 1:  new MeshPolygonTest(fullPanel, wireframeRenderer, MeshPolygonTest.USE_PERTURBATION);
 //				break;
 //			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
 //				break;
 //			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
 //				break;
-            case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-                interpreter = new SimpInterpreter("page4.simp", depthCueingDrawable, renderers);
-                interpreter.interpret();
-                break;
-
-			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.RED);
-				interpreter = new SimpInterpreter("tomsPage5.simp", depthCueingDrawable, renderers);
-				interpreter.interpret();
-				break;
-
-			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
-				interpreter.interpret();
-				break;
-
-			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
-				interpreter.interpret();
-				break;
-
-			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
-				interpreter.interpret();
-				break;
-
-			default: defaultPage();
-				break;
-		}
-	}
+//            case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
+//                interpreter = new SimpInterpreter("page4.simp", depthCueingDrawable, renderers);
+//                interpreter.interpret();
+//                break;
+//
+//			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.BLUE);
+//				interpreter = new SimpInterpreter("page5.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
+//				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
+//				interpreter.interpret();
+//				break;
+//
+//			default: defaultPage();
+//				break;
+//		}
+//	}
 
 
 
