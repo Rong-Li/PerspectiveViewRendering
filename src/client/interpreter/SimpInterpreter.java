@@ -303,22 +303,29 @@ public class SimpInterpreter {
 
 
     private void interpretCamera(String[] tokens) {
-        Transformation temp = Transformation.identity();
-        temp.set(1,1,3);
-        temp.set(1,2,2);
-        temp.set(1,3,-1);
-        temp.set(2,1,-2);
-        temp.set(2,2,0);
-        temp.set(2,3,5);
-        temp.set(3,1,1);
-        temp.set(3,2,1);
-        temp.set(3,3,-4);
-        temp.printMatrix();
+        System.out.println("CTM!!!!!!!!!");
+        CTM.printMatrix();
 
-        System.out.println("AFTER inverse!!!");
+        worldToScreen = CTM.InversedMatrix();
+        CTM = CTM.matrixMultiplication(worldToScreen);
 
-        Transformation result = temp.InversedMatrix();
-        result.printMatrix();
+        //multiply everything in matrix stack with worldToscreen
+        Stack<Transformation> temp = new Stack<>();
+        while(!matrixStack.empty()){
+            Transformation t = matrixStack.pop();
+            System.out.println("original CTM on stack");
+            t.printMatrix();
+            t = t.matrixMultiplication(worldToScreen);
+            temp.push(t);
+        }
+        while(!temp.empty()){
+            Transformation tt = temp.pop();
+            System.out.println("multiplied CTM on stack");
+            tt.printMatrix();
+            matrixStack.push(tt);
+        }
+
+
     }
 
 
