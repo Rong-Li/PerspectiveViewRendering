@@ -23,6 +23,7 @@ public class SimpInterpreter {
 
     private Transformation CTM;
     private Transformation worldToScreen;
+    private Transformation simplePerspectiveMatrix;
     private Stack<Transformation> matrixStack;
 
     private static int WORLD_LOW_X = -100;
@@ -64,6 +65,7 @@ public class SimpInterpreter {
         renderStyle = RenderStyle.FILLED;
         this.matrixStack = new Stack<>();
     }
+
 
     private void makeWorldToScreenTransform(Dimensions dimensions) {
         this.worldToScreen = Transformation.identity();
@@ -339,8 +341,6 @@ public class SimpInterpreter {
         Stack<Transformation> temp = new Stack<>();
         while(!matrixStack.empty()){
             Transformation t = matrixStack.pop();
-//            System.out.println("original CTM on stack");
-//            t.printMatrix();
             t = t.matrixMultiplication(worldToScreen);
             temp.push(t);
         }
@@ -350,6 +350,30 @@ public class SimpInterpreter {
             tt.printMatrix();
             matrixStack.push(tt);
         }
+
+
+        //Projection part
+        double xLow = cleanNumber(tokens[1]);
+        double yLow = cleanNumber(tokens[2]);
+        double xHigh = cleanNumber(tokens[3]);
+        double yHigh = cleanNumber(tokens[4]);
+        Transformation projectedToScreen = new Transformation();
+        double scaleSize_X = 650/(xHigh - xLow);
+        double scaleSize_Y = 650/(yHigh - yLow);
+        //scalling
+        this.worldToScreen.set(1,1,scaleSize_X);
+        this.worldToScreen.set(2,2,scaleSize_Y);
+        //translating
+        this.worldToScreen.set(1,4,324);
+        this.worldToScreen.set(2,4,324);
+
+
+        //simple matrix
+        simplePerspectiveMatrix = Transformation.identity();
+        simplePerspectiveMatrix.set(4,4,0);
+        simplePerspectiveMatrix.set(4,3,0);
+
+
     }
 
 
