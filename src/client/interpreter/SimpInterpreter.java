@@ -283,7 +283,6 @@ public class SimpInterpreter {
 //        vector.set(3,1, z);
 //        vector.set(4,1,1);
 
-        simplePerspectiveMatrix.printMatrix();
         vector = vector.matrixMultiplication(this.CTM);
 
         vector = vector.matrixMultiplication(simplePerspectiveMatrix);
@@ -350,12 +349,11 @@ public class SimpInterpreter {
         while(!matrixStack.empty()){
             Transformation t = matrixStack.pop();
             t = t.matrixMultiplication(worldToScreen);
+            //t = worldToScreen.matrixMultiplication(t);
             temp.push(t);
         }
         while(!temp.empty()){
             Transformation tt = temp.pop();
-//            System.out.println("multiplied CTM on stack");
-//            tt.printMatrix();
             matrixStack.push(tt);
         }
 

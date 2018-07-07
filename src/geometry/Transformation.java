@@ -238,6 +238,8 @@ public class Transformation {
 
         Transformation result = new Transformation();
         result.setMatrix(temp);
+
+
         return result;
     }
 
@@ -271,7 +273,8 @@ public class Transformation {
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
                 temp = this.matrix[i][j];
-                System.out.print(roundTwoDecimals(temp) + "\t");
+                //System.out.print(roundTwoDecimals(temp) + "," + "\t");
+                System.out.print(temp + "," + "\t\t\t");
             }
             System.out.println();
         }
