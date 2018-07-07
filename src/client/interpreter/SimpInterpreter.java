@@ -275,6 +275,7 @@ public class SimpInterpreter {
         Transformation vector = Transformation.vertexToVector(p);
 
         vector = vector.matrixMultiplication(this.CTM);
+
         double z_toKeep = vector.get(3,1);
 
 
@@ -372,7 +373,7 @@ public class SimpInterpreter {
 
         simplePerspectiveMatrix = Transformation.identity();
         simplePerspectiveMatrix.set(4,4,0);
-        simplePerspectiveMatrix.set(4,3,1);
+        simplePerspectiveMatrix.set(4,3,-1);
 
         System.out.println("simple matrix screen");
         simplePerspectiveMatrix.printMatrix();
