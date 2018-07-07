@@ -240,10 +240,7 @@ public class SimpInterpreter {
         for(int index = 0; index < numVertices; index++) {
             vertices[index] = interpretVertex(tokens, startingIndex + index * vertexColors.numTokensPerVertex(), vertexColors);
         }
-//        System.out.println("number of vertices" + numVertices);
-//        for (int i =  0; i  < numVertices; i++){
-//            System.out.println("point: " + vertices[i].toIntString());
-//        }
+
         return vertices;
     }
     public VertexColors verticesAreColored(String[] tokens, int numVertices) {
@@ -256,8 +253,6 @@ public class SimpInterpreter {
     public int numTokensForCommandWithNVertices(int numVertices) {
         return NUM_TOKENS_FOR_COMMAND + numVertices*(NUM_TOKENS_FOR_COLORED_VERTEX);
     }
-
-
     private Vertex3D interpretVertex(String[] tokens, int startingIndex, VertexColors colored) {
         Point3DH point = interpretPoint(tokens, startingIndex);
 
@@ -278,24 +273,19 @@ public class SimpInterpreter {
         Vertex3D p = new Vertex3D(x,y,z,Color.BLACK);
 
         Transformation vector = Transformation.vertexToVector(p);
-//        vector.set(1,1, x);
-//        vector.set(2,1, y);
-//        vector.set(3,1, z);
-//        vector.set(4,1,1);
 
         vector = vector.matrixMultiplication(this.CTM);
+        double z_toKeep = vector.get(3,1);
 
-        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
+
+        vector = vector.matrixMultiplication(cameraToScreen);
         vector = vector.homogeneousTransfer_4X1();
-        System.out.println("Before!!!");
-        vector.printMatrix();
-        vector = vector.matrixMultiplication(projectedToScreen);
+        vector.set(3,1,z_toKeep);
         System.out.println("After!!!!!!");
         vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
-//        System.out.println("After!!!!!!");
-//        vector.printMatrix();
+
 
         return result;
     }
@@ -363,7 +353,7 @@ public class SimpInterpreter {
         double yLow = cleanNumber(tokens[2]);
         double xHigh = cleanNumber(tokens[3]);
         double yHigh = cleanNumber(tokens[4]);
-        projectedToScreen = new Transformation();
+        projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
         //scalling
@@ -399,7 +389,7 @@ public class SimpInterpreter {
         double r = cleanNumber(tokens[1]);
         double g = cleanNumber(tokens[2]);
         double b = cleanNumber(tokens[3]);
-        Color color = new Color(r,g,b);
+        ambientLight = new Color(r,g,b);
         Shader ambientShader = c -> ambientLight.multiply(c);
     }
 

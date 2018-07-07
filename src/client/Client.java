@@ -111,6 +111,7 @@ public class Client implements PageTurner {
 	}
 
 	public void noArgumentNextPage() {
+		Drawable depthCueingDrawable;
         System.out.println("PageNumber " + (pageNumber + 1));
 		pageNumber = (pageNumber + 1) % NUM_PAGES;
 
@@ -134,6 +135,7 @@ public class Client implements PageTurner {
 			default: defaultPage();
 				return;
 		}
+        depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
 		interpreter = new SimpInterpreter(filename + ".simp", fullPanel, renderers);
 		interpreter.interpret();
 	}

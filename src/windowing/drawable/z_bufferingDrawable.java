@@ -31,9 +31,7 @@ public class z_bufferingDrawable extends DrawableDecorator{
     @Override
     public void setPixel(int x, int y, double z, int argbColor) {
         //delegate.setPixel(x, y, z, argbColor);
-        if (z >= -200 && z <= 0
-                && x >= 0 && x <= 650
-                && y >= 0 && y <= 650) {
+        if (z >= -200 && z <= 0 && x >= 0 && x < 650 && y >= 0 && y < 650) {
             if (zBuffer[x][y] < z){
                 //System.out.println(zBuffer.get(x).get(y));
                 delegate.setPixel(x, y, z, argbColor);
