@@ -9,6 +9,8 @@ import client.RendererTrio;
 import geometry.Transformation;
 import polygon.Polygon;
 import polygon.PolygonRenderer;
+import polygon.Shader;
+import windowing.drawable.DepthCueingDrawable;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 import windowing.graphics.Dimensions;
@@ -23,6 +25,7 @@ public class SimpInterpreter {
 
     private Transformation CTM;
     private Transformation worldToScreen;
+    private Transformation projectedToScreen;
     private Transformation simplePerspectiveMatrix;
     private Stack<Transformation> matrixStack;
 
@@ -117,9 +120,9 @@ public class SimpInterpreter {
             case "line" :		interpretLine(tokens);		break;
             case "polygon" :	interpretPolygon(tokens);	break;
 		    case "camera" :		interpretCamera(tokens);	break;
-//		case "surface" :	interpretSurface(tokens);	break;
+    		case "surface" :	interpretSurface(tokens);	break;
             case "ambient" :	interpretAmbient(tokens);	break;
-//		case "depth" :		interpretDepth(tokens);		break;
+    		case "depth" :		interpretDepth(tokens);		break;
 //		case "obj" :		interpretObj(tokens);		break;
 
             default :
@@ -127,6 +130,7 @@ public class SimpInterpreter {
                 break;
         }
     }
+
 
 
 
@@ -279,12 +283,16 @@ public class SimpInterpreter {
 //        vector.set(3,1, z);
 //        vector.set(4,1,1);
 
+        simplePerspectiveMatrix.printMatrix();
         vector = vector.matrixMultiplication(this.CTM);
-//        System.out.println("Before!!!");
-//        vector.printMatrix();
-        vector = vector.matrixMultiplication(worldToScreen);
-//        System.out.println("After!!!!!!");
-//        vector.printMatrix();
+
+        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
+        vector = vector.homogeneousTransfer_4X1();
+        System.out.println("Before!!!");
+        vector.printMatrix();
+        vector = vector.matrixMultiplication(projectedToScreen);
+        System.out.println("After!!!!!!");
+        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
 //        System.out.println("After!!!!!!");
@@ -346,8 +354,8 @@ public class SimpInterpreter {
         }
         while(!temp.empty()){
             Transformation tt = temp.pop();
-            System.out.println("multiplied CTM on stack");
-            tt.printMatrix();
+//            System.out.println("multiplied CTM on stack");
+//            tt.printMatrix();
             matrixStack.push(tt);
         }
 
@@ -357,31 +365,63 @@ public class SimpInterpreter {
         double yLow = cleanNumber(tokens[2]);
         double xHigh = cleanNumber(tokens[3]);
         double yHigh = cleanNumber(tokens[4]);
-        Transformation projectedToScreen = new Transformation();
+        projectedToScreen = new Transformation();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
         //scalling
-        this.worldToScreen.set(1,1,scaleSize_X);
-        this.worldToScreen.set(2,2,scaleSize_Y);
+        projectedToScreen.set(1,1,scaleSize_X);
+        projectedToScreen.set(2,2,scaleSize_Y);
         //translating
-        this.worldToScreen.set(1,4,324);
-        this.worldToScreen.set(2,4,324);
+        projectedToScreen.set(1,4,324);
+        projectedToScreen.set(2,4,324);
 
+        System.out.println("projectionto screen");
+        projectedToScreen.printMatrix();
 
         //simple matrix
+        double hither = cleanNumber(tokens[5]);
+        double yon = cleanNumber(tokens[6]);
+
         simplePerspectiveMatrix = Transformation.identity();
         simplePerspectiveMatrix.set(4,4,0);
-        simplePerspectiveMatrix.set(4,3,0);
+        simplePerspectiveMatrix.set(4,3,1);
 
+        System.out.println("simple matrix screen");
+        simplePerspectiveMatrix.printMatrix();
 
+        this.cameraToScreen = simplePerspectiveMatrix.matrixMultiplication(projectedToScreen);
+
+        System.out.println("Camera to screen");
+        cameraToScreen.printMatrix();
     }
 
 
 
     private void interpretAmbient(String[] tokens) {
+        double r = cleanNumber(tokens[1]);
+        double g = cleanNumber(tokens[2]);
+        double b = cleanNumber(tokens[3]);
+        Color color = new Color(r,g,b);
+        Shader ambientShader = c -> ambientLight.multiply(c);
     }
 
 
+    private void interpretSurface(String[] tokens) {
+        double r = cleanNumber(tokens[1]);
+        double g = cleanNumber(tokens[2]);
+        double b = cleanNumber(tokens[3]);
+        Color color = new Color(r,g,b);
+        this.defaultColor = color;
+    }
+    private void interpretDepth(String[] tokens) {
+        double near = cleanNumber(tokens[1]);
+        double far = cleanNumber(tokens[2]);
+        double r = cleanNumber(tokens[3]);
+        double g = cleanNumber(tokens[4]);
+        double b = cleanNumber(tokens[5]);
+        Color color = new Color(r,g,b);
+        depthCueingDrawable = new DepthCueingDrawable(this.drawable, (int)Math.round(near), (int)Math.round(far), color);
+    }
 //    private void line(Vertex3D p1, Vertex3D p2) {
 //        Vertex3D screenP1 = transformToCamera(p1);
 //        Vertex3D screenP2 = transformToCamera(p2);

@@ -111,7 +111,6 @@ public class Client implements PageTurner {
 	}
 
 	public void noArgumentNextPage() {
-        Drawable depthCueingDrawable;
         System.out.println("PageNumber " + (pageNumber + 1));
 		pageNumber = (pageNumber + 1) % NUM_PAGES;
 

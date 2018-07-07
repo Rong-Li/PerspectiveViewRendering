@@ -34,9 +34,9 @@ public class Transformation {
 
     //this is for getting inverse matrix without changing the old one
     public double[][] getMatrix_withoutAliasing() {
-        double temp[][] = new double[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        double temp[][] = new double[this.getRows()][this.getCols()];
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getCols(); j++) {
                 temp[i][j] = this.getMatrix()[i][j];
             }
         }
@@ -221,8 +221,10 @@ public class Transformation {
 
         det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-        if (det == 0)
+        if (det == 0){
+            System.out.println("wrong !!!!!determine is 0");
             return null;
+        }
 
         det = 1.0 / det;
 
@@ -239,28 +241,17 @@ public class Transformation {
         return result;
     }
 
-//    public Transformation InversedMatrix(){
-//        double temp[][] = this.getMatrix_withoutAliasing();
-//        double mat[][] = this.getMatrix_withoutAliasing();
-//        double det = 0;
-//        for(int i = 0; i < 3; i++)
-//            det = det + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3]));
-//        if (det == 0){
-//            System.out.println("wrong !!!!!determine is 0");
-//            return null;
-//        }
-//        else{
-//            System.out.println("The determine is:  " + det);
-//            for(int i = 0; i < 3; ++i) {
-//                for (int j = 0; j < 3; ++j){
-//                    temp[i][j] = ((mat[(j + 1) % 3][(i + 1) % 3] * mat[(j + 2) % 3][(i + 2) % 3]) - (mat[(j + 1) % 3][(i + 2) % 3] * mat[(j + 2) % 3][(i + 1) % 3])) / det;
-//                }
-//            }
-//        }
-//        Transformation result = new Transformation();
-//        result.setMatrix(temp);
-//        return result;
-//    }
+    //transfer a homogeneous vector with w value that is not 1, to a normal homo vector with w = 1
+    public Transformation homogeneousTransfer_4X1(){
+        Transformation result = new Transformation(4,1);
+        result.setMatrix(this.getMatrix_withoutAliasing());
+        double temp = this.get(4,1);
+        result.set(1,1, this.get(1,1)/temp);
+        result.set(2,1, this.get(2,1)/temp);
+        result.set(3,1, this.get(3,1)/temp);
+        result.set(4,1, this.get(4,1)/temp);
+        return result;
+    }
 
 
     public static Transformation identity(){
@@ -280,7 +271,7 @@ public class Transformation {
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
                 temp = this.matrix[i][j];
-                System.out.print(roundTwoDecimals(temp) + "," + "\t");
+                System.out.print(roundTwoDecimals(temp) + "\t");
             }
             System.out.println();
         }
