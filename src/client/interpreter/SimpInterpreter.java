@@ -326,8 +326,6 @@ public class SimpInterpreter {
 //
 //    }
 
-
-
     private void interpretCamera(String[] tokens) {
         System.out.println("CTM!!!!!!!!!");
         CTM.printMatrix();
@@ -340,7 +338,6 @@ public class SimpInterpreter {
         while(!matrixStack.empty()){
             Transformation t = matrixStack.pop();
             t = t.matrixMultiplication(worldToScreen);
-            //t = worldToScreen.matrixMultiplication(t);
             temp.push(t);
         }
         while(!temp.empty()){
