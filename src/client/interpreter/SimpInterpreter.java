@@ -228,15 +228,22 @@ public class SimpInterpreter {
             Transformation vector = Transformation.vertexToVector(vertices[i]);
             vector = vector.matrixMultiplication(this.CTM);
             vertices[i] = new Vertex3D(vector.get(1,1), vector.get(2,1), vector.get(3,1), vertices[i].getColor());
+            //System.out.println(vertices[i]);
         }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
+
         //clip
         List<Vertex3D> array= this.clipper.clipZ_toVertexArray(polygon);
         //Vertex3D[] array = vertices;
         for (int i = 0; i < array.size(); i++){
             Vertex3D temp = transformToCamera(array.get(i));
             array.set(i,temp);
+            System.out.println("after" + array.get(i).getZ());
         }
+        System.out.println("");
+//        if(array.size() == 3){
+//            System.out.println("SIZE " + array.size());
+//        }
         Vertex3D[] result = new Vertex3D[array.size()];
 
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array.toArray(result));

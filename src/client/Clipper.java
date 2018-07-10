@@ -22,8 +22,12 @@ public class Clipper {
     }
     public List<Vertex3D> clipZ_toVertexArray(Polygon polygon){
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
-        int numberOfEdges = 3;
-
+        int numberOfEdges = polygon.length();
+//        if (polygon.leftChain().length() > polygon.rightChain().length()){
+//            numberOfEdges = polygon.leftChain().length();
+//        }else{
+//            numberOfEdges = polygon.rightChain().length();
+//        }
         //clip by *far* clipping plane
         for(int i = 0; i < numberOfEdges; i++){
             //lowerBond test
@@ -37,31 +41,34 @@ public class Clipper {
                 vertexArray.add(polygon.get(i+1)); //output 2nd point
             }
         }
-
+        //building a far clipping plane clipped polygon
+        Vertex3D tempArray[] = new Vertex3D[vertexArray.size()];
+        Polygon newPolygon = Polygon.make(vertexArray.toArray(tempArray));
+        numberOfEdges = vertexArray.size();
+        vertexArray = new ArrayList<Vertex3D>();
         //clip by *near* clipping plane
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < numberOfEdges; i++){
             //upperbond test
-            int testCase = upperBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.near);
+            int testCase = upperBondTest(newPolygon.get(i).getZ(), newPolygon.get(i+1).getZ(), this.near);
             if (testCase == 1){
-                if(!vertexArray.contains(polygon.get(i+1))){
-                    vertexArray.add(polygon.get(i+1)); //output 2nd point
+                if(!vertexArray.contains(newPolygon.get(i+1))){
+                    vertexArray.add(newPolygon.get(i+1)); //output 2nd point
                 }
             }else if (testCase == 2){
-                Vertex3D temp = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.near);
+                Vertex3D temp = getintersectWithZ(newPolygon.get(i),newPolygon.get(i+1),this.near);
                 if(!vertexArray.contains(temp)){
-                    vertexArray.add(getintersectWithZ(polygon.get(i),polygon.get(i+1),this.near));
+                    vertexArray.add(getintersectWithZ(newPolygon.get(i),newPolygon.get(i+1),this.near));
                 }
             }else if (testCase == 4){
-                Vertex3D temp = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.near);
+                Vertex3D temp = getintersectWithZ(newPolygon.get(i),newPolygon.get(i+1),this.near);
                 if(!vertexArray.contains(temp)){
-                    vertexArray.add(getintersectWithZ(polygon.get(i),polygon.get(i+1),this.near));
+                    vertexArray.add(getintersectWithZ(newPolygon.get(i),newPolygon.get(i+1),this.near));
                 }
-                if(!vertexArray.contains(polygon.get(i+1))){
-                    vertexArray.add(polygon.get(i+1)); //output 2nd point
+                if(!vertexArray.contains(newPolygon.get(i+1))){
+                    vertexArray.add(newPolygon.get(i+1)); //output 2nd point
                 }
             }
         }
-        //Vertex3D[] result = new Vertex3D[vertexArray.size()];
         return vertexArray;
     }
 
