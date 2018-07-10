@@ -1,5 +1,6 @@
 package client.interpreter;
 
+import java.util.List;
 import java.util.Stack;
 
 import client.Clipper;
@@ -230,14 +231,15 @@ public class SimpInterpreter {
         }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         //clip
-        Vertex3D[] array = this.clipper.clipZ_toVertexArray(polygon);
+        List<Vertex3D> array= this.clipper.clipZ_toVertexArray(polygon);
         //Vertex3D[] array = vertices;
-        int index = 0;
-        while(index != 3){
-            array[index] = transformToCamera(array[index]);
-            index++;
+        for (int i = 0; i < array.size(); i++){
+            Vertex3D temp = transformToCamera(array.get(i));
+            array.set(i,temp);
         }
-        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array);
+        Vertex3D[] result = new Vertex3D[array.size()];
+
+        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array.toArray(result));
         if(this.renderStyle == RenderStyle.FILLED){
             filledRenderer.drawPolygon(polygon, this.drawable, null);
         }
