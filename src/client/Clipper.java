@@ -21,12 +21,13 @@ public class Clipper {
     public Vertex3D[] clipZ_toVertexArray(Polygon polygon){
         Vertex3D vertexArray[] = new Vertex3D[10];
         int index = 0;
-        int testCase = -1;
-        //clip by *far* clipping plane
         int numberOfEdges = 3;
+
+        //clip by *far* clipping plane
         for(int i = 0; i < numberOfEdges; i++){
             //lowerBond test
-            testCase = lowerBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.far);
+            int testCase = lowerBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.far);
+//            System.out.println("********" + testCase);
             if (testCase == 1){
                 vertexArray[index] = polygon.get(i+1); //output 2nd point
                 index++;
@@ -39,8 +40,12 @@ public class Clipper {
                 vertexArray[index] = polygon.get(i+1);
                 index++;
             }
+        }
+
+        //clip by *near* clipping plane
+        for(int i = 0; i < 3; i++){
             //upperbond test
-            testCase = upperBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.near);
+            int testCase = upperBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.near);
             if (testCase == 1){
                 if(notInArray(vertexArray, polygon.get(i+1))){
                     vertexArray[index] = polygon.get(i+1); //output 2nd point
@@ -74,26 +79,27 @@ public class Clipper {
             if (array[i] == vertex){
                 result = false;
             }
+            i++;
         }
         return result;
     }
 
     //for *far, *xlow, *ylow clipping plane
     public int lowerBondTest(double a, double b, double lowerBond){
-        int testCase = -1;
-        if (a >= lowerBond && b >= lowerBond){
-            testCase = 1;
+        int result = 0;
+        if ((a >= lowerBond) && (b >= lowerBond)){
+            result = 1;
         }
         else if (a >= lowerBond && b < lowerBond){
-            testCase = 2;
+            result = 2;
         }
         else if (a < lowerBond && b < lowerBond){
-            testCase = 3;
+            result = 3;
         }
-        else if (a >= lowerBond && b >= lowerBond){
-            testCase = 4;
+        else if (a < lowerBond && b >= lowerBond){
+            result = 4;
         }
-        return testCase;
+        return result;
     }
     //for *near, *xhigh, *yhigh clipping plane
     public int upperBondTest(double a, double b, double higherBond){

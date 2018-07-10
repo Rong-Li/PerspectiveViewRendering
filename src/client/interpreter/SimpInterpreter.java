@@ -230,10 +230,12 @@ public class SimpInterpreter {
         }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         //clip
-        Vertex3D[] array = this.clipper.clipZ_toVertexArray(polygon);
+        //Vertex3D[] array = this.clipper.clipZ_toVertexArray(polygon);
+        Vertex3D[] array = vertices;
         int index = 0;
-        while(array[index] != null){
+        while(index != 3){
             array[index] = transformToCamera(array[index]);
+            index++;
         }
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array);
         if(this.renderStyle == RenderStyle.FILLED){
