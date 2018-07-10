@@ -27,7 +27,6 @@ public class Clipper {
         for(int i = 0; i < numberOfEdges; i++){
             //lowerBond test
             int testCase = lowerBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.far);
-//            System.out.println("********" + testCase);
             if (testCase == 1){
                 vertexArray[index] = polygon.get(i+1); //output 2nd point
                 index++;
