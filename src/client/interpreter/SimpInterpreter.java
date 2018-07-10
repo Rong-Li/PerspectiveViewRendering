@@ -238,12 +238,10 @@ public class SimpInterpreter {
         for (int i = 0; i < array.size(); i++){
             Vertex3D temp = transformToCamera(array.get(i));
             array.set(i,temp);
-            System.out.println("after" + array.get(i).getZ());
+            //System.out.println("after" + array.get(i).toIntString());
         }
-        System.out.println("");
-//        if(array.size() == 3){
-//            System.out.println("SIZE " + array.size());
-//        }
+        //System.out.println("");
+
         Vertex3D[] result = new Vertex3D[array.size()];
 
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array.toArray(result));

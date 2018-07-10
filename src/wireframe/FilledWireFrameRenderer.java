@@ -17,18 +17,13 @@ public class FilledWireFrameRenderer implements PolygonRenderer {
         if (outofRange(polygon,drawable)){
             return;
         }
-        int index = 1;
-        Vertex3D init_p1 = polygon.get(0);
-        Vertex3D init_p2 = polygon.get(1);
-        lineRenderer.drawLine(init_p1, init_p2, drawable);
-        while(polygon.get(index) != init_p1 && polygon.get(index+1) != init_p2){
-            lineRenderer.drawLine(polygon.get(index), polygon.get(index+1), drawable);
-            index++;
+        int numberofEdges = polygon.length();
+        for (int i = 0; i < numberofEdges; i++){
+            //System.out.println("drawing " + polygon.get(i).getIntX() + "to " + polygon.get(i+1).getIntX());
+            lineRenderer.drawLine(polygon.get(i), polygon.get(i+1), drawable);
         }
 
-//        lineRenderer.drawLine(polygon.get(0), polygon.get(1), drawable);
-//        lineRenderer.drawLine(polygon.get(1), polygon.get(2), drawable);
-//        lineRenderer.drawLine(polygon.get(0), polygon.get(2), drawable);
+
     }
 
 

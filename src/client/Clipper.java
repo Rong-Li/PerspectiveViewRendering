@@ -114,20 +114,27 @@ public class Clipper {
 
     public Vertex3D getintersectWithZ(Vertex3D p1, Vertex3D p2, double z){
         //get (a,b,c)
-        Vertex3D v = new Vertex3D(p1.getX()-p2.getIntX(), p1.getY()-p2.getY(), p1.getZ()-p2.getZ(), p1.getColor());
+        Vertex3D v = new Vertex3D(p1.getX()-p2.getX(), p1.getY()-p2.getY(), p1.getZ()-p2.getZ(), p1.getColor());
         //(x−x0)/a = (y−y0)/b = (z−z0)/c
         double temp = (z - p1.getZ()) / v.getZ(); // (z−z0)/c
         double resultX = temp * v.getX() + p1.getX();
         double resultY = temp * v.getY() + p1.getY();
         //get the color as well
         //(x−x0)/a = (y−y0)/b = (z−z0)/c = (r-r0)/d = (g-g0)/e = (b-b0)/f
-        double d = p1.getColor().getR() - p2.getColor().getR();
-        double e = p1.getColor().getG() - p2.getColor().getG();
-        double f = p1.getColor().getB() - p2.getColor().getB();
-        double resultR = temp * d + p1.getColor().getR();
-        double resultG = temp * e + p1.getColor().getG();
-        double resultB = temp * f + p1.getColor().getB();
-        Color resultColor = new Color(resultR,resultG,resultB);
+        Color resultColor;
+        if (p1.getColor() == p2.getColor()){
+            resultColor = p1.getColor();
+        }
+        else{
+            double d = p1.getColor().getR() - p2.getColor().getR();
+            double e = p1.getColor().getG() - p2.getColor().getG();
+            double f = p1.getColor().getB() - p2.getColor().getB();
+            double resultR = temp * d + p1.getColor().getR();
+            double resultG = temp * e + p1.getColor().getG();
+            double resultB = temp * f + p1.getColor().getB();
+            resultColor = new Color(resultR,resultG,resultB);
+        }
+
 
         //use resultX, resultY, resultZ, resultColor to get vertex
         Vertex3D result = new Vertex3D(resultX,resultY,z,resultColor);
