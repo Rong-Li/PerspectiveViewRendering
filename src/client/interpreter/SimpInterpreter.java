@@ -223,6 +223,9 @@ public class SimpInterpreter {
     }
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
+        for (int i = 0; i < 3; i++){
+            vertices[i] = transformToCamera(vertices[i]);
+        }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
         if(this.renderStyle == RenderStyle.FILLED){
             filledRenderer.drawPolygon(polygon, this.drawable, null);
@@ -265,35 +268,15 @@ public class SimpInterpreter {
         //System.out.println("then****!!!!!!" + result.toString());
         return result;
     }
-    public Point3DH interpretPoint(String[] tokens, int startingIndex) {
-        double x = cleanNumber(tokens[startingIndex]);
-        double y = cleanNumber(tokens[startingIndex + 1]);
-        double z = cleanNumber(tokens[startingIndex + 2]);
 
-        Vertex3D p = new Vertex3D(x,y,z,Color.BLACK);
+public Point3DH interpretPoint(String[] tokens, int startingIndex) {
+    double x = cleanNumber(tokens[startingIndex]);
+    double y = cleanNumber(tokens[startingIndex + 1]);
+    double z = cleanNumber(tokens[startingIndex + 2]);
 
-        Transformation vector = Transformation.vertexToVector(p);
-
-        vector = vector.matrixMultiplication(this.CTM);
-
-        double z_toKeep = vector.get(3,1);
-        System.out.println("before!!!!!!");
-        vector.printMatrix();
-        //vector = vector.matrixMultiplication(worldToScreen);
-
-        //        System.out.println("After!!!!!!");
-//        vector.printMatrix();
-        vector = vector.matrixMultiplication(cameraToScreen);
-        vector = vector.homogeneousTransfer_4X1();
-        vector.set(3,1,z_toKeep);
-//        System.out.println("After!!!!!!");
-//        vector.printMatrix();
-
-        Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
-
-
-        return result;
-    }
+    Point3DH result = new Point3DH(x, y, z, 1.0);
+    return result;
+}
     public Color interpretColor(String[] tokens, int startingIndex) {
         double r = cleanNumber(tokens[startingIndex]);
         double g = cleanNumber(tokens[startingIndex + 1]);
@@ -355,6 +338,10 @@ public class SimpInterpreter {
         double yLow = cleanNumber(tokens[2]);
         double xHigh = cleanNumber(tokens[3]);
         double yHigh = cleanNumber(tokens[4]);
+        //set clipper
+        double hither = cleanNumber(tokens[5]);
+        double yon = cleanNumber(tokens[6]);
+        this.clipper = new Clipper(hither,yon);
         projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
@@ -369,8 +356,6 @@ public class SimpInterpreter {
         projectedToScreen.printMatrix();
 
         //simple matrix
-        double hither = cleanNumber(tokens[5]);
-        double yon = cleanNumber(tokens[6]);
 
         simplePerspectiveMatrix = Transformation.identity();
         simplePerspectiveMatrix.set(4,4,0);
@@ -425,9 +410,22 @@ public class SimpInterpreter {
 //        // TODO: finish this method
 //    }
 //
-//    private Vertex3D transformToCamera(Vertex3D vertex) {
-//        // TODO: finish this method
-//    }
+    private Vertex3D transformToCamera(Vertex3D vertex) {
+        Transformation vector = Transformation.vertexToVector(vertex);
+
+        vector = vector.matrixMultiplication(this.CTM);
+
+        double z_toKeep = vector.get(3,1);
+
+        vector = vector.matrixMultiplication(cameraToScreen);
+        vector = vector.homogeneousTransfer_4X1();
+        vector.set(3,1,z_toKeep);
+//        System.out.println("After!!!!!!");
+//        vector.printMatrix();
+
+        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), vector.get(3,1), vertex.getColor());
+        return result;
+    }
 
 
 

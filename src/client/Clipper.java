@@ -1,6 +1,5 @@
 package client;
 
-import geometry.Vertex;
 import geometry.Vertex3D;
 import polygon.Polygon;
 import windowing.graphics.Color;
@@ -38,16 +37,45 @@ public class Clipper {
                 vertexArray[index] = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.far); //output 2nd point
                 index++;
                 vertexArray[index] = polygon.get(i+1);
+                index++;
             }
             //upperbond test
-            testCase = upperBondTest()
+            testCase = upperBondTest(polygon.get(i).getZ(), polygon.get(i+1).getZ(), this.near);
+            if (testCase == 1){
+                if(notInArray(vertexArray, polygon.get(i+1))){
+                    vertexArray[index] = polygon.get(i+1); //output 2nd point
+                    index++;
+                }
+            }else if (testCase == 2){
+                Vertex3D temp = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.far);
+                if(notInArray(vertexArray, temp)){
+                    vertexArray[index] = temp; //output 2nd point
+                    index++;
+                }
+            }else if (testCase == 4){
+                Vertex3D temp = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.far);
+                if(notInArray(vertexArray, temp)){
+                    vertexArray[index] = getintersectWithZ(polygon.get(i),polygon.get(i+1),this.far); //output 2nd point
+                    index++;
+                }
+                if(notInArray(vertexArray, polygon.get(i+1))){
+                    vertexArray[index] = polygon.get(i+1);
+                    index++;
+                }
+            }
         }
-
+        return vertexArray;
     }
 
     public boolean notInArray(Vertex3D[] array, Vertex3D vertex){
-        boolean result = false;
-        while(array[])
+        boolean result = true;
+        int i = 0;
+        while(array[i] != null){
+            if (array[i] == vertex){
+                result = false;
+            }
+        }
+        return result;
     }
 
     //for *far, *xlow, *ylow clipping plane
