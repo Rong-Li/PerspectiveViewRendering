@@ -224,14 +224,23 @@ public class SimpInterpreter {
     private void interpretPolygon(String[] tokens) {
         Vertex3D[] vertices = interpretVertices(tokens, 3, 1);
         for (int i = 0; i < 3; i++){
-            vertices[i] = transformToCamera(vertices[i]);
+            Transformation vector = Transformation.vertexToVector(vertices[i]);
+            vector = vector.matrixMultiplication(this.CTM);
+            vertices[i] = new Vertex3D(vector.get(1,1), vector.get(2,1), vector.get(3,1), vertices[i].getColor());
         }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
+        //clip
+        Vertex3D[] array = this.clipper.clipZ_toVertexArray(polygon);
+        int index = 0;
+        while(array[index] != null){
+            array[index] = transformToCamera(array[index]);
+        }
+        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array);
         if(this.renderStyle == RenderStyle.FILLED){
             filledRenderer.drawPolygon(polygon, this.drawable, null);
         }
         else if(this.renderStyle == RenderStyle.WIREFRAME){
-            wireframeRenderer.drawPolygon(polygon, this.drawable, null);
+            wireframeRenderer.drawPolygon(finalPolygon, this.drawable, null);
         }
     }
 
@@ -269,7 +278,7 @@ public class SimpInterpreter {
         return result;
     }
 
-public Point3DH interpretPoint(String[] tokens, int startingIndex) {
+    public Point3DH interpretPoint(String[] tokens, int startingIndex) {
     double x = cleanNumber(tokens[startingIndex]);
     double y = cleanNumber(tokens[startingIndex + 1]);
     double z = cleanNumber(tokens[startingIndex + 2]);
@@ -413,7 +422,7 @@ public Point3DH interpretPoint(String[] tokens, int startingIndex) {
     private Vertex3D transformToCamera(Vertex3D vertex) {
         Transformation vector = Transformation.vertexToVector(vertex);
 
-        vector = vector.matrixMultiplication(this.CTM);
+        //vector = vector.matrixMultiplication(this.CTM);
 
         double z_toKeep = vector.get(3,1);
 
