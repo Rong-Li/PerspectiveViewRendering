@@ -2,9 +2,9 @@ package client.interpreter;
 
 import java.util.Stack;
 
+import client.Clipper;
 import geometry.*;
 import line.LineRenderer;
-//import notProvided.client.Clipper;
 import client.RendererTrio;
 import geometry.Transformation;
 import polygon.Polygon;
@@ -47,7 +47,7 @@ public class SimpInterpreter {
     private PolygonRenderer filledRenderer;
     private PolygonRenderer wireframeRenderer;
     private Transformation cameraToScreen;
-    //private Clipper clipper;
+    private Clipper clipper;
 
     public enum RenderStyle {
         FILLED,
@@ -277,13 +277,17 @@ public class SimpInterpreter {
         vector = vector.matrixMultiplication(this.CTM);
 
         double z_toKeep = vector.get(3,1);
+        System.out.println("before!!!!!!");
+        vector.printMatrix();
+        //vector = vector.matrixMultiplication(worldToScreen);
 
-
+        //        System.out.println("After!!!!!!");
+//        vector.printMatrix();
         vector = vector.matrixMultiplication(cameraToScreen);
         vector = vector.homogeneousTransfer_4X1();
         vector.set(3,1,z_toKeep);
-        System.out.println("After!!!!!!");
-        vector.printMatrix();
+//        System.out.println("After!!!!!!");
+//        vector.printMatrix();
 
         Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), 1.0);
 
@@ -358,8 +362,8 @@ public class SimpInterpreter {
         projectedToScreen.set(1,1,scaleSize_X);
         projectedToScreen.set(2,2,scaleSize_Y);
         //translating
-        projectedToScreen.set(1,4,324);
-        projectedToScreen.set(2,4,324);
+        projectedToScreen.set(1,4,325);
+        projectedToScreen.set(2,4,325);
 
         System.out.println("projectionto screen");
         projectedToScreen.printMatrix();
@@ -407,6 +411,7 @@ public class SimpInterpreter {
         double b = cleanNumber(tokens[5]);
         Color color = new Color(r,g,b);
         depthCueingDrawable = new DepthCueingDrawable(this.drawable, (int)Math.round(near), (int)Math.round(far), color);
+        this.drawable = depthCueingDrawable;
     }
 //    private void line(Vertex3D p1, Vertex3D p2) {
 //        Vertex3D screenP1 = transformToCamera(p1);
