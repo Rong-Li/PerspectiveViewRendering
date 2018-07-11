@@ -1,6 +1,5 @@
 package client;
 
-import client.testPages.*;
 import geometry.Point2D;
 import line.*;
 import polygon.*;
@@ -84,7 +83,7 @@ public class Client implements PageTurner {
 	}
 	private void createRenderers() {
 		lineRenderer = DDALineRenderer.make();
-		polygonRenderer = blerpingFilledPolygoneRenderer.make();
+		polygonRenderer = FilledPolygonRenderer_perspective.make();
 		wireframeRenderer = FilledWireFrameRenderer.make();
 		renderers = new RendererTrio(lineRenderer, polygonRenderer, wireframeRenderer);
     }

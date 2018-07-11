@@ -278,7 +278,7 @@ public class Clipper {
         //get (a,b,c)
         Vertex3D v = new Vertex3D(p1.getX()-p2.getX(), p1.getY()-p2.getY(), p1.getZ()-p2.getZ(), p1.getColor());
         //(x−x0)/a = (y−y0)/b = (z−z0)/c
-        double temp = (x - p1.getX()) / v.getX(); // (z−z0)/c
+        double temp = (x - p1.getX()) / v.getX(); // (x−x0)/a
         double resultZ = temp * v.getZ() + p1.getZ();
         double resultY = temp * v.getY() + p1.getY();
         //get the color as well
@@ -307,7 +307,7 @@ public class Clipper {
         //get (a,b,c)
         Vertex3D v = new Vertex3D(p1.getX()-p2.getX(), p1.getY()-p2.getY(), p1.getZ()-p2.getZ(), p1.getColor());
         //(x−x0)/a = (y−y0)/b = (z−z0)/c
-        double temp = (y - p1.getY()) / v.getY(); // (z−z0)/c
+        double temp = (y - p1.getY()) / v.getY(); // (y−y0)/b
         double resultZ = temp * v.getZ() + p1.getZ();
         double resultX = temp * v.getX() + p1.getX();
         //get the color as well

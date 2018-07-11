@@ -4,8 +4,8 @@ import geometry.Vertex3D;
 import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
-public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
-    private blerpingFilledPolygoneRenderer() {
+public class FilledPolygonRenderer_perspective implements PolygonRenderer {
+    private FilledPolygonRenderer_perspective() {
     }
 
     @Override
@@ -86,13 +86,13 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         double deltaX1 = p_top.getIntX() - p_bottomLeft.getIntX();
         double deltaY1 = p_top.getIntY() - p_bottomLeft.getIntY();
         Color m1 = DecrementforColors(p_top, p_bottomLeft);
-        double z_slope1 = DecrementforZ(p_top, p_bottomLeft);
+        double z_slope1 = DecrementforZ(p_top, p_bottomLeft); //delta 1/z
 
         //right short top edge
         double deltaX2 = p_bottomRight.getIntX() - p_top.getIntX();
         double deltaY2 = p_bottomRight.getIntY() - p_top.getIntY();
         Color m2 = DecrementforColors(p_top, p_bottomRight);
-        double z_slope2 = DecrementforZ(p_top, p_bottomRight);
+        double z_slope2 = DecrementforZ(p_top, p_bottomRight); ////delta 1/z
 
         //right short bot edge
         double deltaX2_2 = p_bottomRight.getIntX() - p_bottomLeft.getIntX();
@@ -108,25 +108,27 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         double end_point = p_top.getIntX();
 
         int y = p_top.getIntY();
-        Color c1 = p_top.getColor();
-        Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = 1/p_top.getIntZ();
+        double z2 = 1/p_top.getIntZ();
+        Color csz = new Color(z1,z1,z1); //1/csz for red/csz
+        Color c1 = p_top.getColor().multiply(csz); // red/csz
+        Color c2 = p_top.getColor().multiply(csz); // red/csz
 
 
         //rendering begin
         while (y >= p_bottomLeft.getIntY()) {
             if (y > p_middle.getIntY()) {
-                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
                 start_point = start_point - L_slope;
                 end_point = end_point - R_slope;
                 c1 = c1.subtract(m1);
                 c2 = c2.subtract(m2);
+
                 z1 = z1 - z_slope1;
                 z2 = z2 - z_slope2;
                 y--;
             } else {
-                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
                 start_point = start_point - L_slope;
                 end_point = end_point - R2_slope;
                 c1 = c1.subtract(m1);
@@ -169,13 +171,13 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         int y = p_top.getIntY();
         Color c1 = p_top.getColor();
         Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = 1/p_top.getIntZ();
+        double z2 = 1/p_top.getIntZ();
 
         //rendering begin
         while (y >= p_bottomRight.getIntY()) {
             if (y > p_middle.getIntY()) {
-                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
                 start_point = start_point - L1_slope;
                 end_point = end_point - R_slope;
                 c1 = c1.subtract(m1_1);
@@ -184,7 +186,7 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
                 z2 = z2 - z_slope2;
                 y--;
             } else {
-                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+                blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
                 start_point = start_point - L2_slope;
                 end_point = end_point - R_slope;
                 c1 = c1.subtract(m1_2);
@@ -214,12 +216,12 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         int y = p_top.getIntY();
         Color c1 = p_top.getColor();
         Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = 1/p_top.getIntZ();
+        double z2 = 1/p_top.getIntZ();
 
         //rendering begin
         while (y > p_bottomLeft.getIntY()) {
-            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
             start_point = start_point - L_slope;
             end_point = end_point - R_slope;
             c1 = c1.subtract(m1);
@@ -249,12 +251,12 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         int y = p_topLeft.getIntY();
         Color c1 = p_topLeft.getColor();
         Color c2 = p_topRight.getColor();
-        double z1 = p_topLeft.getIntZ();
-        double z2 = p_topRight.getIntZ();
+        double z1 = 1/p_topLeft.getIntZ();
+        double z2 = 1/p_topRight.getIntZ();
 
         //rendering begin
         while (y >= p_bottom.getIntY()) {
-            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, z1, z2);
+            blerping_fillPixels_leftToRight(start_point, end_point, y, c1, c2, drawable, 1/z1, 1/z2);
             start_point = start_point - L_slope;
             end_point = end_point - R_slope;
             c1 = c1.subtract(m1);
@@ -271,17 +273,17 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
 
         double r1 = p1.getColor().getR();
         double r2 = p2.getColor().getR();
-        double deltaR = r1 - r2;
+        double deltaR = 1/r1 - 1/r2;
         double mr = deltaR / deltaY;
 
         double g1 = p1.getColor().getG();
         double g2 = p2.getColor().getG();
-        double deltaG = g1 - g2;
+        double deltaG = 1/g1 - 1/g2;
         double mg = deltaG / deltaY;
 
         double b1 = p1.getColor().getB();
         double b2 = p2.getColor().getB();
-        double deltaB = b1 - b2;
+        double deltaB = 1/b1 - 1/b2;
         double mb = deltaB / deltaY;
 
         Color result = new Color(mr, mg, mb);
@@ -290,7 +292,7 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
 
     private double DecrementforZ(Vertex3D p1, Vertex3D p2) {
         double deltaY = p1.getIntY() - p2.getIntY();
-        double deltaZ = p1.getIntZ() - p2.getIntZ();
+        double deltaZ = 1/p1.getIntZ() - 1/p2.getIntZ();
         double result = deltaZ / deltaY;
         return result;
     }
@@ -302,7 +304,7 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         double deltaR = c2.getR() - c1.getR();
         double deltaG = c2.getG() - c1.getG();
         double deltaB = c2.getB() - c1.getB();
-        double deltaZ = z2 - z1;
+        double deltaZ = 1/z2 - 1/z1;
         double m_r = deltaR / deltaX;
         double m_g = deltaG / deltaX;
         double m_b = deltaB / deltaX;
@@ -319,9 +321,10 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         }
 
         else {
+            z = 1/z;
             for (int i = start; i < end; i++) {
                 if(i < drawable.getWidth() && y < drawable.getHeight()){
-                    drawable.setPixel(i, y, z, newColor.asARGB());
+                    drawable.setPixel(i, y, 1/z, newColor.asARGB());
                 }
                 newColor = newColor.add(addOn);
                 z = z + z_slope;
@@ -331,7 +334,7 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
 
 
     public static PolygonRenderer make() {
-        return new blerpingFilledPolygoneRenderer();
+        return new FilledPolygonRenderer_perspective();
     }
 
     public boolean outofRange(Polygon polygon, Drawable panel) {
@@ -352,4 +355,6 @@ public class blerpingFilledPolygoneRenderer implements PolygonRenderer {
         }
         return result;
     }
+
+
 }
