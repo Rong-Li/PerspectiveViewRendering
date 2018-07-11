@@ -21,6 +21,14 @@ public class Clipper {
         this.far = far;
     }
     public List<Vertex3D> clipZ_toVertexArray(Polygon polygon){
+        if (outofRangeCompletely(polygon)){
+            List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
+            int numberOfEdges = polygon.length();
+            for(int i = 0; i < numberOfEdges; i++){
+                sameArray.add(polygon.get(i));
+            }
+            return sameArray;
+        }
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
         int numberOfEdges = polygon.length();
 //        if (polygon.leftChain().length() > polygon.rightChain().length()){
@@ -42,6 +50,7 @@ public class Clipper {
             }
         }
         //building a far clipping plane clipped polygon
+        System.out.println("List size!!!!" + vertexArray.size());
         Vertex3D tempArray[] = new Vertex3D[vertexArray.size()];
         Polygon newPolygon = Polygon.make(vertexArray.toArray(tempArray));
         numberOfEdges = vertexArray.size();
@@ -141,4 +150,18 @@ public class Clipper {
         return result;
     }
 
+    public boolean outofRangeCompletely(Polygon polygon){
+        boolean result = false;
+        double z1 = polygon.get(0).getZ();
+        double z2 = polygon.get(1).getZ();
+        double z3 = polygon.get(2).getZ();
+        if (z1 < far && z2 < far && z3 < far){
+            result = true;
+        }
+        if (z1 > near && z2 > near && z3 > near){
+            result = true;
+        }
+
+        return result;
+    }
 }
