@@ -235,6 +235,19 @@ public class SimpInterpreter {
 
         //clip
         List<Vertex3D> array= this.clipper.clipZ_toVertexArray(polygon);
+
+
+
+        //**some try
+        Vertex3D[] temp1 = new Vertex3D[array.size()];
+        Polygon p = Polygon.makeEnsuringClockwise(array.toArray(temp1));
+        array = this.clipper.clipX_toVertexArray(p);
+        Vertex3D[] temp2 = new Vertex3D[array.size()];
+        Polygon p2 = Polygon.makeEnsuringClockwise(array.toArray(temp2));
+        array = this.clipper.clipX_toVertexArray(p2);
+
+
+
         //Vertex3D[] array = vertices;
         for (int i = 0; i < array.size(); i++){
             Vertex3D temp = transformToCamera(array.get(i));
@@ -418,7 +431,7 @@ public class SimpInterpreter {
         double b = cleanNumber(tokens[5]);
         Color color = new Color(r,g,b);
         depthCueingDrawable = new DepthCueingDrawable(this.drawable, (int)Math.round(near), (int)Math.round(far), color);
-        this.drawable = depthCueingDrawable;
+        //this.drawable = depthCueingDrawable;
     }
 //    private void line(Vertex3D p1, Vertex3D p2) {
 //        Vertex3D screenP1 = transformToCamera(p1);
