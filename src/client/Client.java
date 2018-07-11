@@ -50,9 +50,7 @@ public class Client implements PageTurner {
 		    hasArgument = true;
 		    this.filename = filename;
         }
-        else{
-		    System.out.println("There is no specification of which file to choose!!");
-        }
+        else{}
 		this.drawable = drawable;	
 		createDrawables();
 		createRenderers();

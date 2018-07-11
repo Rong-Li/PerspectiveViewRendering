@@ -19,7 +19,6 @@ public class FilledWireFrameRenderer implements PolygonRenderer {
         }
         int numberofEdges = polygon.length();
         for (int i = 0; i < numberofEdges; i++){
-            //System.out.println("drawing " + polygon.get(i).getIntX() + "to " + polygon.get(i+1).getIntX());
             lineRenderer.drawLine(polygon.get(i), polygon.get(i+1), drawable);
         }
 

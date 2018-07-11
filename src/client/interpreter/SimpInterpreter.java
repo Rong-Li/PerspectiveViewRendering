@@ -1,5 +1,6 @@
 package client.interpreter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -246,7 +247,10 @@ public class SimpInterpreter {
 
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array.toArray(result));
         if(this.renderStyle == RenderStyle.FILLED){
-            filledRenderer.drawPolygon(polygon, this.drawable, null);
+            List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
+            for (int i = 0; i < listOfPolygons.size(); i++){
+                filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
+            }
         }
         else if(this.renderStyle == RenderStyle.WIREFRAME){
             wireframeRenderer.drawPolygon(finalPolygon, this.drawable, null);

@@ -31,11 +31,7 @@ public class Clipper {
         }
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
         int numberOfEdges = polygon.length();
-//        if (polygon.leftChain().length() > polygon.rightChain().length()){
-//            numberOfEdges = polygon.leftChain().length();
-//        }else{
-//            numberOfEdges = polygon.rightChain().length();
-//        }
+
         //clip by *far* clipping plane
         for(int i = 0; i < numberOfEdges; i++){
             //lowerBond test
@@ -50,7 +46,7 @@ public class Clipper {
             }
         }
         //building a far clipping plane clipped polygon
-        System.out.println("List size!!!!" + vertexArray.size());
+        //System.out.println("List size!!!!" + vertexArray.size());
         Vertex3D tempArray[] = new Vertex3D[vertexArray.size()];
         Polygon newPolygon = Polygon.make(vertexArray.toArray(tempArray));
         numberOfEdges = vertexArray.size();
@@ -117,10 +113,6 @@ public class Clipper {
         return testCase;
     }
 
-
-
-
-
     public Vertex3D getintersectWithZ(Vertex3D p1, Vertex3D p2, double z){
         //get (a,b,c)
         Vertex3D v = new Vertex3D(p1.getX()-p2.getX(), p1.getY()-p2.getY(), p1.getZ()-p2.getZ(), p1.getColor());
@@ -150,6 +142,20 @@ public class Clipper {
         return result;
     }
 
+    public static List<Polygon> Triangulation(Polygon general){
+        List<Polygon> result = new ArrayList<Polygon>();
+        for (int i = 0; i < general.length()-2; i++){
+            Vertex3D vertices[] = new Vertex3D[3];
+            vertices[0] = general.get(0);
+            vertices[1] = general.get(i+1);
+            vertices[2] = general.get(i+2);
+            Polygon triangle = Polygon.makeEnsuringClockwise(vertices);
+            result.add(triangle);
+        }
+        return result;
+    }
+
+
     public boolean outofRangeCompletely(Polygon polygon){
         boolean result = false;
         double z1 = polygon.get(0).getZ();
@@ -161,7 +167,6 @@ public class Clipper {
         if (z1 > near && z2 > near && z3 > near){
             result = true;
         }
-
         return result;
     }
 }
