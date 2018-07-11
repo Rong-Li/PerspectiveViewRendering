@@ -363,7 +363,7 @@ public class SimpInterpreter {
         //set clipper
         double hither = cleanNumber(tokens[5]);
         double yon = cleanNumber(tokens[6]);
-        this.clipper = new Clipper(hither,yon);
+        this.clipper = new Clipper(hither, yon, xLow, xHigh, yLow, yHigh);
         projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
