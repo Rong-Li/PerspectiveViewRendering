@@ -253,24 +253,9 @@ public class Clipper {
         double resultX = temp * v.getX() + p1.getX();
         double resultY = temp * v.getY() + p1.getY();
         //get the color as well
-        //(x−x0)/a = (y−y0)/b = (z−z0)/c = (r-r0)/d = (g-g0)/e = (b-b0)/f
-        Color resultColor;
-        if (p1.getColor() == p2.getColor()){
-            resultColor = p1.getColor();
-        }
-        else{
-            double d = p1.getColor().getR() - p2.getColor().getR();
-            double e = p1.getColor().getG() - p2.getColor().getG();
-            double f = p1.getColor().getB() - p2.getColor().getB();
-            double resultR = temp * d + p1.getColor().getR();
-            double resultG = temp * e + p1.getColor().getG();
-            double resultB = temp * f + p1.getColor().getB();
-            resultColor = new Color(resultR,resultG,resultB);
-        }
-
 
         //use resultX, resultY, resultZ, resultColor to get vertex
-        Vertex3D result = new Vertex3D(resultX,resultY,z,resultColor);
+        Vertex3D result = new Vertex3D(resultX,resultY,z,p1.getColor());
         return result;
     }
 
@@ -281,25 +266,11 @@ public class Clipper {
         double temp = (x - p1.getX()) / v.getX(); // (x−x0)/a
         double resultZ = temp * v.getZ() + p1.getZ();
         double resultY = temp * v.getY() + p1.getY();
-        //get the color as well
-        //(x−x0)/a = (y−y0)/b = (z−z0)/c = (r-r0)/d = (g-g0)/e = (b-b0)/f
-        Color resultColor;
-        if (p1.getColor() == p2.getColor()){
-            resultColor = p1.getColor();
-        }
-        else{
-            double d = p1.getColor().getR() - p2.getColor().getR();
-            double e = p1.getColor().getG() - p2.getColor().getG();
-            double f = p1.getColor().getB() - p2.getColor().getB();
-            double resultR = temp * d + p1.getColor().getR();
-            double resultG = temp * e + p1.getColor().getG();
-            double resultB = temp * f + p1.getColor().getB();
-            resultColor = new Color(resultR,resultG,resultB);
-        }
 
 
         //use resultX, resultY, resultZ, resultColor to get vertex
-        Vertex3D result = new Vertex3D(x,resultY,resultZ,resultColor);
+        System.out.println("xClipped Z!!:" + resultZ);
+        Vertex3D result = new Vertex3D(x,resultY,resultZ,p1.getColor());
         return result;
     }
 
@@ -311,23 +282,12 @@ public class Clipper {
         double resultZ = temp * v.getZ() + p1.getZ();
         double resultX = temp * v.getX() + p1.getX();
         //get the color as well
-        //(x−x0)/a = (y−y0)/b = (z−z0)/c = (r-r0)/d = (g-g0)/e = (b-b0)/f
-        Color resultColor;
-        if (p1.getColor() == p2.getColor()){
-            resultColor = p1.getColor();
-        }
-        else{
-            double d = p1.getColor().getR() - p2.getColor().getR();
-            double e = p1.getColor().getG() - p2.getColor().getG();
-            double f = p1.getColor().getB() - p2.getColor().getB();
-            double resultR = temp * d + p1.getColor().getR();
-            double resultG = temp * e + p1.getColor().getG();
-            double resultB = temp * f + p1.getColor().getB();
-            resultColor = new Color(resultR,resultG,resultB);
-        }
-
         //use resultX, resultY, resultZ, resultColor to get vertex
-        Vertex3D result = new Vertex3D(resultX,y,resultZ,resultColor);
+        System.out.println("yClipped Z!!:" + resultZ);
+        Vertex3D result = new Vertex3D(resultX,y,resultZ,p1.getColor());
+
+
+
         return result;
     }
 

@@ -1,60 +1,14 @@
 {
-	ambient 1, 1, 1
+	ambient 1, .9, .9
 	{
 		camera  -1 -1 1 1 -0.1 -200
+		depth 0 -200 (0 0 0)
 	}
 
-	wire
-	{
-	    translate 25 -20 -80
-	    scale 10 10 40
-	    file "cube"
-	}
-	{
-	    translate 30 20 -80
-	    scale 10 10 40
-	    file "cube"
-	}
-	{
-	    translate 44 0 -80
-	    scale 10 10 40
-	 	surface 1.0 0.5 0.5
-	    file "cube"
-	}
-	{
-	    translate 40 0 -80
-	    scale 10 10 40
-	 	surface 0.5 1.0 0.5
-	    file "cube"
-	}
-	{
-	    translate 0 44 -80
-	    scale 10 10 40
-	 	surface 1.0 0.5 0.5
-	    file "cube"
-	}
-	{
-	    translate -54 0 -80
-	    scale 10 10 40
-	 	surface 1.0 0.5 0.5
-	    file "cube"
-	}
-	{
-	    translate 0 -54 -80
-	    scale 10 10 40
-	 	surface 1.0 0.5 0.5
-	    file "cube"
-	}
+    #wire
+
 	{
 	 	surface 0.5 1.0 0.5
-		polygon (0.02 0 1) (80 -40 -201) (0 80 -290)
-	}
-	{
-	 	surface 0.5 0.5 1.0
-		polygon (-0.04 -0.04 -0.09) (80 -40 -201) (0 80 -290)
-	}
-	{
-	 	surface 0.5 1.0 1.0
-		polygon (-100 30 0) (80 -40 -201) (0 80 -290)
+		polygon (0.02 0 1) (0 80 -290) (80 -40 -201)
 	}
 }
