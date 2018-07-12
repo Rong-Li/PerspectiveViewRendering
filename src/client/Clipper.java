@@ -36,10 +36,10 @@ public class Clipper {
     public List<Vertex3D> clipZ_toVertexArray(Polygon polygon) {
         if (Z_outofRangeCompletely(this.far, this.near, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
-            int numberOfEdges = polygon.length();
-            for (int i = 0; i < numberOfEdges; i++) {
-                sameArray.add(polygon.get(i));
-            }
+//            int numberOfEdges = polygon.length();
+//            for (int i = 0; i < numberOfEdges; i++) {
+//                sameArray.add(polygon.get(i));
+//            }
             return sameArray;
         }
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
@@ -90,29 +90,29 @@ public class Clipper {
         return vertexArray;
     }
 
-    public List<Vertex3D> clipX_toVertexArray(Polygon polygon) {
+    public List<Vertex3D> clipX_toVertexArray(List<Vertex3D> polygon) {
         if (X_outofRangeCompletely(this.xlow, this.xhigh, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
-            int numberOfEdges = polygon.length();
-            for (int i = 0; i < numberOfEdges; i++) {
-                sameArray.add(polygon.get(i));
-            }
+//            int numberOfEdges = polygon.size();
+//            for (int i = 0; i < numberOfEdges; i++) {
+//                sameArray.add(polygon.get(i));
+//            }
             return sameArray;
         }
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
-        int numberOfEdges = polygon.length();
+        int numberOfEdges = polygon.size();
 
         //clip by *xlow* clipping plane
         for (int i = 0; i < numberOfEdges; i++) {
             //lowerBond test
-            int testCase = lowerBondTest(polygon.get(i).getX(), polygon.get(i + 1).getX(), this.xlow);
+            int testCase = lowerBondTest(polygon.get(i%numberOfEdges).getX(), polygon.get((i + 1)%numberOfEdges).getX(), this.xlow);
             if (testCase == 1) {
-                vertexArray.add(polygon.get(i + 1)); //output 2nd point
+                vertexArray.add(polygon.get((i + 1)%numberOfEdges)); //output 2nd point
             } else if (testCase == 2) {
-                vertexArray.add(getintersectWithX(polygon.get(i), polygon.get(i + 1), this.xlow));
+                vertexArray.add(getintersectWithX(polygon.get(i%numberOfEdges), polygon.get((i + 1)%numberOfEdges), this.xlow));
             } else if (testCase == 4) {
-                vertexArray.add(getintersectWithX(polygon.get(i), polygon.get(i + 1), this.xlow));
-                vertexArray.add(polygon.get(i + 1)); //output 2nd point
+                vertexArray.add(getintersectWithX(polygon.get(i%numberOfEdges), polygon.get((i + 1)%numberOfEdges), this.xlow));
+                vertexArray.add(polygon.get((i + 1)%numberOfEdges)); //output 2nd point
             }
         }
         //building a xlow clipping plane clipped polygon
@@ -124,23 +124,23 @@ public class Clipper {
         //clip by *xhigh* clipping plane
         for (int i = 0; i < numberOfEdges; i++) {
             //upperbond test
-            int testCase = upperBondTest(newPolygon.get(i).getX(), newPolygon.get(i + 1).getX(), this.xhigh);
+            int testCase = upperBondTest(newPolygon.get(i%numberOfEdges).getX(), newPolygon.get((i + 1)%numberOfEdges).getX(), this.xhigh);
             if (testCase == 1) {
-                if (!vertexArray.contains(newPolygon.get(i + 1))) {
-                    vertexArray.add(newPolygon.get(i + 1)); //output 2nd point
+                if (!vertexArray.contains(newPolygon.get((i + 1)%numberOfEdges))) {
+                    vertexArray.add(newPolygon.get((i + 1)%numberOfEdges)); //output 2nd point
                 }
             } else if (testCase == 2) {
-                Vertex3D temp = getintersectWithX(newPolygon.get(i), newPolygon.get(i + 1), this.xhigh);
+                Vertex3D temp = getintersectWithX(newPolygon.get(i%numberOfEdges), newPolygon.get((i + 1)%numberOfEdges), this.xhigh);
                 if (!vertexArray.contains(temp)) {
-                    vertexArray.add(getintersectWithX(newPolygon.get(i), newPolygon.get(i + 1), this.xhigh));
+                    vertexArray.add(getintersectWithX(newPolygon.get(i%numberOfEdges), newPolygon.get((i + 1)%numberOfEdges), this.xhigh));
                 }
             } else if (testCase == 4) {
-                Vertex3D temp = getintersectWithX(newPolygon.get(i), newPolygon.get(i + 1), this.xhigh);
+                Vertex3D temp = getintersectWithX(newPolygon.get(i%numberOfEdges), newPolygon.get((i + 1)%numberOfEdges), this.xhigh);
                 if (!vertexArray.contains(temp)) {
-                    vertexArray.add(getintersectWithX(newPolygon.get(i), newPolygon.get(i + 1), this.xhigh));
+                    vertexArray.add(getintersectWithX(newPolygon.get(i), newPolygon.get((i + 1)%numberOfEdges), this.xhigh));
                 }
-                if (!vertexArray.contains(newPolygon.get(i + 1))) {
-                    vertexArray.add(newPolygon.get(i + 1)); //output 2nd point
+                if (!vertexArray.contains(newPolygon.get((i + 1)%numberOfEdges))) {
+                    vertexArray.add(newPolygon.get((i + 1)%numberOfEdges)); //output 2nd point
                 }
             }
         }
@@ -150,29 +150,29 @@ public class Clipper {
 
 
 
-    public List<Vertex3D> clipY_toVertexArray(Polygon polygon) {
+    public List<Vertex3D> clipY_toVertexArray(List<Vertex3D> polygon) {
         if (Y_outofRangeCompletely(this.ylow, this.yhigh, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
-            int numberOfEdges = polygon.length();
-            for (int i = 0; i < numberOfEdges; i++) {
-                sameArray.add(polygon.get(i));
-            }
+//            int numberOfEdges = polygon.size();
+//            for (int i = 0; i < numberOfEdges; i++) {
+//                sameArray.add(polygon.get(i));
+//            }
             return sameArray;
         }
         List<Vertex3D> vertexArray = new ArrayList<Vertex3D>();
-        int numberOfEdges = polygon.length();
+        int numberOfEdges = polygon.size();
 
         //clip by *far* clipping plane
         for (int i = 0; i < numberOfEdges; i++) {
             //lowerBond test
-            int testCase = lowerBondTest(polygon.get(i).getY(), polygon.get(i + 1).getY(), this.ylow);
+            int testCase = lowerBondTest(polygon.get(i).getY(), polygon.get((i + 1)%numberOfEdges).getY(), this.ylow);
             if (testCase == 1) {
-                vertexArray.add(polygon.get(i + 1)); //output 2nd point
+                vertexArray.add(polygon.get((i + 1)%numberOfEdges)); //output 2nd point
             } else if (testCase == 2) {
-                vertexArray.add(getintersectWithY(polygon.get(i), polygon.get(i + 1), this.ylow));
+                vertexArray.add(getintersectWithY(polygon.get(i), polygon.get((i + 1)%numberOfEdges), this.ylow));
             } else if (testCase == 4) {
-                vertexArray.add(getintersectWithY(polygon.get(i), polygon.get(i + 1), this.ylow));
-                vertexArray.add(polygon.get(i + 1)); //output 2nd point
+                vertexArray.add(getintersectWithY(polygon.get(i), polygon.get((i + 1)%numberOfEdges), this.ylow));
+                vertexArray.add(polygon.get((i + 1)%numberOfEdges)); //output 2nd point
             }
         }
         //building a far clipping plane clipped polygon
@@ -184,23 +184,23 @@ public class Clipper {
         //clip by *near* clipping plane
         for (int i = 0; i < numberOfEdges; i++) {
             //upperbond test
-            int testCase = upperBondTest(newPolygon.get(i).getY(), newPolygon.get(i + 1).getY(), this.yhigh);
+            int testCase = upperBondTest(newPolygon.get(i).getY(), newPolygon.get((i + 1)%numberOfEdges).getY(), this.yhigh);
             if (testCase == 1) {
-                if (!vertexArray.contains(newPolygon.get(i + 1))) {
-                    vertexArray.add(newPolygon.get(i + 1)); //output 2nd point
+                if (!vertexArray.contains(newPolygon.get((i + 1)%numberOfEdges))) {
+                    vertexArray.add(newPolygon.get((i + 1)%numberOfEdges)); //output 2nd point
                 }
             } else if (testCase == 2) {
-                Vertex3D temp = getintersectWithY(newPolygon.get(i), newPolygon.get(i + 1), this.yhigh);
+                Vertex3D temp = getintersectWithY(newPolygon.get(i), newPolygon.get((i + 1)%numberOfEdges), this.yhigh);
                 if (!vertexArray.contains(temp)) {
-                    vertexArray.add(getintersectWithY(newPolygon.get(i), newPolygon.get(i + 1), this.yhigh));
+                    vertexArray.add(getintersectWithY(newPolygon.get(i), newPolygon.get((i + 1)%numberOfEdges), this.yhigh));
                 }
             } else if (testCase == 4) {
-                Vertex3D temp = getintersectWithY(newPolygon.get(i), newPolygon.get(i + 1), this.yhigh);
+                Vertex3D temp = getintersectWithY(newPolygon.get(i), newPolygon.get((i + 1)%numberOfEdges), this.yhigh);
                 if (!vertexArray.contains(temp)) {
-                    vertexArray.add(getintersectWithY(newPolygon.get(i), newPolygon.get(i + 1), this.yhigh));
+                    vertexArray.add(getintersectWithY(newPolygon.get(i), newPolygon.get((i + 1)%numberOfEdges), this.yhigh));
                 }
-                if (!vertexArray.contains(newPolygon.get(i + 1))) {
-                    vertexArray.add(newPolygon.get(i + 1)); //output 2nd point
+                if (!vertexArray.contains(newPolygon.get((i + 1)%numberOfEdges))) {
+                    vertexArray.add(newPolygon.get((i + 1)%numberOfEdges)); //output 2nd point
                 }
             }
         }
@@ -307,39 +307,69 @@ public class Clipper {
 
     public boolean Z_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
         boolean result = false;
-        double z1 = polygon.get(0).getZ();
-        double z2 = polygon.get(1).getZ();
-        double z3 = polygon.get(2).getZ();
-        if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
+        int num = 0;
+        for (int i = 0; i < polygon.length(); i++){
+            if (polygon.get(i).getZ() < lowerBond){
+                num++;
+            }
+        }
+        if(num == polygon.length()){
             result = true;
         }
-        if (z1 > upperBond && z2 > upperBond && z3 > upperBond){
-            result = true;
+
+        num = 0;
+        for (int i = 0; i < polygon.length(); i++){
+            if (polygon.get(i).getZ() > upperBond){
+                num++;
+            }
         }
-        return result;
-    }
-    public boolean X_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
-        boolean result = false;
-        double z1 = polygon.get(0).getX();
-        double z2 = polygon.get(1).getX();
-        double z3 = polygon.get(2).getX();
-        if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
-            result = true;
-        }
-        if (z1 > upperBond && z2 > upperBond && z3 > upperBond){
+        if(num == polygon.length()){
             result = true;
         }
         return result;
     }
-    public boolean Y_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
+    public boolean X_outofRangeCompletely(double lowerBond, double upperBond, List<Vertex3D> polygon){
         boolean result = false;
-        double z1 = polygon.get(0).getY();
-        double z2 = polygon.get(1).getY();
-        double z3 = polygon.get(2).getY();
-        if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
+        int num = 0;
+        for (int i = 0; i < polygon.size(); i++){
+            if (polygon.get(i).getX() < lowerBond){
+                num++;
+            }
+        }
+        if(num == polygon.size()){
             result = true;
         }
-        if (z1 > upperBond && z2 > upperBond && z3 > upperBond){
+
+        num = 0;
+        for (int i = 0; i < polygon.size(); i++){
+            if (polygon.get(i).getX() > upperBond){
+                num++;
+            }
+        }
+        if(num == polygon.size()){
+            result = true;
+        }
+        return result;
+    }
+    public boolean Y_outofRangeCompletely(double lowerBond, double upperBond, List<Vertex3D> polygon){
+        boolean result = false;
+        int num = 0;
+        for (int i = 0; i < polygon.size(); i++){
+            if (polygon.get(i).getY() < lowerBond){
+                num++;
+            }
+        }
+        if(num == polygon.size()){
+            result = true;
+        }
+
+        num = 0;
+        for (int i = 0; i < polygon.size(); i++){
+            if (polygon.get(i).getY() > upperBond){
+                num++;
+            }
+        }
+        if(num == polygon.size()){
             result = true;
         }
         return result;

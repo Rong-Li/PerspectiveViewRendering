@@ -14,7 +14,7 @@ public class Client implements PageTurner {
 	private static final int ARGB_WHITE = 0xff_ff_ff_ff;
 	private static final int ARGB_GREEN = 0xff_00_ff_40;
 	
-	private static final int NUM_PAGES = 8;
+	private static final int NUM_PAGES = 10;
 	protected static final double GHOST_COVERAGE = 0.14;
 
 	private static final int NUM_PANELS = 4;

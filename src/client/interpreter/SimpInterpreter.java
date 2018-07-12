@@ -122,10 +122,10 @@ public class SimpInterpreter {
             case "rotate" :		interpretRotate(tokens);	break;
             case "line" :		interpretLine(tokens);		break;
             case "polygon" :	interpretPolygon(tokens);	break;
-		    case "camera" :		interpretCamera(tokens);	break;
-    		case "surface" :	interpretSurface(tokens);	break;
+            case "camera" :		interpretCamera(tokens);	break;
+            case "surface" :	interpretSurface(tokens);	break;
             case "ambient" :	interpretAmbient(tokens);	break;
-    		case "depth" :		interpretDepth(tokens);		break;
+            case "depth" :		interpretDepth(tokens);		break;
 //		case "obj" :		interpretObj(tokens);		break;
 
             default :
@@ -235,29 +235,44 @@ public class SimpInterpreter {
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
 
         //clip
-        List<Vertex3D> array= this.clipper.clipZ_toVertexArray(polygon);
+        List<Vertex3D> array_clippedZ= this.clipper.clipZ_toVertexArray(polygon);
 
 
-        for (int i = 0; i < array.size(); i++){
-            Vertex3D temp = transformToCamera(array.get(i));
-            array.set(i,temp);
+
+        //**some try
+        for (int i = 0; i < array_clippedZ.size(); i++){
+            Vertex3D temp = transformToPerspective(array_clippedZ.get(i));
+            array_clippedZ.set(i,temp);
+        }
+        if(array_clippedZ.size() == 0){
+            return;
+        }
+        List<Vertex3D> array_clippedX = this.clipper.clipX_toVertexArray(array_clippedZ);
+
+        if(array_clippedX.size() == 0){
+            return;
+        }
+        List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(array_clippedX);
+        if(array_clippedY.size() == 0){
+            return;
         }
 
-        Vertex3D[] temp1 = new Vertex3D[array.size()];
-        Polygon p = Polygon.makeEnsuringClockwise(array.toArray(temp1));
-        List<Vertex3D> array_clippedX = this.clipper.clipX_toVertexArray(p);
+        for (int i = 0; i < array_clippedY.size(); i++){
+            Vertex3D temp = transformToCamera(array_clippedY.get(i));
+            array_clippedY.set(i,temp);
+            System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
+        }
+        System.out.println("");
 
-        Vertex3D[] temp2 = new Vertex3D[array_clippedX.size()];
-        Polygon p2 = Polygon.makeEnsuringClockwise(array_clippedX.toArray(temp2));
-        List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(p2);
+
 
         Vertex3D[] result = new Vertex3D[array_clippedY.size()];
-        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
 
+
+        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
         if(this.renderStyle == RenderStyle.FILLED){
             List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
             for (int i = 0; i < listOfPolygons.size(); i++){
-                //System.out.println(listOfPolygons.get(i));
                 filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
             }
         }
@@ -301,13 +316,13 @@ public class SimpInterpreter {
     }
 
     public Point3DH interpretPoint(String[] tokens, int startingIndex) {
-    double x = cleanNumber(tokens[startingIndex]);
-    double y = cleanNumber(tokens[startingIndex + 1]);
-    double z = cleanNumber(tokens[startingIndex + 2]);
+        double x = cleanNumber(tokens[startingIndex]);
+        double y = cleanNumber(tokens[startingIndex + 1]);
+        double z = cleanNumber(tokens[startingIndex + 2]);
 
-    Point3DH result = new Point3DH(x, y, z, 1.0);
-    return result;
-}
+        Point3DH result = new Point3DH(x, y, z, 1.0);
+        return result;
+    }
     public Color interpretColor(String[] tokens, int startingIndex) {
         double r = cleanNumber(tokens[startingIndex]);
         double g = cleanNumber(tokens[startingIndex + 1]);
@@ -345,8 +360,6 @@ public class SimpInterpreter {
 //    }
 
     private void interpretCamera(String[] tokens) {
-        System.out.println("CTM!!!!!!!!!");
-        CTM.printMatrix();
 
         worldToScreen = CTM.InversedMatrix();
         CTM = CTM.matrixMultiplication(worldToScreen);
@@ -372,7 +385,7 @@ public class SimpInterpreter {
         //set clipper
         double hither = cleanNumber(tokens[5]);
         double yon = cleanNumber(tokens[6]);
-        this.clipper = new Clipper(hither, yon, 0, 650, 0, 650);
+        this.clipper = new Clipper(hither, yon, xLow, xHigh, yLow, yHigh);
         projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
@@ -383,8 +396,6 @@ public class SimpInterpreter {
         projectedToScreen.set(1,4,325);
         projectedToScreen.set(2,4,325);
 
-        System.out.println("projectionto screen");
-        projectedToScreen.printMatrix();
 
         //simple matrix
 
@@ -392,13 +403,9 @@ public class SimpInterpreter {
         simplePerspectiveMatrix.set(4,4,0);
         simplePerspectiveMatrix.set(4,3,-1);
 
-        System.out.println("simple matrix screen");
-        simplePerspectiveMatrix.printMatrix();
+
 
         this.cameraToScreen = simplePerspectiveMatrix.matrixMultiplication(projectedToScreen);
-
-        System.out.println("Camera to screen");
-        cameraToScreen.printMatrix();
     }
 
 
@@ -431,42 +438,25 @@ public class SimpInterpreter {
     }
 
 
-//    private Vertex3D transformToPerspective(Vertex3D vertex){
-//        Transformation vector = Transformation.vertexToVector(vertex);
-//
-//        double z_toKeep = vector.get(3,1);
-//        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
-//        vector = vector.homogeneousTransfer_4X1();
-//
-//        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), z_toKeep, vertex.getColor());
-//        return result;
-//
-//    }
-//    private Vertex3D transformToCamera(Vertex3D vertex) {
-//        Transformation vector = Transformation.vertexToVector(vertex);
-//
-//
-//        vector = vector.matrixMultiplication(projectedToScreen);
-//
-//        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/vector.get(3,1), vertex.getColor());
-//        return result;
-//    }
+    private Vertex3D transformToPerspective(Vertex3D vertex){
+        Transformation vector = Transformation.vertexToVector(vertex);
+
+        double z_toKeep = vector.get(3,1);
+        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
+        vector = vector.homogeneousTransfer_4X1();
+
+        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/z_toKeep, vertex.getColor());
+        return result;
+
+    }
     private Vertex3D transformToCamera(Vertex3D vertex) {
         Transformation vector = Transformation.vertexToVector(vertex);
 
-        //vector = vector.matrixMultiplication(this.CTM);
 
-        double z_toKeep = vector.get(3,1);
+        vector = vector.matrixMultiplication(projectedToScreen);
 
-        vector = vector.matrixMultiplication(cameraToScreen);
-        vector = vector.homogeneousTransfer_4X1();
-        vector.set(3,1,z_toKeep);
-//        System.out.println("After!!!!!!");
-//        vector.printMatrix();
-
-        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/vector.get(3,1), vertex.getColor());
+        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), vector.get(3,1), vertex.getColor());
         return result;
-
     }
 
 
