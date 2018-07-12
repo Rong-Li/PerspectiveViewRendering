@@ -30,12 +30,12 @@ public class DepthCueingDrawable extends DrawableDecorator {
             Color lightColor = Color.fromARGB(argbColor);
             //csz <= far
             if (z <= far){
-                System.out.println("********");
+                //System.out.println("********");
                 delegate.setPixel(x, y, z, this.color.asARGB());
             }
             //csz >= near
             else if (z >= near){
-                System.out.println("#########!!!!!!!!!!");
+                //System.out.println("#########!!!!!!!!!!");
                 delegate.setPixel(x, y, z, argbColor);
             }
             //near >= csz >= far

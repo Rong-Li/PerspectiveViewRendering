@@ -34,7 +34,7 @@ public class Clipper {
     }
 
     public List<Vertex3D> clipZ_toVertexArray(Polygon polygon) {
-        if (outofRangeCompletely(this.far, this.near, polygon)) {
+        if (Z_outofRangeCompletely(this.far, this.near, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
             int numberOfEdges = polygon.length();
             for (int i = 0; i < numberOfEdges; i++) {
@@ -91,7 +91,7 @@ public class Clipper {
     }
 
     public List<Vertex3D> clipX_toVertexArray(Polygon polygon) {
-        if (outofRangeCompletely(this.xlow, this.xhigh, polygon)) {
+        if (X_outofRangeCompletely(this.xlow, this.xhigh, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
             int numberOfEdges = polygon.length();
             for (int i = 0; i < numberOfEdges; i++) {
@@ -118,7 +118,7 @@ public class Clipper {
         //building a xlow clipping plane clipped polygon
         //System.out.println("List size!!!!" + vertexArray.size());
         Vertex3D tempArray[] = new Vertex3D[vertexArray.size()];
-        Polygon newPolygon = Polygon.make(vertexArray.toArray(tempArray));
+        Polygon newPolygon = Polygon.makeEnsuringClockwise(vertexArray.toArray(tempArray));
         numberOfEdges = vertexArray.size();
         vertexArray = new ArrayList<Vertex3D>();
         //clip by *xhigh* clipping plane
@@ -151,7 +151,7 @@ public class Clipper {
 
 
     public List<Vertex3D> clipY_toVertexArray(Polygon polygon) {
-        if (outofRangeCompletely(this.ylow, this.yhigh, polygon)) {
+        if (Y_outofRangeCompletely(this.ylow, this.yhigh, polygon)) {
             List<Vertex3D> sameArray = new ArrayList<Vertex3D>();
             int numberOfEdges = polygon.length();
             for (int i = 0; i < numberOfEdges; i++) {
@@ -305,11 +305,37 @@ public class Clipper {
     }
 
 
-    public boolean outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
+    public boolean Z_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
         boolean result = false;
         double z1 = polygon.get(0).getZ();
         double z2 = polygon.get(1).getZ();
         double z3 = polygon.get(2).getZ();
+        if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
+            result = true;
+        }
+        if (z1 > upperBond && z2 > upperBond && z3 > upperBond){
+            result = true;
+        }
+        return result;
+    }
+    public boolean X_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
+        boolean result = false;
+        double z1 = polygon.get(0).getX();
+        double z2 = polygon.get(1).getX();
+        double z3 = polygon.get(2).getX();
+        if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
+            result = true;
+        }
+        if (z1 > upperBond && z2 > upperBond && z3 > upperBond){
+            result = true;
+        }
+        return result;
+    }
+    public boolean Y_outofRangeCompletely(double lowerBond, double upperBond, Polygon polygon){
+        boolean result = false;
+        double z1 = polygon.get(0).getY();
+        double z2 = polygon.get(1).getY();
+        double z3 = polygon.get(2).getY();
         if (z1 < lowerBond && z2 < lowerBond && z3 < lowerBond){
             result = true;
         }

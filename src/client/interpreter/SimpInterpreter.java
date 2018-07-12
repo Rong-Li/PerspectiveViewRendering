@@ -235,42 +235,32 @@ public class SimpInterpreter {
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
 
         //clip
-        List<Vertex3D> array_clippedZ= this.clipper.clipZ_toVertexArray(polygon);
+        List<Vertex3D> array= this.clipper.clipZ_toVertexArray(polygon);
 
 
-
-        //**some try
-        for (int i = 0; i < array_clippedZ.size(); i++){
-            Vertex3D temp = transformToPerspective(array_clippedZ.get(i));
-            array_clippedZ.set(i,temp);
+        for (int i = 0; i < array.size(); i++){
+            Vertex3D temp = transformToCamera(array.get(i));
+            array.set(i,temp);
         }
-        Vertex3D[] temp1 = new Vertex3D[array_clippedZ.size()];
-        Polygon p = Polygon.makeEnsuringClockwise(array_clippedZ.toArray(temp1));
+
+        Vertex3D[] temp1 = new Vertex3D[array.size()];
+        Polygon p = Polygon.makeEnsuringClockwise(array.toArray(temp1));
         List<Vertex3D> array_clippedX = this.clipper.clipX_toVertexArray(p);
 
         Vertex3D[] temp2 = new Vertex3D[array_clippedX.size()];
         Polygon p2 = Polygon.makeEnsuringClockwise(array_clippedX.toArray(temp2));
         List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(p2);
-
         for (int i = 0; i < array_clippedY.size(); i++){
-            Vertex3D temp = transformToCamera(array_clippedY.get(i));
-            array_clippedY.set(i,temp);
-            System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
+            System.out.println(array_clippedY.get(i));
         }
-        System.out.println("");
-
-//        for (int i = 0; i < array.size(); i++){
-//            Vertex3D temp = transformToPerspective(array.get(i));
-//            temp = transformToCamera(temp);
-//            array.set(i,temp);
-//        }
 
         Vertex3D[] result = new Vertex3D[array_clippedY.size()];
-
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
+
         if(this.renderStyle == RenderStyle.FILLED){
             List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
             for (int i = 0; i < listOfPolygons.size(); i++){
+                //System.out.println(listOfPolygons.get(i));
                 filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
             }
         }
@@ -385,7 +375,7 @@ public class SimpInterpreter {
         //set clipper
         double hither = cleanNumber(tokens[5]);
         double yon = cleanNumber(tokens[6]);
-        this.clipper = new Clipper(hither, yon, xLow, xHigh, yLow, yHigh);
+        this.clipper = new Clipper(hither, yon, 0, 650, 0, 650);
         projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
@@ -444,25 +434,42 @@ public class SimpInterpreter {
     }
 
 
-    private Vertex3D transformToPerspective(Vertex3D vertex){
-        Transformation vector = Transformation.vertexToVector(vertex);
-
-        double z_toKeep = vector.get(3,1);
-        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
-        vector = vector.homogeneousTransfer_4X1();
-
-        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), z_toKeep, vertex.getColor());
-        return result;
-
-    }
+//    private Vertex3D transformToPerspective(Vertex3D vertex){
+//        Transformation vector = Transformation.vertexToVector(vertex);
+//
+//        double z_toKeep = vector.get(3,1);
+//        vector = vector.matrixMultiplication(simplePerspectiveMatrix);
+//        vector = vector.homogeneousTransfer_4X1();
+//
+//        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), z_toKeep, vertex.getColor());
+//        return result;
+//
+//    }
+//    private Vertex3D transformToCamera(Vertex3D vertex) {
+//        Transformation vector = Transformation.vertexToVector(vertex);
+//
+//
+//        vector = vector.matrixMultiplication(projectedToScreen);
+//
+//        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/vector.get(3,1), vertex.getColor());
+//        return result;
+//    }
     private Vertex3D transformToCamera(Vertex3D vertex) {
         Transformation vector = Transformation.vertexToVector(vertex);
 
+        //vector = vector.matrixMultiplication(this.CTM);
 
-        vector = vector.matrixMultiplication(projectedToScreen);
+        double z_toKeep = vector.get(3,1);
+
+        vector = vector.matrixMultiplication(cameraToScreen);
+        vector = vector.homogeneousTransfer_4X1();
+        vector.set(3,1,z_toKeep);
+//        System.out.println("After!!!!!!");
+//        vector.printMatrix();
 
         Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/vector.get(3,1), vertex.getColor());
         return result;
+
     }
 
 
