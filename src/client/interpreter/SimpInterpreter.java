@@ -260,9 +260,9 @@ public class SimpInterpreter {
         for (int i = 0; i < array_clippedY.size(); i++){
             Vertex3D temp = transformToCamera(array_clippedY.get(i));
             array_clippedY.set(i,temp);
-            System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
+            //System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
         }
-        System.out.println("");
+        //System.out.println("");
 
 
 
@@ -398,6 +398,10 @@ public class SimpInterpreter {
         projectedToScreen.set(1,4,translate_X);
         projectedToScreen.set(2,4,translate_Y);
 
+        if (xHigh != yHigh){
+            projectedToScreen.set(2,2,0.5*projectedToScreen.get(2,2));
+            projectedToScreen.set(2,4,projectedToScreen.get(2,4)-160);
+        }
 
         //simple matrix
 
