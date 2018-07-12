@@ -389,12 +389,14 @@ public class SimpInterpreter {
         projectedToScreen = Transformation.identity();
         double scaleSize_X = 650/(xHigh - xLow);
         double scaleSize_Y = 650/(yHigh - yLow);
+        double translate_X = 650 - xHigh * 325;
+        double translate_Y = 650 - yHigh * 325;
         //scalling
         projectedToScreen.set(1,1,scaleSize_X);
         projectedToScreen.set(2,2,scaleSize_Y);
         //translating
-        projectedToScreen.set(1,4,325);
-        projectedToScreen.set(2,4,325);
+        projectedToScreen.set(1,4,translate_X);
+        projectedToScreen.set(2,4,translate_Y);
 
 
         //simple matrix
