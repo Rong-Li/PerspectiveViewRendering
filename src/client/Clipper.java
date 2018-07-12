@@ -269,7 +269,7 @@ public class Clipper {
 
 
         //use resultX, resultY, resultZ, resultColor to get vertex
-        System.out.println("xClipped Z!!:" + resultZ);
+        //System.out.println("xClipped Z!!:" + resultZ);
         Vertex3D result = new Vertex3D(x,resultY,resultZ,p1.getColor());
         return result;
     }
@@ -283,7 +283,7 @@ public class Clipper {
         double resultX = temp * v.getX() + p1.getX();
         //get the color as well
         //use resultX, resultY, resultZ, resultColor to get vertex
-        System.out.println("yClipped Z!!:" + resultZ);
+        //System.out.println("yClipped Z!!:" + resultZ);
         Vertex3D result = new Vertex3D(resultX,y,resultZ,p1.getColor());
 
 

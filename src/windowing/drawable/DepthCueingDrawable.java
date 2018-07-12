@@ -20,9 +20,6 @@ public class DepthCueingDrawable extends DrawableDecorator {
     public void setPixel(int x, int y, double z, int argbColor) {
         z = 1/z;
 
-
-
-
         if (z >= far && z <= near
                 && x >= 0 && x < 650
                 && y >= 0 && y < 650)
@@ -41,13 +38,10 @@ public class DepthCueingDrawable extends DrawableDecorator {
             //near >= csz >= far
             else{
                 double fraction = 1 - (z / far);
-                double r = lightColor.getR() * fraction;
-                double g = lightColor.getG() * fraction;
-                double b = lightColor.getB() * fraction;
-                Color newColor = new Color(r, g, b);
-                //System.out.println(newColor.toIntString());
 
-                delegate.setPixel(x, y, z, newColor.asARGB());
+                Color result = lightColor.blendInto(fraction, this.color);
+
+                delegate.setPixel(x, y, z, result.asARGB());
             }
         } else {
             return;

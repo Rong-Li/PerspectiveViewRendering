@@ -250,9 +250,6 @@ public class SimpInterpreter {
         Vertex3D[] temp2 = new Vertex3D[array_clippedX.size()];
         Polygon p2 = Polygon.makeEnsuringClockwise(array_clippedX.toArray(temp2));
         List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(p2);
-        for (int i = 0; i < array_clippedY.size(); i++){
-            System.out.println(array_clippedY.get(i));
-        }
 
         Vertex3D[] result = new Vertex3D[array_clippedY.size()];
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
