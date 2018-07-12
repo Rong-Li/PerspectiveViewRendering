@@ -83,7 +83,7 @@ public class Client implements PageTurner {
 	}
 	private void createRenderers() {
 		lineRenderer = DDALineRenderer.make();
-		polygonRenderer = FilledPolygonRenderer_perspective.make();
+		polygonRenderer = FilledPolygonRenderer.make();
 		wireframeRenderer = FilledWireFrameRenderer.make();
 		renderers = new RendererTrio(lineRenderer, polygonRenderer, wireframeRenderer);
     }

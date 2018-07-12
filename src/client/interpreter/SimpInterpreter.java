@@ -239,35 +239,27 @@ public class SimpInterpreter {
 
 
         //**some try
+//        for (int i = 0; i < array.size(); i++){
+//            Vertex3D temp = transformToPerspective(array.get(i));
+//            array.set(i,temp);
+//        }
 //        Vertex3D[] temp1 = new Vertex3D[array.size()];
 //        Polygon p = Polygon.makeEnsuringClockwise(array.toArray(temp1));
 //        array = this.clipper.clipX_toVertexArray(p);
 //        Vertex3D[] temp2 = new Vertex3D[array.size()];
 //        Polygon p2 = Polygon.makeEnsuringClockwise(array.toArray(temp2));
 //        array = this.clipper.clipY_toVertexArray(p2);
-
+//
+//        for (int i = 0; i < array.size(); i++){
+//            Vertex3D temp = transformToCamera(array.get(i));
+//            array.set(i,temp);
+//        }
 
         for (int i = 0; i < array.size(); i++){
             Vertex3D temp = transformToPerspective(array.get(i));
+            temp = transformToCamera(temp);
             array.set(i,temp);
         }
-        Vertex3D[] temp1 = new Vertex3D[array.size()];
-        Polygon p = Polygon.makeEnsuringClockwise(array.toArray(temp1));
-        array = this.clipper.clipX_toVertexArray(p);
-        Vertex3D[] temp2 = new Vertex3D[array.size()];
-        Polygon p2 = Polygon.makeEnsuringClockwise(array.toArray(temp2));
-        array = this.clipper.clipY_toVertexArray(p2);
-
-        for (int i = 0; i < array.size(); i++){
-            Vertex3D temp = transformToCamera(array.get(i));
-            array.set(i,temp);
-        }
-
-//        for (int i = 0; i < array.size(); i++){
-//            Vertex3D temp = transformToPerspective(array.get(i));
-//            temp = transformToCamera(temp);
-//            array.set(i,temp);
-//        }
 
         Vertex3D[] result = new Vertex3D[array.size()];
 
@@ -444,7 +436,7 @@ public class SimpInterpreter {
         double b = cleanNumber(tokens[5]);
         Color color = new Color(r,g,b);
         depthCueingDrawable = new DepthCueingDrawable(this.drawable, (int)Math.round(near), (int)Math.round(far), color);
-        //this.drawable = depthCueingDrawable;
+        this.drawable = depthCueingDrawable;
     }
 //    private void line(Vertex3D p1, Vertex3D p2) {
 //        Vertex3D screenP1 = transformToCamera(p1);
@@ -474,13 +466,11 @@ public class SimpInterpreter {
     private Vertex3D transformToCamera(Vertex3D vertex) {
         Transformation vector = Transformation.vertexToVector(vertex);
 
-        double z_toKeep = vector.get(3,1);
 
         vector = vector.matrixMultiplication(projectedToScreen);
         //vector = vector.homogeneousTransfer_4X1();
-        vector.set(3,1,z_toKeep);
 
-        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), vector.get(3,1), vertex.getColor());
+        Vertex3D result = new Vertex3D(vector.get(1,1), vector.get(2,1), 1/vector.get(3,1), vertex.getColor());
         return result;
     }
 

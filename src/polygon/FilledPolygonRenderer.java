@@ -110,8 +110,8 @@ public class FilledPolygonRenderer implements PolygonRenderer {
         int y = p_top.getIntY();
         Color c1 = p_top.getColor();
         Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = p_top.getZ();
+        double z2 = p_top.getZ();
 
 
         //rendering begin
@@ -169,8 +169,8 @@ public class FilledPolygonRenderer implements PolygonRenderer {
         int y = p_top.getIntY();
         Color c1 = p_top.getColor();
         Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = p_top.getZ();
+        double z2 = p_top.getZ();
 
         //rendering begin
         while (y >= p_bottomRight.getIntY()) {
@@ -214,8 +214,8 @@ public class FilledPolygonRenderer implements PolygonRenderer {
         int y = p_top.getIntY();
         Color c1 = p_top.getColor();
         Color c2 = p_top.getColor();
-        double z1 = p_top.getIntZ();
-        double z2 = p_top.getIntZ();
+        double z1 = p_top.getZ();
+        double z2 = p_top.getZ();
 
         //rendering begin
         while (y > p_bottomLeft.getIntY()) {
@@ -249,8 +249,8 @@ public class FilledPolygonRenderer implements PolygonRenderer {
         int y = p_topLeft.getIntY();
         Color c1 = p_topLeft.getColor();
         Color c2 = p_topRight.getColor();
-        double z1 = p_topLeft.getIntZ();
-        double z2 = p_topRight.getIntZ();
+        double z1 = p_topLeft.getZ();
+        double z2 = p_topRight.getZ();
 
         //rendering begin
         while (y >= p_bottom.getIntY()) {
@@ -290,7 +290,7 @@ public class FilledPolygonRenderer implements PolygonRenderer {
 
     private double DecrementforZ(Vertex3D p1, Vertex3D p2) {
         double deltaY = p1.getIntY() - p2.getIntY();
-        double deltaZ = p1.getIntZ() - p2.getIntZ();
+        double deltaZ = p1.getZ() - p2.getZ();
         double result = deltaZ / deltaY;
         return result;
     }

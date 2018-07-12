@@ -4,33 +4,54 @@ import windowing.graphics.Color;
 
 public class DepthCueingDrawable extends DrawableDecorator {
 
-    private int front;
-    private int back;
+    private int near;
+    private int far;
     private Color color;
 
-    public DepthCueingDrawable(Drawable delegate, int i, int i1, Color color) {
+    public DepthCueingDrawable(Drawable delegate, int near, int far, Color color) {
         super(delegate);
-        this.front = i;
-        this.back = i1;
+        this.near = near;
+        this.far = far;
         this.color = color;
     }
 
 
     @Override
     public void setPixel(int x, int y, double z, int argbColor) {
-        if (z >= back && z <= front
-                && x >= 0 && x < 650
-                && y >= 0 && y < 650) {
-            double fraction = 1 - (z / back);
-            double r = this.color.getR() * fraction;
-            double g = this.color.getG() * fraction;
-            double b = this.color.getB() * fraction;
-            Color newColor = new Color(r, g, b);
+        z = 1/z;
 
-            delegate.setPixel(x, y, z, newColor.asARGB());
+
+
+
+        if (z >= far && z <= near
+                && x >= 0 && x < 650
+                && y >= 0 && y < 650)
+        {
+            Color lightColor = Color.fromARGB(argbColor);
+            //csz <= far
+            if (z <= far){
+                System.out.println("********");
+                delegate.setPixel(x, y, z, this.color.asARGB());
+            }
+            //csz >= near
+            else if (z >= near){
+                System.out.println("#########!!!!!!!!!!");
+                delegate.setPixel(x, y, z, argbColor);
+            }
+            //near >= csz >= far
+            else{
+                double fraction = 1 - (z / far);
+                double r = lightColor.getR() * fraction;
+                double g = lightColor.getG() * fraction;
+                double b = lightColor.getB() * fraction;
+                Color newColor = new Color(r, g, b);
+                //System.out.println(newColor.toIntString());
+
+                delegate.setPixel(x, y, z, newColor.asARGB());
+            }
         } else {
             return;
         }
-    }
 
+    }
 }
