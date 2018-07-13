@@ -140,54 +140,6 @@ public class Client implements PageTurner {
 
 
 
-//	@Override
-//	public void nextPage() {
-//		Drawable depthCueingDrawable;
-//		System.out.println("PageNumber " + (pageNumber + 1));
-//		pageNumber = (pageNumber + 1) % NUM_PAGES;
-//
-//		image.clear();
-//		fullPanel.clear();
-//		//depthCueingDrawable.clear();
-//
-//		switch(pageNumber) {
-//			case 1:  new MeshPolygonTest(fullPanel, wireframeRenderer, MeshPolygonTest.USE_PERTURBATION);
-//				break;
-//			case 2:  new MeshPolygonTest(fullPanel, polygonRenderer, MeshPolygonTest.USE_PERTURBATION);
-//				break;
-//			case 3:	 new centeredTriangleTest(fullPanel, polygonRenderer);
-//				break;
-//            case 4:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.GREEN);
-//                interpreter = new SimpInterpreter("page4.simp", depthCueingDrawable, renderers);
-//                interpreter.interpret();
-//                break;
-//
-//			case 5:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.BLUE);
-//				interpreter = new SimpInterpreter("page5.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			case 6:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page6.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			case 7:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page7.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			case 0:  depthCueingDrawable = new DepthCueingDrawable(fullPanel, 0, -200, Color.WHITE);
-//				interpreter = new SimpInterpreter("page8.simp", depthCueingDrawable, renderers);
-//				interpreter.interpret();
-//				break;
-//
-//			default: defaultPage();
-//				break;
-//		}
-//	}
-
-
 
 
 	private void defaultPage() {

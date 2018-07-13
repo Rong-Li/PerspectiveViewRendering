@@ -464,9 +464,9 @@ public class SimpInterpreter {
 
 
         Vertex3D[] result = new Vertex3D[array_clippedY.size()];
-
-
         Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
+
+
         if(this.renderStyle == RenderStyle.FILLED){
             List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
             for (int i = 0; i < listOfPolygons.size(); i++){
