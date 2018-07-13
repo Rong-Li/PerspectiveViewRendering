@@ -45,6 +45,7 @@ public class SimpInterpreter {
 
     private Drawable drawable;
     private Drawable depthCueingDrawable;
+    private Drawable ZbufferDrawable;
 
     private LineRenderer lineRenderer;
     private PolygonRenderer filledRenderer;
@@ -60,6 +61,7 @@ public class SimpInterpreter {
     public SimpInterpreter(String filename, Drawable drawable, RendererTrio renderers) {
         this.drawable = drawable;
         this.depthCueingDrawable = drawable;
+        this.ZbufferDrawable = drawable;
         this.lineRenderer = renderers.getLineRenderer();
         this.filledRenderer = renderers.getFilledRenderer();
         this.wireframeRenderer = renderers.getWireframeRenderer();
@@ -315,7 +317,7 @@ public class SimpInterpreter {
         double b = cleanNumber(tokens[startingIndex + 2]);
 
         Color result = new Color(r,g,b);
-        result = result.multiply(ambientLight);
+        //result = result.multiply(ambientLight);
         return result;
     }
 
@@ -393,7 +395,7 @@ public class SimpInterpreter {
         double g = cleanNumber(tokens[2]);
         double b = cleanNumber(tokens[3]);
         Color color = new Color(r,g,b);
-        this.defaultColor = color.multiply(ambientLight);
+        this.defaultColor = color;
     }
     private void interpretDepth(String[] tokens) {
         double near = cleanNumber(tokens[1]);
@@ -468,12 +470,11 @@ public class SimpInterpreter {
         if(this.renderStyle == RenderStyle.FILLED){
             List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
             for (int i = 0; i < listOfPolygons.size(); i++){
-                filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
+                filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, ambientShader);
             }
         }
         else if(this.renderStyle == RenderStyle.WIREFRAME){
-            //System.out.println("the polygon: "+finalPolygon);
-            wireframeRenderer.drawPolygon(finalPolygon, this.drawable, null);
+            wireframeRenderer.drawPolygon(finalPolygon, this.ZbufferDrawable, ambientShader);
         }
     }
 

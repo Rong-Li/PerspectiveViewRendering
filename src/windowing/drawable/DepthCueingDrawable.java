@@ -44,6 +44,7 @@ public class DepthCueingDrawable extends DrawableDecorator {
                 delegate.setPixel(x, y, z, result.asARGB());
             }
         } else {
+            //System.out.println("DiDn't setpixel");
             return;
         }
 

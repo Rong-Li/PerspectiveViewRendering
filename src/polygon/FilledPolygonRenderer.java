@@ -5,11 +5,13 @@ import windowing.drawable.Drawable;
 import windowing.graphics.Color;
 
 public class FilledPolygonRenderer implements PolygonRenderer {
+    private Shader shader;
     private FilledPolygonRenderer() {
     }
 
     @Override
     public void drawPolygon(Polygon polygon, Drawable drawable, Shader vertexShader) {
+        this.shader = vertexShader;
         if (outofRange(polygon, drawable)) {
             return;
         }
@@ -314,14 +316,14 @@ public class FilledPolygonRenderer implements PolygonRenderer {
         int end = (int) Math.round(x_end);
         if (start == end) {
             if(start < drawable.getWidth() && y < drawable.getHeight()){
-                drawable.setPixel(start, y, z, c1.asARGB());
+                drawable.setPixel(start, y, z, shader.shade(c1).asARGB());
             }
         }
 
         else {
             for (int i = start; i < end; i++) {
                 if(i < drawable.getWidth() && y < drawable.getHeight()){
-                    drawable.setPixel(i, y, z, newColor.asARGB());
+                    drawable.setPixel(i, y, z, shader.shade(newColor).asARGB());
                 }
                 newColor = newColor.add(addOn);
                 z = z + z_slope;

@@ -148,9 +148,9 @@ class ObjReader {
                 face.add(objVertex);
             }
 
-            objFaces.add(face);
 
 		}
+		objFaces.add(face);
 		// TODO: fill in action to take here.
 	}
 
@@ -185,9 +185,6 @@ class ObjReader {
 		Point3DH point = objVertexPoint(tokens, numArgs);
 		Color color = objVertexColor(tokens, numArgs);
 
-		if(point.getW() != 1){
-		    System.out.println("W is not 1!!! W is not 1!!! W is not 1!!! W is not 1!!! ");
-        }
         Vertex3D vertex = new Vertex3D(point, color);
 		this.objVertices.add(vertex);
 	}
@@ -199,7 +196,7 @@ class ObjReader {
 		if(numArgs == 7) {
 			return SimpInterpreter.interpretColor(tokens, 5);
 		}
-		return defaultColor.multiply(SimpInterpreter.ambientLight);
+		return defaultColor;
 	}
 
 	private Point3DH objVertexPoint(String[] tokens, int numArgs) {
