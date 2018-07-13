@@ -127,7 +127,7 @@ public class Client implements PageTurner {
 			case 7:  filename = "pageG";	 break;
 			case 8:  filename = "pageH";	 break;
 			case 9:  filename = "pageI";	 break;
-			case 0:  filename = "tomsPageJ";	 break;
+			case 0:  filename = "pageJ";	 break;
 
 			default: defaultPage();
 				return;

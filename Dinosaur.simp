@@ -8,9 +8,8 @@
 
 	wire
 	{
-		translate 0 0 -80
-		scale 0.3 0.3 0.3
-		rotate Y 20
-		obj "dummy"
+		translate 0 0 -100
+		scale 0.6 0.6 0.6
+		obj "Dinosaur"
 	}
 }
