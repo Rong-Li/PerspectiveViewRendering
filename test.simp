@@ -1,14 +1,16 @@
 {
-	ambient 1, .9, .9
+	ambient 1 1 0.75
 	{
+		translate 0 25 -32
 		camera  -1 -1 1 1 -0.1 -200
 		depth 0 -200 (0 0 0)
 	}
 
-    #wire
-
+	wire
 	{
-	 	surface 0.5 1.0 0.5
-		polygon (0.02 0 1) (0 80 -290) (80 -40 -201)
+		translate 0 0 -80
+		scale 0.3 0.3 0.3
+		rotate Y 20
+		obj "dummy"
 	}
 }

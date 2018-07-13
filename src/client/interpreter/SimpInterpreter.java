@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import client.Clipper;
 import geometry.*;
+import geometry.Point3DH;
 import line.LineRenderer;
 import client.RendererTrio;
 import geometry.Transformation;
@@ -40,7 +41,7 @@ public class SimpInterpreter {
     private Stack<LineBasedReader> readerStack;
 
     private Color defaultColor = Color.WHITE;
-    private Color ambientLight = Color.BLACK;
+    public static Color ambientLight = Color.BLACK;
 
     private Drawable drawable;
     private Drawable depthCueingDrawable;
@@ -126,12 +127,26 @@ public class SimpInterpreter {
             case "surface" :	interpretSurface(tokens);	break;
             case "ambient" :	interpretAmbient(tokens);	break;
             case "depth" :		interpretDepth(tokens);		break;
-//		case "obj" :		interpretObj(tokens);		break;
+    		case "obj" :		interpretObj(tokens);		break;
 
             default :
                 System.err.println("bad input line: " + tokens);
                 break;
         }
+    }
+
+    private void interpretObj(String[] tokens) {
+        String quotedFilename = tokens[1];
+        int length = quotedFilename.length();
+        assert quotedFilename.charAt(0) == '"' && quotedFilename.charAt(length-1) == '"';
+        String filename = quotedFilename.substring(1, length-1);
+        objFile(filename + ".obj");
+    }
+
+    private void objFile(String filename) {
+        ObjReader objReader = new ObjReader(filename, defaultColor);
+        objReader.read();
+        objReader.render(this);
     }
 
 
@@ -202,7 +217,7 @@ public class SimpInterpreter {
         CTM = rotate.matrixMultiplication(CTM);
         //CTM.printMatrix();
     }
-    private double cleanNumber(String string) {
+    private static double cleanNumber(String string) {
         return Double.parseDouble(string);
     }
 
@@ -234,51 +249,7 @@ public class SimpInterpreter {
         }
         Polygon polygon = Polygon.makeEnsuringClockwise(vertices);
 
-        //clip
-        List<Vertex3D> array_clippedZ= this.clipper.clipZ_toVertexArray(polygon);
-
-
-
-        //**some try
-        for (int i = 0; i < array_clippedZ.size(); i++){
-            Vertex3D temp = transformToPerspective(array_clippedZ.get(i));
-            array_clippedZ.set(i,temp);
-        }
-        if(array_clippedZ.size() == 0){
-            return;
-        }
-        List<Vertex3D> array_clippedX = this.clipper.clipX_toVertexArray(array_clippedZ);
-
-        if(array_clippedX.size() == 0){
-            return;
-        }
-        List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(array_clippedX);
-        if(array_clippedY.size() == 0){
-            return;
-        }
-
-        for (int i = 0; i < array_clippedY.size(); i++){
-            Vertex3D temp = transformToCamera(array_clippedY.get(i));
-            array_clippedY.set(i,temp);
-            //System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
-        }
-        //System.out.println("");
-
-
-
-        Vertex3D[] result = new Vertex3D[array_clippedY.size()];
-
-
-        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
-        if(this.renderStyle == RenderStyle.FILLED){
-            List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
-            for (int i = 0; i < listOfPolygons.size(); i++){
-                filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
-            }
-        }
-        else if(this.renderStyle == RenderStyle.WIREFRAME){
-            wireframeRenderer.drawPolygon(finalPolygon, this.drawable, null);
-        }
+        RenderPolygon(polygon);
     }
 
 
@@ -315,7 +286,7 @@ public class SimpInterpreter {
         return result;
     }
 
-    public Point3DH interpretPoint(String[] tokens, int startingIndex) {
+    public static Point3DH interpretPoint(String[] tokens, int startingIndex) {
         double x = cleanNumber(tokens[startingIndex]);
         double y = cleanNumber(tokens[startingIndex + 1]);
         double z = cleanNumber(tokens[startingIndex + 2]);
@@ -323,41 +294,33 @@ public class SimpInterpreter {
         Point3DH result = new Point3DH(x, y, z, 1.0);
         return result;
     }
-    public Color interpretColor(String[] tokens, int startingIndex) {
+    public static Point3DH interpretPointWithW(String[] tokens, int startingIndex) {
+        double x = cleanNumber(tokens[startingIndex]);
+        double y = cleanNumber(tokens[startingIndex + 1]);
+        double z = cleanNumber(tokens[startingIndex + 2]);
+        double w = cleanNumber(tokens[startingIndex + 3]);
+        Transformation vector = new Transformation(4,1);
+        vector.set(1,1,x);
+        vector.set(2,1,y);
+        vector.set(3,1,z);
+        vector.set(4,1,w);
+        vector = vector.homogeneousTransfer_4X1();
+
+        Point3DH result = new Point3DH(vector.get(1,1), vector.get(2,1), vector.get(3,1), vector.get(4,1));
+        return result;
+    }
+    public static Color interpretColor(String[] tokens, int startingIndex) {
         double r = cleanNumber(tokens[startingIndex]);
         double g = cleanNumber(tokens[startingIndex + 1]);
         double b = cleanNumber(tokens[startingIndex + 2]);
 
         Color result = new Color(r,g,b);
+        result = result.multiply(ambientLight);
         return result;
     }
 
 
 
-
-//    private void interpretCamera(String[] tokens) {
-//        Transformation temp = Transformation.identity();
-//        temp.set(1,1,2);
-//        temp.set(1,2,0);
-//        temp.set(1,3,0);
-//        temp.set(1,4,1);
-//        temp.set(2,1,0);
-//        temp.set(2,2,4);
-//        temp.set(2,3,3);
-//        temp.set(2,4,2);
-//        temp.set(3,1,0);
-//        temp.set(3,2,1);
-//        temp.set(3,3,1);
-//        temp.set(3,4,3);
-//
-//        temp.printMatrix();
-//
-//        System.out.println("AFTER inverse!!!");
-//
-//        Transformation result = temp.InversedMatrix();
-//        result.printMatrix();
-//
-//    }
 
     private void interpretCamera(String[] tokens) {
 
@@ -444,7 +407,7 @@ public class SimpInterpreter {
     }
 
 
-    private Vertex3D transformToPerspective(Vertex3D vertex){
+    public Vertex3D transformToPerspective(Vertex3D vertex){
         Transformation vector = Transformation.vertexToVector(vertex);
 
         double z_toKeep = vector.get(3,1);
@@ -455,7 +418,7 @@ public class SimpInterpreter {
         return result;
 
     }
-    private Vertex3D transformToCamera(Vertex3D vertex) {
+    public Vertex3D transformToCamera(Vertex3D vertex) {
         Transformation vector = Transformation.vertexToVector(vertex);
 
 
@@ -465,10 +428,77 @@ public class SimpInterpreter {
         return result;
     }
 
+    public void RenderPolygon(Polygon polygon){
+        //clip
+        List<Vertex3D> array_clippedZ= this.clipper.clipZ_toVertexArray(polygon);
 
 
 
+        //**some try
+        for (int i = 0; i < array_clippedZ.size(); i++){
+            Vertex3D temp = transformToPerspective(array_clippedZ.get(i));
+            array_clippedZ.set(i,temp);
+        }
+        if(array_clippedZ.size() == 0){
+            return;
+        }
+        List<Vertex3D> array_clippedX = this.clipper.clipX_toVertexArray(array_clippedZ);
+
+        if(array_clippedX.size() == 0){
+            return;
+        }
+        List<Vertex3D> array_clippedY = this.clipper.clipY_toVertexArray(array_clippedX);
+        if(array_clippedY.size() == 0){
+            return;
+        }
+
+        for (int i = 0; i < array_clippedY.size(); i++){
+            Vertex3D temp = transformToCamera(array_clippedY.get(i));
+            array_clippedY.set(i,temp);
+            //System.out.println("the points: "+ array_clippedY.get(i).getIntX() + " " + array_clippedY.get(i).getIntY() + " " +array_clippedY.get(i).getZ());
+        }
+        //System.out.println("");
 
 
 
+        Vertex3D[] result = new Vertex3D[array_clippedY.size()];
+
+
+        Polygon finalPolygon = Polygon.makeEnsuringClockwise(array_clippedY.toArray(result));
+        if(this.renderStyle == RenderStyle.FILLED){
+            List<Polygon> listOfPolygons = Clipper.Triangulation(finalPolygon);
+            for (int i = 0; i < listOfPolygons.size(); i++){
+                filledRenderer.drawPolygon(listOfPolygons.get(i), this.drawable, null);
+            }
+        }
+        else if(this.renderStyle == RenderStyle.WIREFRAME){
+            //System.out.println("the polygon: "+finalPolygon);
+            wireframeRenderer.drawPolygon(finalPolygon, this.drawable, null);
+        }
+    }
+
+
+    public Transformation getCTM() {
+        return CTM;
+    }
+
+    public Clipper getClipper() {
+        return clipper;
+    }
+
+    public RenderStyle getRenderStyle() {
+        return renderStyle;
+    }
+
+    public PolygonRenderer getFilledRenderer() {
+        return filledRenderer;
+    }
+
+    public PolygonRenderer getWireframeRenderer() {
+        return wireframeRenderer;
+    }
+
+    public Drawable getDrawable() {
+        return drawable;
+    }
 }
